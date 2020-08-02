@@ -32,7 +32,7 @@ public class CategoryWriter {
      */
     public static void writeCategory(String categoryName) throws FileNotFoundException {
 
-        Document doc = getDocument();
+        Document doc = XMLHandler.getDocument(catXMLPath);
         Element docElement = doc.getDocumentElement();
         removeWhiteSpaceNodes(doc);
 
@@ -50,7 +50,7 @@ public class CategoryWriter {
      */
     public static void writeItem(String categoryName, String itemName) throws FileNotFoundException {
 
-        Document doc = getDocument();
+        Document doc = XMLHandler.getDocument(catXMLPath);
         Element docElement = doc.getDocumentElement();
         removeWhiteSpaceNodes(doc);
 
@@ -101,24 +101,6 @@ public class CategoryWriter {
             e.printStackTrace();
         } catch (TransformerException e) {
             e.printStackTrace();
-        }
-    }
-
-    /**
-     * Gets xml document.
-     * @return Document of categories.xml
-     * @throws FileNotFoundException If categories.xml is missing
-     */
-    public static Document getDocument() throws FileNotFoundException {
-
-        try {
-            File xmlFile = new File(catXMLPath);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            return dBuilder.parse(xmlFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new FileNotFoundException("categories.xml is missing");
         }
     }
 

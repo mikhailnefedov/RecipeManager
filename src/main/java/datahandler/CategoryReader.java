@@ -6,9 +6,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
@@ -17,6 +14,9 @@ import java.util.ArrayList;
  */
 public class CategoryReader {
 
+    /** file path to categories.xml. */
+    private static String catXMLPath = "./src/main/resources/categories.xml";
+
     /**
      * Reads the categories.xml file and loads the data into.
      * ListOfPurchasableItems
@@ -24,29 +24,8 @@ public class CategoryReader {
      */
     public static void readCategories() throws FileNotFoundException {
 
-        Document doc = getDocument();
+        Document doc = XMLHandler.getDocument(catXMLPath);
         readDocument(doc);
-    }
-
-    /**
-     * Gets xml document.
-     * @return Document of categories.xml
-     * @throws FileNotFoundException If categories.xml is missing
-     */
-    public static Document getDocument() throws FileNotFoundException {
-
-        try {
-            String path = "./src/main/resources/categories.xml";
-            File xmlFile = new File(path);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(xmlFile);
-            doc.getDocumentElement().normalize();
-            return doc;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new FileNotFoundException("categories.xml is missing");
-        }
     }
 
     /**
