@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection>
+	<description>
+		Recipe categories of programm.
+	</description>
+	<!-- Comment for xml-->
+	<category name="Obst und Gemüse">
+		<item>Ananas</item>
+		<item>Apfel</item>
+	</category>
+	<category name="Frische und Kühlung">
+		<item>Butter</item>
+		<item>Camembert</item>
+	</category>
+	<category name="Tiefkühl">
+		<item>Shrimps</item>
+	</category>
+	<category name="Nahrungsmittel">
+		<item>Backin</item>
+		<item>Basmati Reis</item>
+	</category>
+	<category name="Gewürze">
+		<item>Basilikum gerebelt</item>
+		<item>Bohnenkraut</item>
+	</category>
+	<category name="Süßes und Salziges">
+		<item>Walnüsse</item>
+		<item>Cashewkerne</item>
+	</category>
+	<category name="Kaffee, Tee &amp; Kakao">
+		<item>Kondensmilch</item>
+		<item>Kokosmilch</item>
+	</category>
+	<category name="Getränke">
+		<item>Apfelsaft</item>
+		<item>Kirschsaft</item>
+	</category>
+	<category name="Wein &amp; Spirituosen">
+		<item>Rotwein</item>
+	</category>
+	
+	
+  
+</collection>
