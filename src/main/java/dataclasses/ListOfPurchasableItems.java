@@ -1,6 +1,7 @@
 package dataclasses;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class ListOfPurchasableItems {
@@ -40,10 +41,13 @@ public class ListOfPurchasableItems {
     @Override
     public String toString() {
 
+        ArrayList<Category> categories = new ArrayList<Category>(categoriesAndItems.keySet());
+        Collections.sort(categories);
+
         StringBuilder stringText = new StringBuilder();
         stringText.append("All Categories").append("\n");
         stringText.append("---------------").append("\n");
-        for (Category category : categoriesAndItems.keySet()) {
+        for (Category category : categories) {
             stringText.append(category.toString()).append(":\n");
             for (Item item : categoriesAndItems.get(category)) {
                 stringText.append(item.toString()).append("\n");
@@ -53,4 +57,5 @@ public class ListOfPurchasableItems {
 
         return stringText.toString();
     }
+
 }
