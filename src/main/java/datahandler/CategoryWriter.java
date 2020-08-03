@@ -5,16 +5,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import java.io.File;
 import java.io.FileNotFoundException;
 
 /**
@@ -34,12 +24,12 @@ public class CategoryWriter {
 
         Document doc = XMLHandler.getDocument(catXMLPath);
         Element docElement = doc.getDocumentElement();
-        removeWhiteSpaceNodes(doc);
+        XMLHandler.removeWhiteSpaceNodes(doc);
 
         Element nodeElement = doc.createElement("category");
         nodeElement.setAttribute("name", categoryName);
         docElement.appendChild(nodeElement);
-        writeToXML(doc, docElement);
+        XMLHandler.writeToXML(doc, docElement, catXMLPath);
     }
 
     /**
@@ -52,7 +42,7 @@ public class CategoryWriter {
 
         Document doc = XMLHandler.getDocument(catXMLPath);
         Element docElement = doc.getDocumentElement();
-        removeWhiteSpaceNodes(doc);
+        XMLHandler.removeWhiteSpaceNodes(doc);
 
         NodeList nList = doc.getDocumentElement().getElementsByTagName("category");
         for (int i = 0; i < nList.getLength(); i++) {
@@ -64,7 +54,7 @@ public class CategoryWriter {
                 }
             }
         }
-        writeToXML(doc, docElement);
+        XMLHandler.writeToXML(doc, docElement, catXMLPath);
     }
 
     /**
@@ -80,50 +70,4 @@ public class CategoryWriter {
         node.appendChild(element);
     }
 
-    /**
-     * Writes the new data formatted into xml.
-     * @param doc document in which the data will be written
-     * @param docElement DocumentElement of doc
-     */
-    private static void writeToXML(Document doc, Element docElement) {
-        doc.replaceChild(docElement, docElement);
-        Transformer tFormer;
-        try {
-            tFormer = TransformerFactory.newInstance().newTransformer();
-            //tFormer.setOutputProperty(OutputKeys.METHOD, "xml");
-            tFormer.setOutputProperty(OutputKeys.INDENT, "yes");
-            tFormer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-            Source source = new DOMSource(doc);
-            File xmlFile = new File(catXMLPath);
-            Result result = new StreamResult(xmlFile);
-            tFormer.transform(source, result);
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Removes White Space Nodes from Document for formatting purposes.
-     * @param doc document itself
-     */
-    private static void removeWhiteSpaceNodes(Document doc) {
-
-        XPathFactory xpathFactory = XPathFactory.newInstance();
-        XPathExpression xpathExp;
-        try {
-            xpathExp = xpathFactory.newXPath().compile(
-                    "//text()[normalize-space(.) = '']");
-            NodeList emptyTextNodes = (NodeList)
-                    xpathExp.evaluate(doc, XPathConstants.NODESET);
-            // Remove each empty text node from document.
-            for (int i = 0; i < emptyTextNodes.getLength(); i++) {
-                Node emptyTextNode = emptyTextNodes.item(i);
-                emptyTextNode.getParentNode().removeChild(emptyTextNode);
-            }
-        } catch (XPathExpressionException e) {
-            e.printStackTrace();
-        }
-    }
 }
