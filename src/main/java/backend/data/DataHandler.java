@@ -1,8 +1,8 @@
-package data;
+package backend.data;
 
-import dataclasses.Recipe.Recipe;
-import dataclasses.Recipe.Recipes;
-import dataclasses.ShoppingList;
+import backend.dataclasses.Recipe.Recipe;
+import backend.dataclasses.Recipe.Recipes;
+import backend.dataclasses.ShoppingList;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

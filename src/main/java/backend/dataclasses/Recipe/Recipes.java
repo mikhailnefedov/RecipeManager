@@ -1,4 +1,4 @@
-package dataclasses.Recipe;
+package backend.dataclasses.Recipe;
 
 import java.util.ArrayList;
 

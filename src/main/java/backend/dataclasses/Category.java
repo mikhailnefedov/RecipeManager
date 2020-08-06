@@ -1,10 +1,10 @@
-package dataclasses;
+package backend.dataclasses;
 
-public class Item implements Comparable{
+public class Category implements Comparable<Category>{
 
     private String name;
 
-    public Item(String name) {
+    public Category(String name) {
         this.name = name;
     }
 
@@ -13,7 +13,7 @@ public class Item implements Comparable{
         return name;
     }
 
-    public int compareTo(Object other) {
+    public int compareTo(Category other) {
 
         String otherName = other.toString();
         return name.compareTo(otherName);

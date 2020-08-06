@@ -1,4 +1,4 @@
-package dataclasses;
+package backend.dataclasses;
 
 import java.util.ArrayList;
 import java.util.Collections;

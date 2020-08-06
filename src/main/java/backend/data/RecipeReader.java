@@ -1,6 +1,6 @@
-package data;
+package backend.data;
 
-import dataclasses.Recipe.Recipe;
+import backend.dataclasses.Recipe.Recipe;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
