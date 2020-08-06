@@ -2,6 +2,7 @@ package dataclasses.Recipe;
 
 import dataclasses.Category;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -11,7 +12,7 @@ public class Recipe {
 
     private String id;
     private String title;
-    private Category category;
+    private String category;
     private URL recipeLink;
     //private Amount && Unit TODO: Implement ENUM For Unit
     private int time;
@@ -20,7 +21,7 @@ public class Recipe {
     //TODO: Implement data structure for preparation
     private String comment;
 
-    Recipe() { }
+    public Recipe() {  }
 
     public void setId(String id) {
         this.id = id;
@@ -30,8 +31,8 @@ public class Recipe {
         this.title = title;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategory(String category) {
+        this.category = category; //TODO: create own category class
     }
 
     public void setRecipeLink(URL recipeLink) {
@@ -48,5 +49,73 @@ public class Recipe {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public static class RecipeBuilder {
+
+        private String id;
+        private String title;
+        private String category;
+        private URL recipeLink;
+        //private Amount && Unit TODO: Implement ENUM For Unit
+        private int time;
+        private boolean vegetarian;
+        //TODO: Implement Handling for ingridient list
+        //TODO: Implement data structure for preparation
+        private String comment;
+
+        public RecipeBuilder() { }
+
+        public RecipeBuilder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public RecipeBuilder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public RecipeBuilder category(String category) {
+            this.category = category; //TODO: Implement category class for recipe categories
+            return this;
+        }
+
+        public RecipeBuilder recipeLink(String link) {
+            try {
+                this.recipeLink = new URL(link);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            return this;
+        }
+
+        public RecipeBuilder time(String time) {
+            this.time = Integer.parseInt(time);
+            return this;
+        }
+
+        public RecipeBuilder vegetarian(String vegetarian) {
+            this.vegetarian = Boolean.parseBoolean(vegetarian);
+            return this;
+        }
+
+        public RecipeBuilder comment(String comment) {
+            this.comment = comment;
+            return this;
+        }
+
+        public Recipe build() {
+            Recipe recipe = new Recipe();
+            recipe.id = this.id;
+            recipe.title = this.title;
+            recipe.category = this.category;
+            recipe.recipeLink = this.recipeLink;
+            recipe.time = this.time;
+            recipe.vegetarian = this.vegetarian;
+            recipe.comment = this.comment;
+
+            return recipe;
+        }
     }
 }

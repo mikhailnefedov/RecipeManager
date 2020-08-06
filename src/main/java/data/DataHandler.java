@@ -1,5 +1,7 @@
 package data;
 
+import dataclasses.Recipe.Recipe;
+import dataclasses.Recipe.Recipes;
 import dataclasses.ShoppingList;
 
 import java.io.FileNotFoundException;
@@ -10,14 +12,19 @@ public class DataHandler {
 
     public static void initialize() throws FileNotFoundException {
 
-        CategoryReader catReader = new CategoryReader();
         HashMap<String, ArrayList<String>> catsAndItems =
-                catReader.readCategories();
+                CategoryReader.readCategories();
 
         ShoppingList shopList = ShoppingList.getInstance();
         for (String category : catsAndItems.keySet()) {
             shopList.addCategoryWithItems(category, catsAndItems.get(category));
         }
+
+        ArrayList<Recipe.RecipeBuilder> recipeBuilders = RecipeReader.readRecipes();
+        Recipes recipes = Recipes.getInstance();
+        recipes.addRecipes(recipeBuilders);
+        System.out.print(recipes.getSavedRecipes().toString());
+
 
     }
 }
