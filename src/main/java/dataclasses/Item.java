@@ -1,6 +1,6 @@
 package dataclasses;
 
-public class Item {
+public class Item implements Comparable{
 
     private String name;
 
@@ -11,5 +11,11 @@ public class Item {
     @Override
     public String toString() {
         return name;
+    }
+
+    public int compareTo(Object other) {
+
+        String otherName = other.toString();
+        return name.compareTo(otherName);
     }
 }

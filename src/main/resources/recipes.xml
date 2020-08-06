@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection>
+	<description>
+		Recipe list.
+	</description>
+	<recipe>
+		<id>H1</id>
+		<title>Rezept 1</title>
+		<category>Kategorie 1</category>
+		<link>www.google.de</link>
+		<portionsize amount="2" unit="1"/>
+		<time>60</time>
+		<vegetarian>False</vegetarian>
+	<ingridients>
+		<categoryOfIngridient categoryName="Obst und Gemüse">
+			<ingredient name="Ananas" amount="500" unit="gramm"/>
+			<ingredient name="Apfel" amount="500" unit="gramm"/>
+		</categoryOfIngridient>
+		<categoryOfIngridient categoryName="Süßes und Salziges">
+			<ingredient name="Walnüsse" amount="50" unit="gramm"/>
+		</categoryOfIngridient>	
+	</ingridients>
+	<preparation>
+		<step type="Vorbereitung">
+			Preheat oven to 350 degrees F (175 degrees C).
+		</step>
+		<step type="Vorbereitung">
+			Trallalalala
+		</step>
+		...
+    </preparation>
+    <comment>
+		Make the meat.
+	</comment>
+  </recipe>
+  ...
+</collection>

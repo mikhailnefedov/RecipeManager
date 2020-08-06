@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-public class ListOfPurchasableItems {
+public class ShoppingList {
 
-    private static ListOfPurchasableItems instance = null;
-    private HashMap<Category, ArrayList<Item>> categoriesAndItems;
+    private static ShoppingList instance = null;
+    private HashMap<Category, HashMap<Item, Quantity>> categoriesAndItems;
 
-    private ListOfPurchasableItems() {
+    private ShoppingList() {
 
-        categoriesAndItems = new HashMap<Category, ArrayList<Item>>();
+        categoriesAndItems = new HashMap<Category, HashMap<Item, Quantity>>();
     }
 
-    public static ListOfPurchasableItems getInstance() {
+    public static ShoppingList getInstance() {
 
         if (instance == null) {
-            instance = new ListOfPurchasableItems();
+            instance = new ShoppingList();
         }
         return instance;
     }
@@ -25,17 +25,17 @@ public class ListOfPurchasableItems {
     public void addCategoryWithItems(String catStr, ArrayList<String> items) {
 
         Category category = new Category(catStr);
-        ArrayList<Item> itemList = createItemList(items);
+        HashMap<Item, Quantity> itemList = createItemList(items);
         categoriesAndItems.put(category, itemList);
     }
 
-    private ArrayList<Item> createItemList(ArrayList<String> items) {
+    private  HashMap<Item, Quantity> createItemList(ArrayList<String> items) {
 
-        ArrayList<Item> itemList = new ArrayList<Item>();
+        HashMap<Item, Quantity> itemMap = new HashMap<Item, Quantity>();
         for (String itemName : items) {
-            itemList.add(new Item(itemName));
+            itemMap.put(new Item(itemName), null);
         }
-        return itemList;
+        return itemMap;
     }
 
     @Override
@@ -49,7 +49,11 @@ public class ListOfPurchasableItems {
         stringText.append("---------------").append("\n");
         for (Category category : categories) {
             stringText.append(category.toString()).append(":\n");
-            for (Item item : categoriesAndItems.get(category)) {
+
+            ArrayList<Item> items = new ArrayList<Item>
+                    (categoriesAndItems.get(category).keySet());
+            Collections.sort(items);
+            for (Item item : items) {
                 stringText.append(item.toString()).append("\n");
             }
             stringText.append("---" + "\n");

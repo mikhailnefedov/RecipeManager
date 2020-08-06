@@ -1,6 +1,5 @@
-package datahandler;
+package data;
 
-import dataclasses.ListOfPurchasableItems;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -8,6 +7,7 @@ import org.w3c.dom.NodeList;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Reader for categories.xml.
@@ -18,44 +18,49 @@ public class CategoryReader {
     private static String catXMLPath = "./src/main/resources/categories.xml";
 
     /**
-     * Reads the categories.xml file and loads the data into.
-     * ListOfPurchasableItems
+     * Reads the categories.xml file and gets the categories with their items.
+     * @return HashMap with categories and their items (Strings)
      * @throws FileNotFoundException If categories.xml is missing
      */
-    public static void readCategories() throws FileNotFoundException {
+    public static HashMap<String, ArrayList<String>> readCategories()
+            throws FileNotFoundException {
 
         Document doc = XMLHandler.getDocument(catXMLPath);
-        readDocument(doc);
+        return readDocument(doc);
     }
 
     /**
-     * Reads the document for the category nodes.
+     * Reads the document for the category nodes and its items.
      * @param doc Document of file which will be parsed
+     * @return HashMap of the categories with their items
      */
-    public static void readDocument(Document doc) {
+    private static HashMap<String, ArrayList<String>> readDocument(Document doc) {
 
         NodeList nList = doc.getDocumentElement().getElementsByTagName("category");
+        HashMap<String, ArrayList<String>> categoriesAndItems = new
+                HashMap<String, ArrayList<String>>();
 
         for (int i = 0; i < nList.getLength(); i++) {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
-                handleCategory((Element) node);
+                Element element = (Element) node;
+                String categoryName = element.getAttribute("name");
+                categoriesAndItems.put(categoryName, handleCategory(element));
             }
         }
+
+        return categoriesAndItems;
     }
 
     /**
-     * Handles reading of one category and its items. Adds data into
-     * ListOfPurchasableItems.
+     * Gets the items of one node (category).
      * @param node category node
+     * @return list of the items
      */
-    static void handleCategory(Element node) {
+    private static ArrayList<String> handleCategory(Element node) {
 
-        String categoryName = node.getAttribute("name");
         NodeList nList = node.getElementsByTagName("item");
-        ArrayList<String> items = handleItems(nList);
-        ListOfPurchasableItems.getInstance().addCategoryWithItems(categoryName,
-                items);
+        return handleItems(nList);
     }
 
     /**

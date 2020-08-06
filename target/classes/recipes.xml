@@ -7,7 +7,7 @@
 		<id>H1</id>
 		<title>Rezept 1</title>
 		<category>Kategorie 1</category>
-		<quote>www.google.de</quote>
+		<link>www.google.de</link>
 		<portionsize amount="2" unit="1"/>
 		<time>60</time>
 		<vegetarian>False</vegetarian>
@@ -31,7 +31,7 @@
     </preparation>
     <comment>
 		Make the meat.
-    </comment>
+	</comment>
   </recipe>
   ...
 </collection>
