@@ -20,10 +20,14 @@ import java.io.FileNotFoundException;
 /**
  * Handler for getting xml files.
  */
-public class XMLHandler {
+public final class XMLHandler {
+
+    private XMLHandler() {
+    }
 
     /**
      * Gets the requested XML document from path.
+     *
      * @param filePath path to xml document
      * @return document of xml
      * @throws FileNotFoundException If file doesn't exist
@@ -45,9 +49,10 @@ public class XMLHandler {
 
     /**
      * Writes the new data formatted into xml.
-     * @param doc document in which the data will be written
+     *
+     * @param doc        document in which the data will be written
      * @param docElement DocumentElement of doc
-     * @param path path of XML file
+     * @param path       path of XML file
      */
     static void writeToXML(Document doc, Element docElement, String path) {
         doc.replaceChild(docElement, docElement);
@@ -55,7 +60,8 @@ public class XMLHandler {
         try {
             tFormer = TransformerFactory.newInstance().newTransformer();
             tFormer.setOutputProperty(OutputKeys.INDENT, "yes");
-            tFormer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+            String indentAmount = "{http://xml.apache.org/xslt}indent-amount";
+            tFormer.setOutputProperty(indentAmount, "2");
             Source source = new DOMSource(doc);
             File xmlFile = new File(path);
             Result result = new StreamResult(xmlFile);
@@ -69,6 +75,7 @@ public class XMLHandler {
 
     /**
      * Removes White Space Nodes from Document for formatting purposes.
+     *
      * @param doc document itself
      */
     static void removeWhiteSpaceNodes(Document doc) {

@@ -12,15 +12,21 @@ import java.util.ArrayList;
 /**
  * Reader for recipes.xml.
  */
-public class RecipeReader {
-
-    /** file path to recipes.xml. */
-    private static String recXMLPath = "./src/main/resources/recipes.xml";
+public final class RecipeReader {
 
     /**
-     * Reads the categories.xml file and loads the data into.
-     * ListOfPurchasableItems
-     * @throws FileNotFoundException If categories.xml is missing
+     * file path to recipes.xml.
+     */
+    private static String recXMLPath = "./src/main/resources/recipes.xml";
+
+    private RecipeReader() {
+    }
+
+    /**
+     * Gets the saved Recipes from recipes.xml.
+     *
+     * @return ArrayList with Recipes that are saved in recipes.xml
+     * @throws FileNotFoundException If recipes.xml is missing
      */
     public static ArrayList<Recipe.RecipeBuilder> readRecipes()
             throws FileNotFoundException {
@@ -30,12 +36,16 @@ public class RecipeReader {
     }
 
     /**
-     * Reads the document for the recipes nodes.
+     * Reads the document for the recipes nodes and returns the recipes saved in
+     * it.
+     *
      * @param doc Document of file which will be parsed
+     * @return Recipes saved in doc
      */
     private static ArrayList<Recipe.RecipeBuilder> readDocument(Document doc) {
 
-        ArrayList<Recipe.RecipeBuilder> recipes = new ArrayList<Recipe.RecipeBuilder>();
+        ArrayList<Recipe.RecipeBuilder> recipes =
+                new ArrayList<Recipe.RecipeBuilder>();
 
         NodeList nList = doc.getDocumentElement().getElementsByTagName("recipe");
 
@@ -50,9 +60,9 @@ public class RecipeReader {
     }
 
     /**
-     * Handles reading of one category and its items. Adds data into
-     * ListOfPurchasableItems.
+     * Handles reading of one Recipes and its items.
      * @param node category node
+     * @return RecipeBuilder created from the saved data of the xml element
      */
     private static Recipe.RecipeBuilder handleRecipe(Element node) {
 

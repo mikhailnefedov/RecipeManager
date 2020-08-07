@@ -12,13 +12,18 @@ import java.util.HashMap;
 /**
  * Reader for categories.xml.
  */
-public class CategoryReader {
+public final class CategoryReader {
 
-    /** file path to categories.xml. */
+    private CategoryReader() { }
+
+    /**
+     * file path to categories.xml.
+     */
     private static String catXMLPath = "./src/main/resources/categories.xml";
 
     /**
      * Reads the categories.xml file and gets the categories with their items.
+     *
      * @return HashMap with categories and their items (Strings)
      * @throws FileNotFoundException If categories.xml is missing
      */
@@ -31,6 +36,7 @@ public class CategoryReader {
 
     /**
      * Reads the document for the category nodes and its items.
+     *
      * @param doc Document of file which will be parsed
      * @return HashMap of the categories with their items
      */
@@ -54,6 +60,7 @@ public class CategoryReader {
 
     /**
      * Gets the items of one node (category).
+     *
      * @param node category node
      * @return list of the items
      */
@@ -65,10 +72,11 @@ public class CategoryReader {
 
     /**
      * Gets the list of items as an ArrayList<String>.
+     *
      * @param list list of nodes (document) of items
      * @return list of items
      */
-    static ArrayList<String> handleItems(NodeList list) {
+    private static ArrayList<String> handleItems(NodeList list) {
 
         ArrayList<String> items = new ArrayList<String>();
         for (int i = 0; i < list.getLength(); i++) {

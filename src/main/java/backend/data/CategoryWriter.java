@@ -10,17 +10,23 @@ import java.io.FileNotFoundException;
 /**
  * Writer for categories.xml.
  */
-public class CategoryWriter {
+public final class CategoryWriter {
 
-    /** Path of the categories xml. */
+    private CategoryWriter() { }
+
+    /**
+     * Path of the categories xml.
+     */
     private static String catXMLPath = "./src/main/resources/categories.xml";
 
     /**
      * Writes a new category into xml.
+     *
      * @param categoryName name of the new category
      * @throws FileNotFoundException If categories.xml not found
      */
-    public static void writeCategory(String categoryName) throws FileNotFoundException {
+    public static void writeCategory(String categoryName)
+            throws FileNotFoundException {
 
         Document doc = XMLHandler.getDocument(catXMLPath);
         Element docElement = doc.getDocumentElement();
@@ -33,18 +39,20 @@ public class CategoryWriter {
     }
 
     /**
-     * Writes new item into the xml.
+     * Writes new item into the categories.xml.
+     *
      * @param categoryName name of category to which the item will be inserted
-     * @param itemName name of the new item
+     * @param itemName     name of the new item
      * @throws FileNotFoundException If categories.xml not found
      */
-    public static void writeItem(String categoryName, String itemName) throws FileNotFoundException {
+    public static void writeItem(String categoryName, String itemName)
+            throws FileNotFoundException {
 
         Document doc = XMLHandler.getDocument(catXMLPath);
         Element docElement = doc.getDocumentElement();
         XMLHandler.removeWhiteSpaceNodes(doc);
 
-        NodeList nList = doc.getDocumentElement().getElementsByTagName("category");
+        NodeList nList = docElement.getElementsByTagName("category");
         for (int i = 0; i < nList.getLength(); i++) {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -59,11 +67,13 @@ public class CategoryWriter {
 
     /**
      * Appends new item node to category node.
-     * @param doc document in which the Appending happens
-     * @param node category node to which the item will be appended
+     *
+     * @param doc      document in which the appending happens
+     * @param node     category node to which the item will be appended
      * @param itemName name of the new item
      */
-    private static void handleInsertion(Document doc, Element node, String itemName) {
+    private static void handleInsertion(Document doc, Element node,
+                                        String itemName) {
 
         Element element = doc.createElement("item");
         element.setTextContent(itemName);
