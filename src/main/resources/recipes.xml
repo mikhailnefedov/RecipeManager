@@ -9,7 +9,7 @@
         <category>Kategorie 1</category>
         <link>https://example.com/</link>
         <portionsize amount="2" unit="1"/>
-        <time>60</time>
+        <time>120</time>
         <vegetarian>False</vegetarian>
         <ingridients>
             <categoryOfIngridient categoryName="Obst und Gemüse">
@@ -68,7 +68,7 @@
 		<category>Kategorie 1</category>
 		<link>https://example.com/</link>
 		<portionsize amount="2" unit="1"/>
-		<time>60</time>
+		<time>45</time>
 		<vegetarian>False</vegetarian>
 		<ingridients>
 			<categoryOfIngridient categoryName="Obst und Gemüse">

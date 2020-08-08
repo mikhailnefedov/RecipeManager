@@ -1,4 +1,4 @@
-package backend.dataclasses.Recipe;
+package backend.dataclasses.recipe;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -19,7 +19,8 @@ public class Recipe {
     //TODO: Implement data structure for preparation
     private String comment;
 
-    public Recipe() {  }
+    public Recipe() {
+    }
 
     public void setId(String id) {
         this.id = id;
@@ -49,6 +50,34 @@ public class Recipe {
         this.comment = comment;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public URL getRecipeLink() {
+        return recipeLink;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public boolean isVegetarian() {
+        return vegetarian;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
     public static class RecipeBuilder {
 
         private String id;
@@ -62,7 +91,8 @@ public class Recipe {
         //TODO: Implement data structure for preparation
         private String comment;
 
-        public RecipeBuilder() { }
+        public RecipeBuilder() {
+        }
 
         public RecipeBuilder id(String id) {
             this.id = id;

@@ -1,15 +1,18 @@
-package backend.dataclasses.Recipe;
+package backend.dataclasses.recipe;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 
 public class Recipes {
 
     private static Recipes instance = null;
-    private static ArrayList<Recipe> savedRecipes;
+    private static ObservableList<Recipe> savedRecipes;
 
     private Recipes() {
 
-        savedRecipes = new ArrayList<Recipe>();
+        savedRecipes = FXCollections.observableArrayList();
     }
 
     public static Recipes getInstance() {
@@ -32,7 +35,7 @@ public class Recipes {
         savedRecipes.add(builder.build());
     }
 
-    public ArrayList<Recipe> getSavedRecipes() {
+    public ObservableList<Recipe> getSavedRecipes() {
         return savedRecipes;
     }
 

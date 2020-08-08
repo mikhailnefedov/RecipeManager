@@ -1,6 +1,6 @@
 package backend.data;
 
-import backend.dataclasses.Recipe.Recipe;
+import backend.dataclasses.recipe.Recipe;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -45,7 +45,7 @@ public final class RecipeReader {
     private static ArrayList<Recipe.RecipeBuilder> readDocument(Document doc) {
 
         ArrayList<Recipe.RecipeBuilder> recipes =
-                new ArrayList<Recipe.RecipeBuilder>();
+                new ArrayList<>();
 
         NodeList nList = doc.getDocumentElement().getElementsByTagName("recipe");
 
