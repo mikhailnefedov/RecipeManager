@@ -1,58 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0"
-            prefWidth="500.0"
-            xmlns="http://javafx.com/javafx/10.0.2-internal"
-            fx:controller="frontend.WindowController">
+
+<AnchorPane prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.WindowController">
     <GridPane prefHeight="600.0" prefWidth="500.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0"
-                               minWidth="200.0" prefWidth="200.0"/>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
-                               prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="400.0" minHeight="26.0" prefHeight="26.0"
-                            vgrow="SOMETIMES"/>
-            <RowConstraints maxHeight="774.0" minHeight="400.0"
-                            prefHeight="774.0" vgrow="SOMETIMES"/>
-            <RowConstraints maxHeight="200.0" minHeight="200.0"
-                            prefHeight="200.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="400.0" minHeight="26.0" prefHeight="26.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="774.0" minHeight="400.0" prefHeight="774.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="200.0" minHeight="200.0" prefHeight="200.0" vgrow="SOMETIMES" />
         </rowConstraints>
-        <TableView id="recipeTable" fx:id="recipeTable" prefHeight="200.0"
-                   prefWidth="200.0" GridPane.columnSpan="2"
-                   GridPane.rowIndex="2">
-            <columns>
-                <TableColumn fx:id="idColumn" maxWidth="30.0" minWidth="30.0"
-                             prefWidth="30.0" text="ID"/>
-                <TableColumn fx:id="titleColumn" maxWidth="150.0"
-                             minWidth="150.0" prefWidth="150.0"
-                             text="%recipeTable.recipe"/>
-                <TableColumn fx:id="categoryColumn" maxWidth="100.0"
-                             minWidth="100.0" prefWidth="100.0"
-                             text="%recipeTable.category"/>
-                <TableColumn fx:id="timeColumn" maxWidth="100.0"
-                             minWidth="100.0" prefWidth="100.0"
-                             text="%recipeTable.time"/>
-                <TableColumn fx:id="sourceColumn" maxWidth="100.0"
-                             minWidth="100.0" prefWidth="100.0"
-                             text="%recipeTable.source"/>
-            </columns>
-            <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-            </padding>
-        </TableView>
         <MenuBar prefHeight="25.0" prefWidth="364.0" GridPane.columnSpan="2">
             <Menu mnemonicParsing="false" text="File">
-                <MenuItem mnemonicParsing="false" text="Close"/>
+                <MenuItem mnemonicParsing="false" text="Close" />
             </Menu>
             <Menu mnemonicParsing="false" text="%menu.languages">
-                <MenuItem fx:id="menuLanguageGerman"
-                          mnemonicParsing="false" text="Deutsch"/>
+                <MenuItem mnemonicParsing="false" text="Deutsch" />
             </Menu>
         </MenuBar>
+        <TableView id="recipeTable" fx:id="recipeTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+            <columns>
+                <TableColumn fx:id="idColumn" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" text="ID" />
+                <TableColumn fx:id="titleColumn" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="%recipeTable.recipe" />
+                <TableColumn fx:id="categoryColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="%recipeTable.category" />
+                <TableColumn fx:id="timeColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="%recipeTable.time" />
+                <TableColumn fx:id="sourceColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="%recipeTable.source" />
+            </columns>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </TableView>
     </GridPane>
 </AnchorPane>

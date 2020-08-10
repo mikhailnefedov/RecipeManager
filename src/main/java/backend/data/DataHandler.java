@@ -3,6 +3,8 @@ package backend.data;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
 import backend.dataclasses.ShoppingList;
+import backend.dataclasses.recipecategories.ListOfRecipeCategories;
+import backend.dataclasses.recipecategories.RecipeCategory;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -30,6 +32,10 @@ public final class DataHandler {
         ArrayList<Recipe.RecipeBuilder> recipeBuilders = RecipeReader.readRecipes();
         Recipes recipes = Recipes.getInstance();
         recipes.addRecipes(recipeBuilders);
+
+        ArrayList<RecipeCategory> recipeCategories = RecipeCategoryReader.readRecipeCategories();
+        ListOfRecipeCategories listOfRecCats = ListOfRecipeCategories.getInstance();
+        listOfRecCats.addListOfRecipeCategories(recipeCategories);
 
 
     }
