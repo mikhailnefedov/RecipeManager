@@ -27,7 +27,7 @@ public class IDCreationTest {
     void CategoryNameAlreadyExists() {
 
         try {
-            list.addRecipe("ABC");
+            list.addRecipeCategory("ABC");
         } catch (IllegalArgumentException e) {
             assertTrue(true);
         }
@@ -36,10 +36,10 @@ public class IDCreationTest {
     @Test
     void addCategories() {
         try {
-            list.addRecipe("ABCDEF");
-            list.addRecipe("Salate");
-            list.addRecipe("Saucen");
-            list.addRecipe("Suppen");
+            list.addRecipeCategory("ABCDEF");
+            list.addRecipeCategory("Salate");
+            list.addRecipeCategory("Saucen");
+            list.addRecipeCategory("Suppen");
         } catch (IllegalArgumentException e) {
             fail();
         }

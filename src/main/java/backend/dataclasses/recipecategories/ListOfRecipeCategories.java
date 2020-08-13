@@ -1,5 +1,6 @@
 package backend.dataclasses.recipecategories;
 
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -12,7 +13,8 @@ public class ListOfRecipeCategories {
 
     private ListOfRecipeCategories() {
 
-        savedRecipeCategories = FXCollections.observableArrayList();
+        savedRecipeCategories = FXCollections.observableArrayList(
+                recipeCategory -> new Observable[]{recipeCategory.nameProperty(), recipeCategory.idProperty()});
     }
 
     public static ListOfRecipeCategories getInstance() {
@@ -42,16 +44,30 @@ public class ListOfRecipeCategories {
      * Checks if a category name is already in program.
      *
      * @param categoryName name that shall be checked.
-     * @return true, if already exists | false, if name is nonexistent
+     * @return true, if nonexistent | false, if name already exists
      */
-    public boolean checkExistanceOfCategoryName(String categoryName) {
-
+    public boolean isCategoryNameNonExistent(String categoryName) {
         for (RecipeCategory category : savedRecipeCategories) {
             if (categoryName.equals(category.getName())) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
+    }
+
+    /**
+     * Checks if an id is already given.
+     *
+     * @param id id that shall be checked.
+     * @return true, if nonexistent | false, if id already exists
+     */
+    public boolean isIDNonExistent(String id) {
+        for (RecipeCategory category : savedRecipeCategories) {
+            if (id.equals(category.getId())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -67,7 +83,7 @@ public class ListOfRecipeCategories {
     public String computeIDForRecipeCategory(String categoryName)
             throws IllegalArgumentException {
 
-        if (!checkExistanceOfCategoryName(categoryName)) {
+        if (isCategoryNameNonExistent(categoryName)) {
             ArrayList<String> allIds = new ArrayList<>();
             for (RecipeCategory category : savedRecipeCategories) {
                 allIds.add(category.getId());
@@ -94,7 +110,7 @@ public class ListOfRecipeCategories {
             throws IllegalArgumentException {
 
         String potentialID;
-        for (int i = 1; i < categoryName.length(); i++) {
+        for (int i = 1; i <= categoryName.length(); i++) {
             potentialID = categoryName.substring(0, i);
             if (!allIds.contains(potentialID)) {
                 return potentialID;
@@ -113,7 +129,7 @@ public class ListOfRecipeCategories {
      * @throws IllegalArgumentException If category with same name already
      *                                  exists
      */
-    public void addRecipe(String categoryName) throws IllegalArgumentException {
+    public void addRecipeCategory(String categoryName) throws IllegalArgumentException {
         String id = computeIDForRecipeCategory(categoryName);
         savedRecipeCategories.add(new RecipeCategory(id, categoryName));
     }

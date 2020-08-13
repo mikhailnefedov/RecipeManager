@@ -4,11 +4,18 @@ import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class WindowController {
 
@@ -37,6 +44,30 @@ public class WindowController {
         sourceColumn.setCellValueFactory(new PropertyValueFactory<>("recipeLink"));
 
         recipeTable.setItems(getRecipes());
+    }
+
+    /**
+     * Loads fxml from path with german Localisation
+     *
+     * @param fxml name of fxml resource
+     * @return loaded object hierarchy from fxml document.
+     * @throws IOException If resource not found
+     */
+    private static Parent loadFXML(String fxml) throws IOException {
+        Locale locale = new Locale("de", "DE");
+        String resourcePath = "RecipeManager";
+        ResourceBundle bundle = ResourceBundle.getBundle(resourcePath, locale);
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml + ".fxml"), bundle);
+        return fxmlLoader.load();
+    }
+
+    public void handleCategoriesClick() throws IOException {
+        Scene scene = new Scene(loadFXML("RecipeCategoriesWindow"));
+        Stage stage = new Stage();
+        stage.setTitle("RecipeManager");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
     }
 
 

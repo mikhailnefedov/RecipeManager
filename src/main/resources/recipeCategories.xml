@@ -1,38 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <collection>
-    <description>
+  <description>
         List of different recipe categories. For example: soup, bread, antipasto
     </description>
-    <category>
-        <id>B</id>
-        <name>Backwaren</name>
-    </category>
-    <category>
-        <id>D</id>
-        <name>Dessert</name>
-    </category>
-    <category>
-        <id>F</id>
-        <name>Frühstück</name>
-    </category>
-    <category>
-        <id>H</id>
-        <name>Hauptgericht</name>
-    </category>
-    <category>
-        <id>Sa</id>
-        <name>Salat</name>
-    </category>
-    <category>
-        <id>Su</id>
-        <name>Sauce</name>
-    </category>
-    <category>
-        <id>Sp</id>
-        <name>Suppen</name>
-    </category>
-    <category>
-        <id>V</id>
-        <name>Vorspeisen &amp; Antipasti</name>
-    </category>
+  <category>
+    <id>B</id>
+    <name>Backwaren</name>
+  </category>
+  <category>
+    <id>D</id>
+    <name>Dessert</name>
+  </category>
+  <category>
+    <id>F</id>
+    <name>Frühstück</name>
+  </category>
+  <category>
+    <id>H</id>
+    <name>Hauptgericht</name>
+  </category>
+  <category>
+    <id>Sa</id>
+    <name>Salat</name>
+  </category>
+  <category>
+    <id>Su</id>
+    <name>Sauce</name>
+  </category>
+  <category>
+    <id>Sp</id>
+    <name>Suppen</name>
+  </category>
+  <category>
+    <id>V</id>
+    <name>Vorspeisen &amp; Antipasti</name>
+  </category>
 </collection>
