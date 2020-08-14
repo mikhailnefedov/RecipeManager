@@ -44,17 +44,3 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Run tests with Maven
         run: mvn -B test --file pom.xml
-        
-  
-  Checkstyle:
-    runs-on: ubuntu-latest
-    name: Checkstyle Job
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Run check style
-        uses: mikhailnefedov/RecipeManager@master
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: 'github-pr-check'
-          tool_name: 'testtool'
