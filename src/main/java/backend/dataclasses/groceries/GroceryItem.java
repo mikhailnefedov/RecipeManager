@@ -1,10 +1,10 @@
-package backend.dataclasses;
+package backend.dataclasses.groceries;
 
-public class Item implements Comparable<Item>{
+public class GroceryItem implements Comparable<GroceryItem>{
 
     private String name;
 
-    public Item(String name) {
+    public GroceryItem(String name) {
         this.name = name;
     }
 
@@ -13,7 +13,7 @@ public class Item implements Comparable<Item>{
         return name;
     }
 
-    public int compareTo(Item other) {
+    public int compareTo(GroceryItem other) {
 
         String otherName = other.toString();
         return name.compareTo(otherName);

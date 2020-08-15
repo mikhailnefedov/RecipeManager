@@ -1,5 +1,8 @@
 package backend.dataclasses;
 
+import backend.dataclasses.groceries.GroceryCategory;
+import backend.dataclasses.groceries.GroceryItem;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,11 +10,11 @@ import java.util.HashMap;
 public class ShoppingList {
 
     private static ShoppingList instance = null;
-    private HashMap<Category, HashMap<Item, Quantity>> categoriesAndItems;
+    private HashMap<GroceryCategory, HashMap<GroceryItem, Quantity>> categoriesAndItems;
 
     private ShoppingList() {
 
-        categoriesAndItems = new HashMap<Category, HashMap<Item, Quantity>>();
+        categoriesAndItems = new HashMap<>();
     }
 
     public static ShoppingList getInstance() {
@@ -24,16 +27,16 @@ public class ShoppingList {
 
     public void addCategoryWithItems(String catStr, ArrayList<String> items) {
 
-        Category category = new Category(catStr);
-        HashMap<Item, Quantity> itemList = createItemList(items);
+        GroceryCategory category = new GroceryCategory(catStr);
+        HashMap<GroceryItem, Quantity> itemList = createItemList(items);
         categoriesAndItems.put(category, itemList);
     }
 
-    private  HashMap<Item, Quantity> createItemList(ArrayList<String> items) {
+    private  HashMap<GroceryItem, Quantity> createItemList(ArrayList<String> items) {
 
-        HashMap<Item, Quantity> itemMap = new HashMap<Item, Quantity>();
+        HashMap<GroceryItem, Quantity> itemMap = new HashMap<>();
         for (String itemName : items) {
-            itemMap.put(new Item(itemName), null);
+            itemMap.put(new GroceryItem(itemName), null);
         }
         return itemMap;
     }
@@ -41,19 +44,19 @@ public class ShoppingList {
     @Override
     public String toString() {
 
-        ArrayList<Category> categories = new ArrayList<Category>(categoriesAndItems.keySet());
+        ArrayList<GroceryCategory> categories = new ArrayList<>(categoriesAndItems.keySet());
         Collections.sort(categories);
 
         StringBuilder stringText = new StringBuilder();
         stringText.append("All Categories").append("\n");
         stringText.append("---------------").append("\n");
-        for (Category category : categories) {
+        for (GroceryCategory category : categories) {
             stringText.append(category.toString()).append(":\n");
 
-            ArrayList<Item> items = new ArrayList<Item>
+            ArrayList<GroceryItem> items = new ArrayList<>
                     (categoriesAndItems.get(category).keySet());
             Collections.sort(items);
-            for (Item item : items) {
+            for (GroceryItem item : items) {
                 stringText.append(item.toString()).append("\n");
             }
             stringText.append("---" + "\n");

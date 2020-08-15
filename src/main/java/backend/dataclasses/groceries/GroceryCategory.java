@@ -1,10 +1,10 @@
-package backend.dataclasses;
+package backend.dataclasses.groceries;
 
-public class Category implements Comparable<Category>{
+public class GroceryCategory implements Comparable<GroceryCategory>{
 
     private String name;
 
-    public Category(String name) {
+    public GroceryCategory(String name) {
         this.name = name;
     }
 
@@ -13,7 +13,7 @@ public class Category implements Comparable<Category>{
         return name;
     }
 
-    public int compareTo(Category other) {
+    public int compareTo(GroceryCategory other) {
 
         String otherName = other.toString();
         return name.compareTo(otherName);
