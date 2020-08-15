@@ -23,7 +23,7 @@ public final class RecipeCategoryReader {
     }
 
     /**
-     * Gets a list with the saved recipe categories in the xml file.
+     * Gets a list with the saved recipe categories of the xml file.
      *
      * @return list of RecipeCategory
      * @throws FileNotFoundException If file that has the categories saved is
@@ -37,17 +37,17 @@ public final class RecipeCategoryReader {
     }
 
     /**
-     * Reads document for the recipecategories and returns a list of them.
+     * Reads document for the recipe categories and returns a list of them.
      *
      * @param doc Document of file which will be parsed
      * @return List of RecipeCategory saved in the document
      */
     private static ArrayList<RecipeCategory> readDocument(Document doc) {
 
-        ArrayList<RecipeCategory> categories =
-                new ArrayList<>();
+        ArrayList<RecipeCategory> categories = new ArrayList<>();
 
-        NodeList nList = doc.getDocumentElement().getElementsByTagName("category");
+        NodeList nList = doc.getDocumentElement().
+                getElementsByTagName("category");
 
         for (int i = 0; i < nList.getLength(); i++) {
             Node node = nList.item(i);
@@ -60,7 +60,7 @@ public final class RecipeCategoryReader {
     }
 
     /**
-     * Handles reading of a recipecategory and the creation of its object.
+     * Handles reading of a recipe category and the creation of its object.
      *
      * @param node category node in the xml file
      * @return RecipCategory that was created from the saved data

@@ -1,6 +1,6 @@
 package frontend;
 
-import backend.data.RecipeCategoryWriter;
+import backend.data.DataHandler;
 import backend.dataclasses.recipecategories.ListOfRecipeCategories;
 import backend.dataclasses.recipecategories.RecipeCategory;
 import javafx.collections.ObservableList;
@@ -10,8 +10,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import java.io.FileNotFoundException;
 
 public class RecipeCategoriesWindowController {
 
@@ -76,12 +74,7 @@ public class RecipeCategoriesWindowController {
     public void deleteCategoryClick() {
         RecipeCategory selectedCategory = recipeCategoryTable.getSelectionModel().getSelectedItem();
         getCategories().remove(selectedCategory);
-        try {
-            RecipeCategoryWriter.removeCategory(selectedCategory.getId(), selectedCategory.getName());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        //TODO: Handle Recipes with the deleted categories so that they get a dummy id
+        DataHandler.deleteRecipeCategory(selectedCategory.getId(), selectedCategory.getName());
     }
 
     @FXML
@@ -102,11 +95,7 @@ public class RecipeCategoriesWindowController {
             String newID = listOfCategories.computeIDForRecipeCategory(newCatName);
             recipeCategoryIDTextField.setText(newID);
             listOfCategories.addRecipeCategory(newCatName);
-            try {
-                RecipeCategoryWriter.writeNewCategory(newID, newCatName);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            DataHandler.saveNewRecipeCategory(newID, newCatName);
         } catch (IllegalArgumentException e) {
             //TODO: Styling of Error
         }
@@ -133,14 +122,11 @@ public class RecipeCategoriesWindowController {
         String newName = recipeCategoryNameTextField.getText();
 
         if (checkChangeCondition(oldID, oldName, newID, newName)) {
-            try {
-                selectedCategory.setId(newID);
-                selectedCategory.setName(newName);
-                RecipeCategoryWriter.changeCategory(oldID, oldName, newID, newName);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            selectedCategory.setId(newID);
+            selectedCategory.setName(newName);
+            DataHandler.changeRecipeCategory(oldID, oldName, newID, newName);
         } else {
+            System.out.println("Category already exists");
             //TODO: Throw error if category or id already exists.
         }
     }

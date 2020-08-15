@@ -21,11 +21,11 @@ public final class RecipeCategoryWriter {
     }
 
     /**
-     * Change saved information about a category in xml.
+     * Changes saved information about a category in xml.
      *
-     * @param oldID saved id of category in xml
+     * @param oldID           saved id of category in xml
      * @param oldCategoryName saved name of category in xml
-     * @param newID new id of category
+     * @param newID           new id of category
      * @param newCategoryName new name of category
      * @throws FileNotFoundException If xml that saves the data is not found
      */
@@ -37,6 +37,7 @@ public final class RecipeCategoryWriter {
         XMLHandler.removeWhiteSpaceNodes(doc);
 
         Node category = getCorrectNode(oldID, oldCategoryName, docElement);
+        assert category != null;
         Node idNode = getIdNode((Element) category);
         Node nameNode = getNameNode((Element) category);
 
@@ -92,12 +93,13 @@ public final class RecipeCategoryWriter {
     /**
      * Gets the node corresponding to the category id and category name.
      *
-     * @param id id of category
+     * @param id           id of category
      * @param categoryName name of category
-     * @param docElement DocumentElement of document from xml
+     * @param docElement   DocumentElement of document from xml
      * @return corresponding Node of document of the category
      */
-    private static Node getCorrectNode(String id, String categoryName, Element docElement) {
+    private static Node getCorrectNode(String id, String categoryName,
+                                       Element docElement) {
         NodeList nList = docElement.getElementsByTagName("category");
         for (int i = 0; i < nList.getLength(); i++) {
             Node node = nList.item(i);
@@ -112,7 +114,8 @@ public final class RecipeCategoryWriter {
     }
 
     /**
-     * Checks if the node is the correct node that saves the data of the category.
+     * Checks if element is the correct node that corresponds to the parameter
+     * data info of a category.
      *
      * @param id           id of the category
      * @param categoryName name of the category
@@ -124,8 +127,8 @@ public final class RecipeCategoryWriter {
         Node idNode = getIdNode(element);
         Node nameNode = getNameNode(element);
 
-        return idNode.getTextContent().equals(id) &&
-                nameNode.getTextContent().equals(categoryName);
+        return idNode.getTextContent().equals(id)
+                && nameNode.getTextContent().equals(categoryName);
     }
 
     /**
