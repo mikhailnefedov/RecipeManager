@@ -9,12 +9,25 @@ import java.util.ArrayList;
 public class ListOfRecipeCategories {
 
     private static ListOfRecipeCategories instance = null;
+    /**
+     * Observable list that contains every recipe Category loaded from the xml
+     * or added/changed/deleted at runtime.
+     */
     private static ObservableList<RecipeCategory> savedRecipeCategories;
 
+    /**
+     * Constructor. Creates a new ObservableArrayList for the table view of the
+     * frontend. Reason: Changes to backend data are visible live in frontend
+     * part
+     */
     private ListOfRecipeCategories() {
 
         savedRecipeCategories = FXCollections.observableArrayList(
-                recipeCategory -> new Observable[]{recipeCategory.nameProperty(), recipeCategory.idProperty()});
+                recipeCategory -> new Observable[]
+                        {recipeCategory.nameProperty(),
+                                recipeCategory.idProperty()});
+        //Callback exists, so that if there is a change to a RecipeCategory item
+        //the frontend table view will be updated
     }
 
     public static ListOfRecipeCategories getInstance() {
@@ -117,9 +130,9 @@ public class ListOfRecipeCategories {
             }
         }
         // Should not reach this code
-        throw new IllegalArgumentException("Something went wrong in the ID " +
-                "creation, presumambly the newly created potential ID is " +
-                "already in the system");
+        throw new IllegalArgumentException("Something went wrong in the ID "
+                + "creation, presumambly the newly created potential ID is "
+                + "already in the system");
     }
 
     /**
@@ -129,7 +142,8 @@ public class ListOfRecipeCategories {
      * @throws IllegalArgumentException If category with same name already
      *                                  exists
      */
-    public void addRecipeCategory(String categoryName) throws IllegalArgumentException {
+    public void addRecipeCategory(String categoryName)
+            throws IllegalArgumentException {
         String id = computeIDForRecipeCategory(categoryName);
         savedRecipeCategories.add(new RecipeCategory(id, categoryName));
     }

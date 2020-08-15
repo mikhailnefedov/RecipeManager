@@ -5,6 +5,8 @@ import javafx.beans.property.StringProperty;
 
 public class RecipeCategory {
 
+    //Uses StringProperty, so that it can be observed. If a change happens the
+    //frontend will be updated
     private StringProperty id;
     private StringProperty name;
 
