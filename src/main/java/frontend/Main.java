@@ -1,7 +1,7 @@
 package frontend;
 
 import backend.data.DataHandler;
-import backend.dataclasses.ShoppingList;
+import backend.dataclasses.groceries.ShoppingList;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

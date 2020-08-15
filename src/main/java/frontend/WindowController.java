@@ -61,8 +61,25 @@ public class WindowController {
         return fxmlLoader.load();
     }
 
+    /**
+     * Opens new window for the recipe categories.
+     * @throws IOException
+     */
     public void handleCategoriesClick() throws IOException {
         Scene scene = new Scene(loadFXML("RecipeCategoriesWindow"));
+        Stage stage = new Stage();
+        stage.setTitle("RecipeManager");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    /**
+     * Opens new window for the grocery items.
+     * @throws IOException
+     */
+    public void handleGroceryItemsClick() throws IOException {
+        Scene scene = new Scene(loadFXML("GroceryItemsWindow"));
         Stage stage = new Stage();
         stage.setTitle("RecipeManager");
         stage.setScene(scene);

@@ -11,4 +11,7 @@ module RecipeManager {
 
     opens backend.dataclasses.recipecategories to javafx.base;
     exports backend.dataclasses.recipecategories;
+
+    opens backend.dataclasses.groceries to javafx.base;
+    exports backend.dataclasses.groceries;
 }

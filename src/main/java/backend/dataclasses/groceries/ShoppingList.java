@@ -1,7 +1,9 @@
-package backend.dataclasses;
+package backend.dataclasses.groceries;
 
-import backend.dataclasses.groceries.GroceryCategory;
-import backend.dataclasses.groceries.GroceryItem;
+import backend.dataclasses.Quantity;
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,11 +12,25 @@ import java.util.HashMap;
 public class ShoppingList {
 
     private static ShoppingList instance = null;
+    /**
+     * Map that serves as a template for every recipe. It contains every
+     * Category and its Items. Serves also as a container for saving the
+     * Quantity amounts of the Recipe, so when recipes are combined into a
+     * shopping list, the amounts can be merged together.
+     */
     private HashMap<GroceryCategory, HashMap<GroceryItem, Quantity>> categoriesAndItems;
+    /**
+     * Observable Map for frontend view
+     */
+    private ObservableList<GroceryItem> observableItems;
 
     private ShoppingList() {
 
         categoriesAndItems = new HashMap<>();
+        observableItems = FXCollections.observableArrayList(
+                item -> new Observable[]{item.nameProperty(),
+                        item.affiliatedCategoryProperty()}
+        );
     }
 
     public static ShoppingList getInstance() {
@@ -25,18 +41,23 @@ public class ShoppingList {
         return instance;
     }
 
+    //TODO: if something is added deleted --> add to Observable
+
     public void addCategoryWithItems(String catStr, ArrayList<String> items) {
 
         GroceryCategory category = new GroceryCategory(catStr);
-        HashMap<GroceryItem, Quantity> itemList = createItemList(items);
+        HashMap<GroceryItem, Quantity> itemList = createItemList(items, category);
         categoriesAndItems.put(category, itemList);
     }
 
-    private  HashMap<GroceryItem, Quantity> createItemList(ArrayList<String> items) {
+    private  HashMap<GroceryItem, Quantity> createItemList(
+            ArrayList<String> items, GroceryCategory category) {
 
         HashMap<GroceryItem, Quantity> itemMap = new HashMap<>();
         for (String itemName : items) {
-            itemMap.put(new GroceryItem(itemName), null);
+            GroceryItem groceryItem = new GroceryItem(itemName, category);
+            itemMap.put(groceryItem, null);
+            observableItems.add(groceryItem);
         }
         return itemMap;
     }
@@ -63,6 +84,10 @@ public class ShoppingList {
         }
 
         return stringText.toString();
+    }
+
+    public ObservableList<GroceryItem> getObservableItems() {
+        return observableItems;
     }
 
 }

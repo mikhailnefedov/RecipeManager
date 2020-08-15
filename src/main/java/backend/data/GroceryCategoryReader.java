@@ -12,9 +12,9 @@ import java.util.HashMap;
 /**
  * Reader for categories.xml.
  */
-public final class CategoryReader {
+public final class GroceryCategoryReader {
 
-    private CategoryReader() { }
+    private GroceryCategoryReader() { }
 
     /**
      * file path to categories.xml.
@@ -44,7 +44,7 @@ public final class CategoryReader {
 
         NodeList nList = doc.getDocumentElement().getElementsByTagName("category");
         HashMap<String, ArrayList<String>> categoriesAndItems = new
-                HashMap<String, ArrayList<String>>();
+                HashMap<>();
 
         for (int i = 0; i < nList.getLength(); i++) {
             Node node = nList.item(i);
@@ -78,7 +78,7 @@ public final class CategoryReader {
      */
     private static ArrayList<String> handleItems(NodeList list) {
 
-        ArrayList<String> items = new ArrayList<String>();
+        ArrayList<String> items = new ArrayList<>();
         for (int i = 0; i < list.getLength(); i++) {
             Node node = list.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
