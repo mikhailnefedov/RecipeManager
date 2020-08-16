@@ -80,7 +80,6 @@ public final class RecipeReader {
         Node linkNode = node.getElementsByTagName("link").item(0);
         builder.recipeLink(linkNode.getTextContent());
 
-        //TODO: portionsize
 
         Node timeNode = node.getElementsByTagName("time").item(0);
         builder.time(timeNode.getTextContent());
@@ -88,9 +87,6 @@ public final class RecipeReader {
         Node vegetarianNode = node.getElementsByTagName("vegetarian").item(0);
         builder.vegetarian(vegetarianNode.getTextContent());
 
-        //TODO: ingridients
-
-        //TODO: preparation
 
         Node commentNode = node.getElementsByTagName("comment").item(0);
         builder.comment(commentNode.getTextContent());

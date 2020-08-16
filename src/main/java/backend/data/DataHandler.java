@@ -53,7 +53,6 @@ public final class DataHandler {
         try {
             RecipeCategoryWriter.changeCategory(oldID, oldCatName,
                     newID, newCatName);
-            //TODO: Update Recipes of the changed category
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -84,7 +83,6 @@ public final class DataHandler {
 
         try {
             RecipeCategoryWriter.removeCategory(id, categoryName);
-            //TODO: Handle Recipes with the deleted categories so that they get a dummy id
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

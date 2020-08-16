@@ -97,10 +97,9 @@ public class RecipeCategoriesWindowController {
             listOfCategories.addRecipeCategory(newCatName);
             DataHandler.saveNewRecipeCategory(newID, newCatName);
         } catch (IllegalArgumentException e) {
-            //TODO: Styling of Error
+            System.out.println("Category already exists");
         }
 
-        //TODO: Error Handling if Category already exists
     }
 
     @FXML
@@ -127,7 +126,6 @@ public class RecipeCategoriesWindowController {
             DataHandler.changeRecipeCategory(oldID, oldName, newID, newName);
         } else {
             System.out.println("Category already exists");
-            //TODO: Throw error if category or id already exists.
         }
     }
 
@@ -164,7 +162,4 @@ public class RecipeCategoriesWindowController {
         recipeCategoryChangeButton.setDisable(false);
         recipeCategoryDeleteButton.setDisable(false);
     }
-
-    //TODO: Implement State Structure for Textfields
-    //TODO: Rework newCategory System
 }
