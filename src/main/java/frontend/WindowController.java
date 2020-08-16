@@ -17,37 +17,26 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Class Models controller of the main window.
+ */
 public class WindowController {
 
     @FXML
-    private TableView<Recipe> recipeTable;
+    private TableView<Recipe> recipeTable; //table view of recipes in frontend
     @FXML
-    private TableColumn<Recipe, String> idColumn;
+    private TableColumn<Recipe, String> idColumn; //id column of recipeTable
     @FXML
-    private TableColumn<Recipe, String> titleColumn;
+    private TableColumn<Recipe, String> titleColumn; //title column " "
     @FXML
-    private TableColumn<Recipe, String> categoryColumn;
+    private TableColumn<Recipe, String> categoryColumn; //category column " "
     @FXML
-    private TableColumn<Recipe, Integer> timeColumn;
+    private TableColumn<Recipe, Integer> timeColumn; //time column " "
     @FXML
-    private TableColumn<Recipe, URL> sourceColumn;
-
-    private ObservableList<Recipe> getRecipes() {
-        return Recipes.getInstance().getSavedRecipes();
-    }
-
-    private void loadDataIntoTable() {
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
-        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
-        sourceColumn.setCellValueFactory(new PropertyValueFactory<>("recipeLink"));
-
-        recipeTable.setItems(getRecipes());
-    }
+    private TableColumn<Recipe, URL> sourceColumn; //source column " "
 
     /**
-     * Loads fxml from path with german Localisation
+     * Loads fxml from path with german Localisation.
      *
      * @param fxml name of fxml resource
      * @return loaded object hierarchy from fxml document.
@@ -62,11 +51,35 @@ public class WindowController {
     }
 
     /**
-     * Opens new window for the recipe categories.
-     * @throws IOException
+     * Gets all saved recipes that are in the Singleton class of Recipes.
+     *
+     * @return list of all recipes
      */
-    public void handleCategoriesClick() throws IOException {
-        Scene scene = new Scene(loadFXML("RecipeCategoriesWindow"));
+    private ObservableList<Recipe> getRecipes() {
+        return Recipes.getInstance().getSavedRecipes();
+    }
+
+    /**
+     * Loads the recipes into the table view.
+     */
+    private void loadRecipesIntoTable() {
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
+        sourceColumn.setCellValueFactory(new PropertyValueFactory<>("recipeLink"));
+
+        recipeTable.setItems(getRecipes());
+    }
+
+    /**
+     * Opens a new window corresponding to the name of the fxml resource.
+     *
+     * @param nameOfFXMLFile name of fxml (without .fxml) that will be loaded
+     * @throws IOException failed or interrupted I/O operations
+     */
+    public void openNewWindow(String nameOfFXMLFile) throws IOException {
+        Scene scene = new Scene(loadFXML(nameOfFXMLFile));
         Stage stage = new Stage();
         stage.setTitle("RecipeManager");
         stage.setScene(scene);
@@ -75,22 +88,31 @@ public class WindowController {
     }
 
     /**
-     * Opens new window for the grocery items.
-     * @throws IOException
+     * Handler for a button click on categories. Opens new window for the
+     * recipe categories.
+     *
+     * @throws IOException failed or interrupted I/O operations
      */
-    public void handleGroceryItemsClick() throws IOException {
-        Scene scene = new Scene(loadFXML("GroceryItemsWindow"));
-        Stage stage = new Stage();
-        stage.setTitle("RecipeManager");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
+    public void handleCategoriesClick() throws IOException {
+        openNewWindow("RecipeCategoriesWindow");
     }
 
+    /**
+     * Handler for a button click on grocery items. Opens new window for the
+     * grocery items.
+     *
+     * @throws IOException failed or interrupted I/O operations
+     */
+    public void handleGroceryItemsClick() throws IOException {
+        openNewWindow("GroceryItemsWindow");
+    }
 
+    /**
+     * Initialization of window. Loads necessary data into the fxml components
+     * of the view.
+     */
     @FXML
     protected void initialize() {
-
-        loadDataIntoTable();
+        loadRecipesIntoTable();
     }
 }
