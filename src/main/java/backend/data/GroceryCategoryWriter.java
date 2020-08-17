@@ -10,9 +10,9 @@ import java.io.FileNotFoundException;
 /**
  * Writer for categories.xml.
  */
-public final class CategoryWriter {
+public final class GroceryCategoryWriter {
 
-    private CategoryWriter() { }
+    private GroceryCategoryWriter() { }
 
     /**
      * Path of the categories xml.

@@ -1,6 +1,7 @@
 package backend.data;
 
-import backend.dataclasses.ShoppingList;
+import backend.dataclasses.groceries.GroceryItem;
+import backend.dataclasses.groceries.ShoppingList;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
 import backend.dataclasses.recipecategories.ListOfRecipeCategories;
@@ -22,7 +23,7 @@ public final class DataHandler {
     public static void initialize() throws FileNotFoundException {
 
         HashMap<String, ArrayList<String>> catsAndItems =
-                CategoryReader.readCategories();
+                GroceryCategoryReader.readCategories();
 
         ShoppingList shopList = ShoppingList.getInstance();
         for (String category : catsAndItems.keySet()) {
@@ -53,7 +54,6 @@ public final class DataHandler {
         try {
             RecipeCategoryWriter.changeCategory(oldID, oldCatName,
                     newID, newCatName);
-            //TODO: Update Recipes of the changed category
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -84,9 +84,24 @@ public final class DataHandler {
 
         try {
             RecipeCategoryWriter.removeCategory(id, categoryName);
-            //TODO: Handle Recipes with the deleted categories so that they get a dummy id
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Adds new grocery item to save file.
+     *
+     * @param newItem new grocery item to be saved
+     */
+    public static void saveNewGroceryItem(GroceryItem newItem) {
+
+        try {
+            String category = newItem.getGroceryCategory().toString();
+            GroceryCategoryWriter.writeItem(category, newItem.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 }

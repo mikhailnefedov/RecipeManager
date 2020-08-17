@@ -12,7 +12,7 @@ public class Recipe {
     private String title;
     private String category;
     private URL recipeLink;
-    //private Amount && Unit TODO: Implement ENUM For Unit
+    //private Amount && Unit
     private int time;
     private boolean vegetarian;
     //TODO: Implement Handling for ingridient list
@@ -31,7 +31,7 @@ public class Recipe {
     }
 
     public void setCategory(String category) {
-        this.category = category; //TODO: create own category class
+        this.category = category;
     }
 
     public void setRecipeLink(URL recipeLink) {
@@ -84,7 +84,7 @@ public class Recipe {
         private String title;
         private String category;
         private URL recipeLink;
-        //private Amount && Unit TODO: Implement ENUM For Unit
+        //private Amount && Unit 
         private int time;
         private boolean vegetarian;
         //TODO: Implement Handling for ingridient list
@@ -105,7 +105,7 @@ public class Recipe {
         }
 
         public RecipeBuilder category(String category) {
-            this.category = category; //TODO: Implement category class for recipe categories
+            this.category = category;
             return this;
         }
 

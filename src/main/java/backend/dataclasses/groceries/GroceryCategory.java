@@ -1,21 +1,25 @@
 package backend.dataclasses.groceries;
 
-public class GroceryCategory implements Comparable<GroceryCategory>{
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
-    private String name;
+public class GroceryCategory implements Comparable<GroceryCategory> {
+
+    private StringProperty name;
 
     public GroceryCategory(String name) {
-        this.name = name;
+        this.name = new SimpleStringProperty("");
+        this.name.set(name);
     }
 
     @Override
     public String toString() {
-        return name;
+        return name.get();
     }
 
     public int compareTo(GroceryCategory other) {
 
         String otherName = other.toString();
-        return name.compareTo(otherName);
+        return name.get().compareTo(otherName);
     }
 }

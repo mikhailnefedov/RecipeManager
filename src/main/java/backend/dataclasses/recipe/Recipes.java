@@ -23,8 +23,6 @@ public class Recipes {
         return instance;
     }
 
-    //TODO: Add new Recipe
-
     public void addRecipes(ArrayList<Recipe.RecipeBuilder> builders) {
         for (Recipe.RecipeBuilder builder : builders) {
             savedRecipes.add(builder.build());
