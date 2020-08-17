@@ -1,5 +1,8 @@
 package backend.dataclasses.recipe;
 
+import backend.dataclasses.recipecategories.ListOfRecipeCategories;
+import backend.dataclasses.recipecategories.RecipeCategory;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -10,7 +13,7 @@ public class Recipe {
 
     private String id;
     private String title;
-    private String category;
+    private RecipeCategory category;
     private URL recipeLink;
     //private Amount && Unit
     private int time;
@@ -19,70 +22,84 @@ public class Recipe {
     //TODO: Implement data structure for preparation
     private String comment;
 
-    public Recipe() {
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public void setRecipeLink(URL recipeLink) {
-        this.recipeLink = recipeLink;
-    }
-
-    public void setTime(int time) {
-        this.time = time;
-    }
-
-    public void setVegetarian(boolean vegetarian) {
-        this.vegetarian = vegetarian;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
+    private Recipe() {
     }
 
     public String getId() {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }
 
-    public String getCategory() {
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * Gets recipe category object!
+     *
+     * @return object of recipe category
+     */
+    public RecipeCategory getCategory() {
         return category;
+    }
+
+    public void setCategory(RecipeCategory category) {
+        this.category = category;
+    }
+
+    /**
+     * Gets the name of the recipe category. (Needed for table views).
+     *
+     * @return name of recipe category
+     */
+    public String getRecipeCategory() {
+        return category.getName();
     }
 
     public URL getRecipeLink() {
         return recipeLink;
     }
 
+    public void setRecipeLink(URL recipeLink) {
+        this.recipeLink = recipeLink;
+    }
+
     public int getTime() {
         return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 
     public boolean isVegetarian() {
         return vegetarian;
     }
 
+    public void setVegetarian(boolean vegetarian) {
+        this.vegetarian = vegetarian;
+    }
+
     public String getComment() {
         return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public static class RecipeBuilder {
 
         private String id;
         private String title;
-        private String category;
+        private RecipeCategory category;
         private URL recipeLink;
         //private Amount && Unit 
         private int time;
@@ -105,7 +122,8 @@ public class Recipe {
         }
 
         public RecipeBuilder category(String category) {
-            this.category = category;
+            this.category = ListOfRecipeCategories.getInstance().
+                    getRecipeCategory(category);
             return this;
         }
 

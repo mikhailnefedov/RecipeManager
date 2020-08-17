@@ -2,6 +2,7 @@ package frontend;
 
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
+import backend.dataclasses.recipecategories.ListOfRecipeCategories;
 import backend.dataclasses.recipecategories.RecipeCategory;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,6 +17,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Class Models controller of the main window.
@@ -39,7 +42,7 @@ public class WindowController {
     @FXML
     private TextField recipeNameTextField; //name textfield for shown recipe
     @FXML
-    private ComboBox<RecipeCategory> recipeCategoryComboBox;
+    private ComboBox<String> recipeCategoryComboBox;
     @FXML
     private Button recipeSaveButton; //Button for saving changes/new recipe
     @FXML
@@ -68,7 +71,7 @@ public class WindowController {
     private void loadRecipesIntoTable() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("RecipeCategory"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
         sourceColumn.setCellValueFactory(new PropertyValueFactory<>("recipeLink"));
 
@@ -161,9 +164,17 @@ public class WindowController {
         recipeIDLabel.setText(selectedRecipe.getId());
         recipeNameTextField.setText(selectedRecipe.getTitle());
 
+        Set<String> categories = ListOfRecipeCategories.
+                getInstance().getSavedRecipeCategories().stream().
+                map(RecipeCategory::getName).collect(Collectors.toSet());
+        recipeCategoryComboBox.getItems().addAll(categories);
+        recipeCategoryComboBox.getSelectionModel().
+                select(selectedRecipe.getRecipeCategory());
+
+
         recipeTimeTextField.setText(Integer.toString(selectedRecipe.getTime()));
         if (selectedRecipe.isVegetarian()) {
-            recipeVegetarianCheckbox.isSelected();
+            recipeVegetarianCheckbox.setSelected(true);
         }
         recipeSourceTextField.setText(selectedRecipe.getRecipeLink().toString());
 

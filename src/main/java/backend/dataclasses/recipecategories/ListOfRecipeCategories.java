@@ -5,6 +5,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class ListOfRecipeCategories {
 
@@ -40,6 +42,24 @@ public class ListOfRecipeCategories {
 
     public ObservableList<RecipeCategory> getSavedRecipeCategories() {
         return savedRecipeCategories;
+    }
+
+    /**
+     * Get the recipe category object corresponding to the parameter:
+     * categoryName.
+     *
+     * @param categoryName name of the wanted category
+     * @return category corresponding to the categoryName
+     */
+    public RecipeCategory getRecipeCategory(String categoryName) {
+        Supplier<Stream<RecipeCategory>> categoryStream = () ->
+                savedRecipeCategories.stream().filter(category ->
+                        category.getName().equals(categoryName));
+        if (categoryStream.get().findFirst().isPresent()){
+            return categoryStream.get().findFirst().get();
+        } else {
+            throw new IllegalArgumentException("category Name does not exist");
+        }
     }
 
     /**
