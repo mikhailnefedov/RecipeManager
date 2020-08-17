@@ -6,13 +6,21 @@ import javafx.beans.property.StringProperty;
 public class GroceryItem implements Comparable<GroceryItem>{
 
     private StringProperty name;
+    /**
+     * Affiliated grocery category, Stringproperty for frontend callbacks.
+     */
     private StringProperty affiliatedGroceryCategory;
+    /**
+     * Object of the affiliated grocery category.
+     */
+    private GroceryCategory affiliatedObjectGroceryCategory;
 
     public GroceryItem(String name, GroceryCategory affiliatedCategory) {
         this.name = new SimpleStringProperty("");
         this.affiliatedGroceryCategory = new SimpleStringProperty("");
         this.name.set(name);
         this.affiliatedGroceryCategory.set(affiliatedCategory.toString());
+        this.affiliatedObjectGroceryCategory = affiliatedCategory;
     }
 
     @Override
@@ -32,5 +40,13 @@ public class GroceryItem implements Comparable<GroceryItem>{
 
     public StringProperty affiliatedCategoryProperty() {
         return affiliatedGroceryCategory;
+    }
+
+    /**
+     * Get the grocery category this item belongs to.
+     * @return grocery category
+     */
+    public GroceryCategory getGroceryCategory() {
+        return affiliatedObjectGroceryCategory;
     }
 }

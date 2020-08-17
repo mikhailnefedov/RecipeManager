@@ -8,6 +8,8 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.stream.Stream;
 
 public class ShoppingList {
 
@@ -50,7 +52,7 @@ public class ShoppingList {
         categoriesAndItems.put(category, itemList);
     }
 
-    private  HashMap<GroceryItem, Quantity> createItemList(
+    private HashMap<GroceryItem, Quantity> createItemList(
             ArrayList<String> items, GroceryCategory category) {
 
         HashMap<GroceryItem, Quantity> itemMap = new HashMap<>();
@@ -88,6 +90,41 @@ public class ShoppingList {
 
     public ObservableList<GroceryItem> getObservableItems() {
         return observableItems;
+    }
+
+    /**
+     * Gets the current grocery categories.
+     *
+     * @return Set of grocery categories
+     */
+    public Set<GroceryCategory> getGroceryCategories() {
+        return categoriesAndItems.keySet();
+    }
+
+    /**
+     * Add new grocery item to the observable list and shopping list template.
+     *
+     * @param newItem new grocery item
+     */
+    public void addGroceryItem(GroceryItem newItem) {
+        observableItems.add(newItem);
+        categoriesAndItems.get(newItem.getGroceryCategory()).put(newItem, null);
+    }
+
+    /**
+     * Checks if an item is already saved.
+     *
+     * @param itemName the item to be checked. Important is not the object, but its
+     *                 name and category
+     * @param category category of the item
+     * @return true, if it already exists | else, if not
+     */
+    public boolean isItemInList(String itemName, GroceryCategory category) {
+        Set<GroceryItem> itemsFromCategory = categoriesAndItems.get
+                (category).keySet();
+        Stream<String> itemNames = itemsFromCategory.
+                stream().map(GroceryItem::toString);
+        return itemNames.anyMatch(item -> item.equals(itemName));
     }
 
 }

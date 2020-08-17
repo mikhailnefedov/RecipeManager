@@ -1,5 +1,6 @@
 package backend.data;
 
+import backend.dataclasses.groceries.GroceryItem;
 import backend.dataclasses.groceries.ShoppingList;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
@@ -86,5 +87,21 @@ public final class DataHandler {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Adds new grocery item to save file.
+     *
+     * @param newItem new grocery item to be saved
+     */
+    public static void saveNewGroceryItem(GroceryItem newItem) {
+
+        try {
+            String category = newItem.getGroceryCategory().toString();
+            GroceryCategoryWriter.writeItem(category, newItem.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 }
