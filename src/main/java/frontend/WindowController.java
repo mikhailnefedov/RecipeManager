@@ -1,5 +1,6 @@
 package frontend;
 
+import backend.dataclasses.recipe.Ingredient;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
 import backend.dataclasses.recipecategories.ListOfRecipeCategories;
@@ -55,6 +56,14 @@ public class WindowController {
     private CheckBox recipeVegetarianCheckbox; //Checkbox if recipe is vegetarian
     @FXML
     private TextField recipeSourceTextField; //textfield for shown recipe source
+    @FXML
+    private TableView<Ingredient> recipeTabIngredientTable;
+    @FXML
+    private TableColumn<Ingredient, String> recipeTabIngredientCategoryColumn;
+    @FXML
+    private TableColumn<Ingredient, String> recipeTabIngredientItemColumn;
+    @FXML
+    private TableColumn<Ingredient, String> recipeTabIngredientQuantityColumn;
 
     /**
      * Initialization of window. Loads necessary data into the fxml components
@@ -177,6 +186,13 @@ public class WindowController {
             recipeVegetarianCheckbox.setSelected(true);
         }
         recipeSourceTextField.setText(selectedRecipe.getRecipeLink().toString());
+
+        recipeTabIngredientCategoryColumn.setCellValueFactory(new PropertyValueFactory<>("categoryString"));
+        recipeTabIngredientItemColumn.setCellValueFactory(new PropertyValueFactory<>("itemString"));
+        recipeTabIngredientQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+
+        recipeTabIngredientTable.setItems(selectedRecipe.getIngredients());
+
 
     }
 
