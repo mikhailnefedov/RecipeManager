@@ -11,15 +11,15 @@
         <portionsize amount="2" unit="1"/>
         <time>120</time>
         <vegetarian>False</vegetarian>
-        <ingridients>
+        <ingredients>
             <categoryOfIngridient categoryName="Obst und Gemüse">
-                <ingredient name="Ananas" amount="500" unit="gramm"/>
-                <ingredient name="Apfel" amount="500" unit="gramm"/>
+                <ingredient name="Ananas" amount="1" unit="Pkg"/>
+                <ingredient name="Apfel" amount="1" unit="L"/>
             </categoryOfIngridient>
             <categoryOfIngridient categoryName="Süßes und Salziges">
-                <ingredient name="Walnüsse" amount="50" unit="gramm"/>
+                <ingredient name="Walnüsse" amount="4" unit="TL"/>
             </categoryOfIngridient>
-        </ingridients>
+        </ingredients>
         <preparation>
             <step type="Vorbereitung">
                 Preheat oven to 350 degrees F (175 degrees C).
@@ -40,14 +40,14 @@
         <portionsize amount="2" unit="1"/>
         <time>60</time>
         <vegetarian>False</vegetarian>
-        <ingridients>
+        <ingredients>
             <categoryOfIngridient categoryName="Obst und Gemüse">
-                <ingredient name="Ananas" amount="500" unit="gramm"/>
+                <ingredient name="Ananas" amount="0.07" unit="Kg"/>
             </categoryOfIngridient>
             <categoryOfIngridient categoryName="Süßes und Salziges">
-                <ingredient name="Walnüsse" amount="50" unit="gramm"/>
+                <ingredient name="Walnüsse" amount="5" unit="St"/>
             </categoryOfIngridient>
-        </ingridients>
+        </ingredients>
         <preparation>
             <step type="Vorbereitung">
                 Do Something
@@ -70,14 +70,14 @@
 		<portionsize amount="2" unit="1"/>
 		<time>45</time>
 		<vegetarian>True</vegetarian>
-		<ingridients>
+		<ingredients>
 			<categoryOfIngridient categoryName="Obst und Gemüse">
-				<ingredient name="Apfel" amount="500" unit="gramm"/>
+				<ingredient name="Apfel" amount="0.05" unit="Kg"/>
 			</categoryOfIngridient>
 			<categoryOfIngridient categoryName="Süßes und Salziges">
-				<ingredient name="Walnüsse" amount="50" unit="gramm"/>
+				<ingredient name="Walnüsse" amount="3" unit="St"/>
 			</categoryOfIngridient>
-		</ingridients>
+		</ingredients>
 		<preparation>
 			<step type="Vorbereitung">
 				Do Something

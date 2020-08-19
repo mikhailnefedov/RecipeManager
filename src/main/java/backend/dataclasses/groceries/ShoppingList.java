@@ -1,6 +1,6 @@
 package backend.dataclasses.groceries;
 
-import backend.dataclasses.Quantity;
+import backend.dataclasses.recipe.Quantity;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class ShoppingList {
@@ -120,11 +121,52 @@ public class ShoppingList {
      * @return true, if it already exists | else, if not
      */
     public boolean isItemInList(String itemName, GroceryCategory category) {
-        Set<GroceryItem> itemsFromCategory = categoriesAndItems.get
-                (category).keySet();
+        Set<GroceryItem> itemsFromCategory = categoriesAndItems
+                .get(category).keySet();
         Stream<String> itemNames = itemsFromCategory.
                 stream().map(GroceryItem::toString);
         return itemNames.anyMatch(item -> item.equals(itemName));
+    }
+
+    /**
+     * Gets the grocery category object corresponding to the parameter string.
+     *
+     * @param categoryName name of the category
+     * @return grocery category
+     */
+    public GroceryCategory getGroceryCategory(String categoryName) {
+        //TODO: Think its better to work with observator pattern, but for now this should work fine
+
+        Supplier<Stream<GroceryCategory>> stream = () ->
+                categoriesAndItems.keySet().stream()
+                        .filter(category -> category.toString()
+                                .equals(categoryName));
+        if (stream.get().findFirst().isPresent()) {
+            return stream.get().findFirst().get();
+        } else {
+            throw new IllegalArgumentException("Category does not exist");
+        }
+
+    }
+
+    /**
+     * Gets the corresponding grocery item to the parameter of a category.
+     *
+     * @param category category of the item
+     * @param groceryItemName name of the item
+     * @return grocery item corresponding to the data
+     */
+    public GroceryItem getGroceryItem(GroceryCategory category,
+                                          String groceryItemName) {
+
+        Supplier<Stream<GroceryItem>> items = () -> categoriesAndItems
+                .get(category).keySet().stream()
+                .filter(item -> item.toString().equals(groceryItemName));
+        if (items.get().findFirst().isPresent()) {
+            return items.get().findFirst().get();
+        } else {
+            throw new IllegalArgumentException("Item does not exist");
+        }
     }
 
 }

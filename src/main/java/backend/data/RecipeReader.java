@@ -1,5 +1,6 @@
 package backend.data;
 
+import backend.dataclasses.recipe.Quantity;
 import backend.dataclasses.recipe.Recipe;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -87,11 +88,63 @@ public final class RecipeReader {
         Node vegetarianNode = node.getElementsByTagName("vegetarian").item(0);
         builder.vegetarian(vegetarianNode.getTextContent());
 
+        handleIngredientList(node, builder);
 
         Node commentNode = node.getElementsByTagName("comment").item(0);
         builder.comment(commentNode.getTextContent());
 
         return builder;
+    }
+
+    /**
+     * Inserts every ingredient into the Recipebuilder.
+     *
+     * @param node xml node of the recipe
+     * @param builder Recipebuilder to which the ingredients will be added
+     */
+    private static void handleIngredientList(Element node,
+                                             Recipe.RecipeBuilder builder) {
+        builder.ingredientsInitializer();
+
+        Node ingredients = node.getElementsByTagName("ingredients").item(0);
+        Element ingredientsElement = (Element) ingredients;
+        NodeList categories = ingredientsElement.getElementsByTagName("categoryOfIngridient");
+
+        for (int i = 0; i < categories.getLength(); i++) {
+            Node category = categories.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                handleItems((Element) category, builder);
+            }
+        }
+    }
+
+    /**
+     * Handles insertion of grocery items of a category.
+     *
+     * @param categoryNode the category node
+     * @param builder Recipebuilder to which the ingredients will be added
+     */
+    private static void handleItems(Element categoryNode,
+                                    Recipe.RecipeBuilder builder) {
+        String categoryName = categoryNode.getAttribute("categoryName");
+
+        NodeList ingredients = categoryNode.getElementsByTagName("ingredient");
+
+        for (int i = 0; i < ingredients.getLength(); i++) {
+            Node ingredient = ingredients.item(i);
+            if (ingredient.getNodeType() == Node.ELEMENT_NODE) {
+                Element ingredientElement = (Element) ingredient;
+
+                String ingredientName = ingredientElement
+                        .getAttribute("name");
+                String amount = ingredientElement.getAttribute("amount");
+                String unit = ingredientElement.getAttribute("unit");
+
+
+                builder.addGroceryItem(categoryName, ingredientName,
+                        new Quantity(amount, unit));
+            }
+        }
     }
 
 

@@ -1,7 +1,12 @@
 package backend.dataclasses.recipe;
 
+import backend.dataclasses.groceries.GroceryCategory;
+import backend.dataclasses.groceries.GroceryItem;
+import backend.dataclasses.groceries.ShoppingList;
 import backend.dataclasses.recipecategories.ListOfRecipeCategories;
 import backend.dataclasses.recipecategories.RecipeCategory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,7 +23,7 @@ public class Recipe {
     //private Amount && Unit
     private int time;
     private boolean vegetarian;
-    //TODO: Implement Handling for ingridient list
+    private ObservableList<Ingredient> ingredients;
     //TODO: Implement data structure for preparation
     private String comment;
 
@@ -87,6 +92,10 @@ public class Recipe {
         this.vegetarian = vegetarian;
     }
 
+    public ObservableList<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
     public String getComment() {
         return comment;
     }
@@ -104,7 +113,7 @@ public class Recipe {
         //private Amount && Unit 
         private int time;
         private boolean vegetarian;
-        //TODO: Implement Handling for ingridient list
+        private ObservableList<Ingredient> ingredients;
         //TODO: Implement data structure for preparation
         private String comment;
 
@@ -146,6 +155,35 @@ public class Recipe {
             return this;
         }
 
+        /**
+         * Necessary method for initializing ingredients HashMap
+         * @return self
+         */
+        public RecipeBuilder ingredientsInitializer() {
+            this.ingredients = FXCollections.observableArrayList();
+            return this;
+        }
+
+        /**
+         * Adds a new ingredient object corresponding to the parameters to the
+         * ingredients list.
+         *
+         * @param categoryName name of the category
+         * @param itemName name of the item
+         * @param amount quantity of item
+         * @return self
+         */
+        public RecipeBuilder addGroceryItem(String categoryName,
+                                            String itemName, Quantity amount) {
+            GroceryCategory category = ShoppingList.getInstance()
+                    .getGroceryCategory(categoryName);
+           GroceryItem item = ShoppingList.getInstance()
+                   .getGroceryItem(category, itemName);
+
+            this.ingredients.add(new Ingredient(category, item, amount));
+            return this;
+        }
+
         public RecipeBuilder comment(String comment) {
             this.comment = comment;
             return this;
@@ -159,6 +197,8 @@ public class Recipe {
             recipe.recipeLink = this.recipeLink;
             recipe.time = this.time;
             recipe.vegetarian = this.vegetarian;
+            recipe.ingredients = FXCollections.observableArrayList();
+            recipe.ingredients = this.ingredients;
             recipe.comment = this.comment;
 
             return recipe;
