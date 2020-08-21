@@ -74,7 +74,7 @@ public class RecipeCategoriesWindowController {
     public void deleteCategoryClick() {
         RecipeCategory selectedCategory = recipeCategoryTable.getSelectionModel().getSelectedItem();
         getCategories().remove(selectedCategory);
-        DataHandler.deleteRecipeCategory(selectedCategory.getId(), selectedCategory.getName());
+        DataHandler.deleteRecipeCategory(selectedCategory.getId());
     }
 
     @FXML
@@ -123,7 +123,7 @@ public class RecipeCategoriesWindowController {
         if (checkChangeCondition(oldID, oldName, newID, newName)) {
             selectedCategory.setId(newID);
             selectedCategory.setName(newName);
-            DataHandler.changeRecipeCategory(oldID, oldName, newID, newName);
+            DataHandler.changeRecipeCategory(oldID, newID, newName);
         } else {
             System.out.println("Category already exists");
         }

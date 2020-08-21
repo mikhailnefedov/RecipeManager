@@ -40,7 +40,7 @@ public final class GroceryCategoryWriter {
             Statement stmt = connection.createStatement();
 
             int grocCatID = category.getID();
-            String query = "INSERT INTO GroceryItem (name, grocerycategorykey)"
+            String query = "INSERT INTO GroceryItem (name, grocerycategoryID)"
                     + " VALUES ('" + itemName + "','" + grocCatID + "');";
 
             stmt.execute(query);
