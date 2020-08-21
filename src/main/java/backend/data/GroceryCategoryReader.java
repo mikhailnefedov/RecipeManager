@@ -1,11 +1,9 @@
 package backend.data;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import java.io.FileNotFoundException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,75 +15,72 @@ public final class GroceryCategoryReader {
     private GroceryCategoryReader() { }
 
     /**
-     * file path to categories.xml.
+     * Connection to RecipeManagerDB.
      */
-    private static String catXMLPath = "./src/main/resources/categories.xml";
+    private static Connection connection;
 
     /**
-     * Reads the categories.xml file and gets the categories with their items.
+     * Sets the connection to the database.
      *
-     * @return HashMap with categories and their items (Strings)
-     * @throws FileNotFoundException If categories.xml is missing
+     * @param c Connection to database (should be to RecipeManagerDB)
      */
-    public static HashMap<String, ArrayList<String>> readCategories()
-            throws FileNotFoundException {
-
-        Document doc = XMLHandler.getDocument(catXMLPath);
-        return readDocument(doc);
+    public static void setConnectionToDatabase(Connection c) {
+        connection = c;
     }
 
     /**
-     * Reads the document for the category nodes and its items.
+     * Gets the grocery categories and the grocery items as a HashMap from the
+     * database.
      *
-     * @param doc Document of file which will be parsed
-     * @return HashMap of the categories with their items
+     * @return HashMap with (Strings) grocery categories and their items.
      */
-    private static HashMap<String, ArrayList<String>> readDocument(Document doc) {
+    public static HashMap<String, ArrayList<String>> readCategories() {
 
-        NodeList nList = doc.getDocumentElement().getElementsByTagName("category");
-        HashMap<String, ArrayList<String>> categoriesAndItems = new
-                HashMap<>();
+        HashMap<String, ArrayList<String>> categoriesAndItems = new HashMap<>();
 
-        for (int i = 0; i < nList.getLength(); i++) {
-            Node node = nList.item(i);
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element element = (Element) node;
-                String categoryName = element.getAttribute("name");
-                categoriesAndItems.put(categoryName, handleCategory(element));
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM GroceryCategory;");
+
+            while (rs.next()) {
+                int categoryID = rs.getInt("id");
+                String categoryName = rs.getString("name");
+                categoriesAndItems.put(categoryName, getItems(categoryID));
             }
+            stmt.close();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return categoriesAndItems;
     }
 
     /**
-     * Gets the items of one node (category).
+     * Gets the items from a specific category.
      *
-     * @param node category node
-     * @return list of the items
+     * @param categoryID id of the category
+     * @return List of items of the category
      */
-    private static ArrayList<String> handleCategory(Element node) {
-
-        NodeList nList = node.getElementsByTagName("item");
-        return handleItems(nList);
-    }
-
-    /**
-     * Gets the list of items as an ArrayList<String>.
-     *
-     * @param list list of nodes (document) of items
-     * @return list of items
-     */
-    private static ArrayList<String> handleItems(NodeList list) {
+    private static ArrayList<String> getItems(int categoryID) {
 
         ArrayList<String> items = new ArrayList<>();
-        for (int i = 0; i < list.getLength(); i++) {
-            Node node = list.item(i);
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                String item = node.getTextContent();
-                items.add(item);
+
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT name "
+                    + "FROM GroceryItem "
+                    + "where grocerycategorykey=" + categoryID + ";");
+
+            while (rs.next()) {
+                items.add(rs.getString("name"));
             }
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
         return items;
     }
 }

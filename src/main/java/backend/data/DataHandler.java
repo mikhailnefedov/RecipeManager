@@ -8,6 +8,8 @@ import backend.dataclasses.recipecategories.ListOfRecipeCategories;
 import backend.dataclasses.recipecategories.RecipeCategory;
 
 import java.io.FileNotFoundException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,6 +23,19 @@ public final class DataHandler {
      *                               from/to are not existing
      */
     public static void initialize() throws FileNotFoundException {
+
+
+        //New part for database:
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection connection = DriverManager.getConnection
+                    ("jdbc:sqlite:src/main/resources/RecipeManagerDB.db");
+
+            GroceryCategoryReader.setConnectionToDatabase(connection);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         HashMap<String, ArrayList<String>> catsAndItems =
                 GroceryCategoryReader.readCategories();
@@ -37,6 +52,9 @@ public final class DataHandler {
         ArrayList<Recipe.RecipeBuilder> recipeBuilders = RecipeReader.readRecipes();
         Recipes recipes = Recipes.getInstance();
         recipes.addRecipes(recipeBuilders);
+
+
+
 
     }
 
