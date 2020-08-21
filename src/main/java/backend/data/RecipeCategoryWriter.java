@@ -1,17 +1,11 @@
 package backend.data;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Writer for recipeCategories.xml.
+ * Changes/Adds/Deletes records of RecipeCategory table from database.
  */
 public final class RecipeCategoryWriter {
 

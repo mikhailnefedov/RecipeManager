@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Adds/Changes rows from GroceryCategory/GroceryItem tables from database.
+ * Adds/Changes records from GroceryCategory/GroceryItem tables from database.
  */
 public final class GroceryCategoryWriter {
 

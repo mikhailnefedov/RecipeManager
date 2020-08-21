@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Gets database entries from GroceryCategory and GroceryItem tables.
+ * Gets database records from GroceryCategory and GroceryItem tables.
  */
 public final class GroceryCategoryReader {
 
