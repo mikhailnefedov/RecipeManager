@@ -1,5 +1,6 @@
 package backend.data;
 
+import backend.dataclasses.groceries.GroceryCategory;
 import backend.dataclasses.groceries.GroceryItem;
 import backend.dataclasses.groceries.ShoppingList;
 import backend.dataclasses.recipe.Recipe;
@@ -32,18 +33,15 @@ public final class DataHandler {
                     ("jdbc:sqlite:src/main/resources/RecipeManagerDB.db");
 
             GroceryCategoryReader.setConnectionToDatabase(connection);
+            GroceryCategoryWriter.setConnectionToDatabase(connection);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        HashMap<String, ArrayList<String>> catsAndItems =
-                GroceryCategoryReader.readCategories();
 
         ShoppingList shopList = ShoppingList.getInstance();
-        for (String category : catsAndItems.keySet()) {
-            shopList.addCategoryWithItems(category, catsAndItems.get(category));
-        }
+        shopList.initialize(GroceryCategoryReader.readCategories());
 
         ArrayList<RecipeCategory> recipeCategories = RecipeCategoryReader.readRecipeCategories();
         ListOfRecipeCategories listOfRecCats = ListOfRecipeCategories.getInstance();
@@ -52,8 +50,6 @@ public final class DataHandler {
         ArrayList<Recipe.RecipeBuilder> recipeBuilders = RecipeReader.readRecipes();
         Recipes recipes = Recipes.getInstance();
         recipes.addRecipes(recipeBuilders);
-
-
 
 
     }
@@ -108,18 +104,14 @@ public final class DataHandler {
     }
 
     /**
-     * Adds new grocery item to save file.
+     * Adds the new grocery item string into the database
      *
-     * @param newItem new grocery item to be saved
+     * @param category category of the item
+     * @param newItemName name of the item
+     * @return id of newly added item into the database
      */
-    public static void saveNewGroceryItem(GroceryItem newItem) {
-
-        try {
-            String category = newItem.getGroceryCategory().toString();
-            GroceryCategoryWriter.writeItem(category, newItem.toString());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
+    public static int saveNewGroceryItem(GroceryCategory category,
+                                         String newItemName) {
+        return GroceryCategoryWriter.writeItem(category, newItemName);
     }
 }

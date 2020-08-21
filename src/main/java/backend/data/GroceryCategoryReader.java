@@ -1,5 +1,8 @@
 package backend.data;
 
+import backend.dataclasses.groceries.GroceryCategory;
+import backend.dataclasses.groceries.GroceryItem;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,11 +35,13 @@ public final class GroceryCategoryReader {
      * Gets the grocery categories and the grocery items as a HashMap from the
      * database.
      *
-     * @return HashMap with (Strings) grocery categories and their items.
+     * @return HashMap with grocery categories and their items.
      */
-    public static HashMap<String, ArrayList<String>> readCategories() {
+    public static HashMap<GroceryCategory, ArrayList<GroceryItem>>
+    readCategories() {
 
-        HashMap<String, ArrayList<String>> categoriesAndItems = new HashMap<>();
+        HashMap<GroceryCategory, ArrayList<GroceryItem>> categoriesAndItems =
+                new HashMap<>();
 
         try {
             Statement stmt = connection.createStatement();
@@ -45,7 +50,10 @@ public final class GroceryCategoryReader {
             while (rs.next()) {
                 int categoryID = rs.getInt("id");
                 String categoryName = rs.getString("name");
-                categoriesAndItems.put(categoryName, getItems(categoryID));
+
+                GroceryCategory category = new
+                        GroceryCategory(categoryID, categoryName);
+                categoriesAndItems.put(category, getItems(category));
             }
             stmt.close();
             rs.close();
@@ -59,21 +67,24 @@ public final class GroceryCategoryReader {
     /**
      * Gets the items from a specific category.
      *
-     * @param categoryID id of the category
+     * @param category category to which the items belong
      * @return List of items of the category
      */
-    private static ArrayList<String> getItems(int categoryID) {
+    private static ArrayList<GroceryItem> getItems(GroceryCategory category) {
 
-        ArrayList<String> items = new ArrayList<>();
+        ArrayList<GroceryItem> items = new ArrayList<>();
 
         try {
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT name "
+            ResultSet rs = stmt.executeQuery("SELECT *"
                     + "FROM GroceryItem "
-                    + "where grocerycategorykey=" + categoryID + ";");
+                    + "where grocerycategorykey=" + category.getID() + ";");
 
             while (rs.next()) {
-                items.add(rs.getString("name"));
+                int itemID = rs.getInt("id");
+                String itemName = rs.getString("name");
+
+                items.add(new GroceryItem(itemID, itemName, category));
             }
             rs.close();
             stmt.close();

@@ -21,7 +21,7 @@ public class ShoppingList {
      * Quantity amounts of the Recipe, so when recipes are combined into a
      * shopping list, the amounts can be merged together.
      */
-    private HashMap<GroceryCategory, HashMap<GroceryItem, Quantity>> categoriesAndItems;
+    private HashMap<GroceryCategory, ArrayList<GroceryItem>> categoriesAndItems;
     /**
      * Observable Map for frontend view
      */
@@ -46,49 +46,35 @@ public class ShoppingList {
 
     //TODO: if something is added deleted --> add to Observable
 
-    public void addCategoryWithItems(String catStr, ArrayList<String> items) {
-
-        GroceryCategory category = new GroceryCategory(catStr);
-        HashMap<GroceryItem, Quantity> itemList = createItemList(items, category);
-        categoriesAndItems.put(category, itemList);
-    }
-
-    private HashMap<GroceryItem, Quantity> createItemList(
-            ArrayList<String> items, GroceryCategory category) {
-
-        HashMap<GroceryItem, Quantity> itemMap = new HashMap<>();
-        for (String itemName : items) {
-            GroceryItem groceryItem = new GroceryItem(itemName, category);
-            itemMap.put(groceryItem, null);
-            observableItems.add(groceryItem);
+    /**
+     * Initializes ShoppingList by loading data into an observable list and a
+     * HashMap that contains every Category and its items.
+     *
+     * @param categoriesAndItems map of categories and their items
+     */
+    public void initialize(HashMap<GroceryCategory, ArrayList<GroceryItem>>
+                                   categoriesAndItems) {
+        this.categoriesAndItems = categoriesAndItems;
+        for (GroceryCategory category : categoriesAndItems.keySet()) {
+            addItemListToObservable(categoriesAndItems.get(category));
         }
-        return itemMap;
     }
 
-    @Override
-    public String toString() {
+    /**
+     * Adds a list of items to the observable list for the frontend.
+     *
+     * @param items list of GroceryItem
+     */
+    private void addItemListToObservable(ArrayList<GroceryItem> items) {
 
-        ArrayList<GroceryCategory> categories = new ArrayList<>(categoriesAndItems.keySet());
-        Collections.sort(categories);
-
-        StringBuilder stringText = new StringBuilder();
-        stringText.append("All Categories").append("\n");
-        stringText.append("---------------").append("\n");
-        for (GroceryCategory category : categories) {
-            stringText.append(category.toString()).append(":\n");
-
-            ArrayList<GroceryItem> items = new ArrayList<>
-                    (categoriesAndItems.get(category).keySet());
-            Collections.sort(items);
-            for (GroceryItem item : items) {
-                stringText.append(item.toString()).append("\n");
-            }
-            stringText.append("---" + "\n");
-        }
-
-        return stringText.toString();
+        observableItems.addAll(items);
     }
 
+    /**
+     * Returns list of observable items for javafx frontend.
+     *
+     * @return observable list of grocery items
+     */
     public ObservableList<GroceryItem> getObservableItems() {
         return observableItems;
     }
@@ -109,22 +95,20 @@ public class ShoppingList {
      */
     public void addGroceryItem(GroceryItem newItem) {
         observableItems.add(newItem);
-        categoriesAndItems.get(newItem.getGroceryCategory()).put(newItem, null);
+        categoriesAndItems.get(newItem.getGroceryCategory()).add(newItem);
     }
 
     /**
      * Checks if an item is already saved.
      *
-     * @param itemName the item to be checked. Important is not the object, but its
-     *                 name and category
+     * @param itemName the item to be checked. Important is not the object, but
+     *                 its name and category
      * @param category category of the item
      * @return true, if it already exists | else, if not
      */
     public boolean isItemInList(String itemName, GroceryCategory category) {
-        Set<GroceryItem> itemsFromCategory = categoriesAndItems
-                .get(category).keySet();
-        Stream<String> itemNames = itemsFromCategory.
-                stream().map(GroceryItem::toString);
+        Stream<String> itemNames = categoriesAndItems.get(category)
+                .stream().map(GroceryItem::toString);
         return itemNames.anyMatch(item -> item.equals(itemName));
     }
 
@@ -160,7 +144,7 @@ public class ShoppingList {
                                           String groceryItemName) {
 
         Supplier<Stream<GroceryItem>> items = () -> categoriesAndItems
-                .get(category).keySet().stream()
+                .get(category).stream()
                 .filter(item -> item.toString().equals(groceryItemName));
         if (items.get().findFirst().isPresent()) {
             return items.get().findFirst().get();

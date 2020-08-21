@@ -40,8 +40,6 @@ public class Main extends Application {
             e.printStackTrace();
         }
 
-        System.out.print(ShoppingList.getInstance().toString());
-
 
         launch();
 
