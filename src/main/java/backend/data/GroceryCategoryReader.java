@@ -78,7 +78,7 @@ public final class GroceryCategoryReader {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT *"
                     + "FROM GroceryItem "
-                    + "where grocerycategorykey=" + category.getID() + ";");
+                    + "where grocerycategoryID=" + category.getID() + ";");
 
             while (rs.next()) {
                 int itemID = rs.getInt("id");
