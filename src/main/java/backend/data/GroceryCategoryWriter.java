@@ -3,12 +3,11 @@ package backend.data;
 import backend.dataclasses.groceries.GroceryCategory;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Writer for categories.xml.
+ * Adds/Changes rows from GroceryCategory/GroceryItem tables from database.
  */
 public final class GroceryCategoryWriter {
 
