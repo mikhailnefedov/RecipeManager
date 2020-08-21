@@ -1,79 +1,64 @@
 package backend.data;
 
 import backend.dataclasses.recipecategories.RecipeCategory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-import java.io.FileNotFoundException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- * Reader for recipeCategories.xml.
+ * Gets data from RecipeCategory table from database.
  */
 public final class RecipeCategoryReader {
 
     /**
-     * file path to recipeCategories.xml.
+     * Connection to RecipeManagerDB.
      */
-    private static String xmlPath = "./src/main/resources/recipeCategories.xml";
+    private static Connection connection;
 
     private RecipeCategoryReader() {
     }
 
     /**
-     * Gets a list with the saved recipe categories of the xml file.
+     * Sets the connection to the database.
      *
-     * @return list of RecipeCategory
-     * @throws FileNotFoundException If file that has the categories saved is
-     *                               non existent
+     * @param c Connection to database (should be to RecipeManagerDB)
      */
-    public static ArrayList<RecipeCategory> readRecipeCategories()
-            throws FileNotFoundException {
-
-        Document doc = XMLHandler.getDocument(xmlPath);
-        return readDocument(doc);
+    public static void setConnectionToDatabase(Connection c) {
+        connection = c;
     }
 
     /**
-     * Reads document for the recipe categories and returns a list of them.
+     * Gets a list with the saved recipe categories from the database.
      *
-     * @param doc Document of file which will be parsed
-     * @return List of RecipeCategory saved in the document
+     * @return list of saved recipe categories
      */
-    private static ArrayList<RecipeCategory> readDocument(Document doc) {
+    public static ArrayList<RecipeCategory> readRecipeCategories() {
 
-        ArrayList<RecipeCategory> categories = new ArrayList<>();
+        ArrayList<RecipeCategory> recipeCategories = new ArrayList<>();
 
-        NodeList nList = doc.getDocumentElement().
-                getElementsByTagName("category");
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM RecipeCategory;");
 
-        for (int i = 0; i < nList.getLength(); i++) {
-            Node node = nList.item(i);
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                categories.add(handleCategory((Element) node));
+            while (rs.next()) {
+                String categoryID = rs.getString("id");
+                String categoryName = rs.getString("name");
+
+                RecipeCategory category =
+                        new RecipeCategory(categoryID, categoryName);
+                recipeCategories.add(category);
+
             }
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-        return categories;
+        return recipeCategories;
     }
 
-    /**
-     * Handles reading of a recipe category and the creation of its object.
-     *
-     * @param node category node in the xml file
-     * @return RecipCategory that was created from the saved data
-     */
-    private static RecipeCategory handleCategory(Element node) {
-
-
-        Node idNode = node.getElementsByTagName("id").item(0);
-        String id = idNode.getTextContent();
-
-        Node nameNode = node.getElementsByTagName("name").item(0);
-        String name = nameNode.getTextContent();
-
-        return new RecipeCategory(id, name);
-    }
 }

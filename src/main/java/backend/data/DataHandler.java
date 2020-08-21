@@ -34,6 +34,7 @@ public final class DataHandler {
 
             GroceryCategoryReader.setConnectionToDatabase(connection);
             GroceryCategoryWriter.setConnectionToDatabase(connection);
+            RecipeCategoryReader.setConnectionToDatabase(connection);
 
         } catch (Exception e) {
             e.printStackTrace();
