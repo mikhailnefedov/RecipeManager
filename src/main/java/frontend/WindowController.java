@@ -184,6 +184,8 @@ public class WindowController {
         recipeTimeTextField.setText(Integer.toString(selectedRecipe.getTime()));
         if (selectedRecipe.isVegetarian()) {
             recipeVegetarianCheckbox.setSelected(true);
+        } else {
+            recipeVegetarianCheckbox.setSelected(false);
         }
         recipeSourceTextField.setText(selectedRecipe.getRecipeLink().toString());
 
