@@ -32,9 +32,9 @@ public final class RecipeReader {
     }
 
     /**
-     * Gets the saved Recipes from recipes.xml.
+     * Gets the saved recipes from the database.
      *
-     * @return ArrayList with Recipes that are saved in recipes.xml
+     * @return ArrayList with Recipes that are saved in the database
      */
     public static ArrayList<Recipe.RecipeBuilder> readRecipes() {
 
