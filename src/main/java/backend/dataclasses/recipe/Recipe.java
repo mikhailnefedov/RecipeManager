@@ -16,7 +16,7 @@ import java.net.URL;
  */
 public class Recipe {
 
-    private String id;
+    private int id;
     private String title;
     private RecipeCategory category;
     private URL recipeLink;
@@ -30,11 +30,11 @@ public class Recipe {
     private Recipe() {
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -106,7 +106,7 @@ public class Recipe {
 
     public static class RecipeBuilder {
 
-        private String id;
+        private int id;
         private String title;
         private RecipeCategory category;
         private URL recipeLink;
@@ -120,7 +120,7 @@ public class Recipe {
         public RecipeBuilder() {
         }
 
-        public RecipeBuilder id(String id) {
+        public RecipeBuilder id(int id) {
             this.id = id;
             return this;
         }
@@ -145,13 +145,27 @@ public class Recipe {
             return this;
         }
 
-        public RecipeBuilder time(String time) {
-            this.time = Integer.parseInt(time);
+        public RecipeBuilder time(int time) {
+            this.time = time;
             return this;
         }
 
-        public RecipeBuilder vegetarian(String vegetarian) {
-            this.vegetarian = Boolean.parseBoolean(vegetarian);
+        /**
+         * Sets the vegetarian value of the recipe builder.
+         *
+         * @param vegetarian 0 --> false , 1 --> true
+         * @return this RecipeBuilder
+         */
+        public RecipeBuilder vegetarian(int vegetarian) {
+            if (vegetarian == 0) {
+                this.vegetarian = false;
+            } else if (vegetarian == 1) {
+                this.vegetarian = true;
+            } else {
+                throw new IllegalArgumentException("When trying to set the "
+                        + "vegetarian value of a RecipeBuilder the Argument was"
+                        + " not 0 or 1");
+            }
             return this;
         }
 

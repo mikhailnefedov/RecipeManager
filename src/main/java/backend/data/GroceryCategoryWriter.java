@@ -1,83 +1,56 @@
 package backend.data;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import backend.dataclasses.groceries.GroceryCategory;
 
-import java.io.FileNotFoundException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
- * Writer for categories.xml.
+ * Adds/Changes records from GroceryCategory/GroceryItem tables from database.
  */
 public final class GroceryCategoryWriter {
 
     private GroceryCategoryWriter() { }
 
     /**
-     * Path of the categories xml.
+     * Connection to RecipeManagerDB.
      */
-    private static String catXMLPath = "./src/main/resources/categories.xml";
+    private static Connection connection;
 
     /**
-     * Writes a new category into xml.
+     * Sets the connection to the database.
      *
-     * @param categoryName name of the new category
-     * @throws FileNotFoundException If categories.xml not found
+     * @param c Connection to database (should be to RecipeManagerDB)
      */
-    public static void writeCategory(String categoryName)
-            throws FileNotFoundException {
-
-        Document doc = XMLHandler.getDocument(catXMLPath);
-        Element docElement = doc.getDocumentElement();
-        XMLHandler.removeWhiteSpaceNodes(doc);
-
-        Element nodeElement = doc.createElement("category");
-        nodeElement.setAttribute("name", categoryName);
-        docElement.appendChild(nodeElement);
-        XMLHandler.writeToXML(doc, docElement, catXMLPath);
+    public static void setConnectionToDatabase(Connection c) {
+        connection = c;
     }
 
     /**
-     * Writes new item into the categories.xml.
+     * Inserts a new grocery item into the database and returns its id.
      *
-     * @param categoryName name of category to which the item will be inserted
-     * @param itemName     name of the new item
-     * @throws FileNotFoundException If categories.xml not found
+     * @param category category of the item
+     * @param itemName name of the item
+     * @return id of the newly added item
      */
-    public static void writeItem(String categoryName, String itemName)
-            throws FileNotFoundException {
+    public static int writeItem(GroceryCategory category, String itemName) {
 
-        Document doc = XMLHandler.getDocument(catXMLPath);
-        Element docElement = doc.getDocumentElement();
-        XMLHandler.removeWhiteSpaceNodes(doc);
+        try {
+            Statement stmt = connection.createStatement();
 
-        NodeList nList = docElement.getElementsByTagName("category");
-        for (int i = 0; i < nList.getLength(); i++) {
-            Node node = nList.item(i);
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element element = (Element) node;
-                if (element.getAttribute("name").equals(categoryName)) {
-                    handleInsertion(doc, element, itemName);
-                }
-            }
+            int grocCatID = category.getID();
+            String query = "INSERT INTO GroceryItem (name, grocerycategoryID)"
+                    + " VALUES ('" + itemName + "','" + grocCatID + "');";
+
+            stmt.execute(query);
+            return stmt.executeQuery("SELECT last_insert_rowid()")
+                    .getInt("last_insert_rowid()");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("Something went wrong when " +
+                    "trying to save a new grocery item into the database");
         }
-        XMLHandler.writeToXML(doc, docElement, catXMLPath);
-    }
-
-    /**
-     * Appends new item node to category node.
-     *
-     * @param doc      document in which the appending happens
-     * @param node     category node to which the item will be appended
-     * @param itemName name of the new item
-     */
-    private static void handleInsertion(Document doc, Element node,
-                                        String itemName) {
-
-        Element element = doc.createElement("item");
-        element.setTextContent(itemName);
-        node.appendChild(element);
     }
 
 }

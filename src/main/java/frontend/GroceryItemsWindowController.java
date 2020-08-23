@@ -90,13 +90,11 @@ public class GroceryItemsWindowController {
         String newName = groceryItemTextField.getText();
 
         if (checkItemCreationCondition(newName, selectedCategory)) {
-            GroceryItem newItem = new GroceryItem(newName, selectedCategory);
-
+            int id = DataHandler.saveNewGroceryItem(selectedCategory, newName);
+            GroceryItem newItem = new GroceryItem(id, newName, selectedCategory);
             ShoppingList.getInstance().addGroceryItem(newItem);
-            DataHandler.saveNewGroceryItem(newItem);
-            //TODO: sorting table after creating item
-
             focusTableOnNewItem(newItem);
+            //TODO: sorting table after creating item
         } else {
             //TODO: Frontend visualization of error
             System.out.println("Error when creating grocery item");

@@ -1,6 +1,6 @@
 package backend.data;
 
-import backend.dataclasses.groceries.GroceryItem;
+import backend.dataclasses.groceries.GroceryCategory;
 import backend.dataclasses.groceries.ShoppingList;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
@@ -8,27 +8,37 @@ import backend.dataclasses.recipecategories.ListOfRecipeCategories;
 import backend.dataclasses.recipecategories.RecipeCategory;
 
 import java.io.FileNotFoundException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public final class DataHandler {
 
     /**
-     * Currently work in progress. Initializes data loading from xml files and
-     * creates new objects based on the data.
+     * Initializes by loading data from database and creating new objects based
+     * on this data.
      *
-     * @throws FileNotFoundException If xml files that will be read/written
-     *                               from/to are not existing
      */
-    public static void initialize() throws FileNotFoundException {
+    public static void initialize() {
 
-        HashMap<String, ArrayList<String>> catsAndItems =
-                GroceryCategoryReader.readCategories();
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection connection = DriverManager.getConnection
+                    ("jdbc:sqlite:src/main/resources/RecipeManagerDB.db");
+
+            GroceryCategoryReader.setConnectionToDatabase(connection);
+            GroceryCategoryWriter.setConnectionToDatabase(connection);
+            RecipeCategoryReader.setConnectionToDatabase(connection);
+            RecipeCategoryWriter.setConnectionToDatabase(connection);
+            RecipeReader.setConnectionToDatabase(connection);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         ShoppingList shopList = ShoppingList.getInstance();
-        for (String category : catsAndItems.keySet()) {
-            shopList.addCategoryWithItems(category, catsAndItems.get(category));
-        }
+        shopList.initialize(GroceryCategoryReader.readCategories());
 
         ArrayList<RecipeCategory> recipeCategories = RecipeCategoryReader.readRecipeCategories();
         ListOfRecipeCategories listOfRecCats = ListOfRecipeCategories.getInstance();
@@ -41,67 +51,48 @@ public final class DataHandler {
     }
 
     /**
-     * Changes saved information of a recipe category.
+     * Changes saved information of a recipe category in the database.
      *
      * @param oldID      current id of category
-     * @param oldCatName current name of category
      * @param newID      new id of category
      * @param newCatName new name of category
      */
-    public static void changeRecipeCategory(String oldID, String oldCatName,
-                                            String newID, String newCatName) {
+    public static void changeRecipeCategory(String oldID, String newID,
+                                            String newCatName) {
 
-        try {
-            RecipeCategoryWriter.changeCategory(oldID, oldCatName,
-                    newID, newCatName);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+            RecipeCategoryWriter.changeCategory(oldID, newID, newCatName);
     }
 
     /**
-     * Saves new recipe category into a file.
+     * Saves new recipe category into the database.
      *
      * @param id           id of new category
      * @param categoryName name of new category
      */
     public static void saveNewRecipeCategory(String id, String categoryName) {
 
-        try {
-            RecipeCategoryWriter.writeNewCategory(id, categoryName);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        RecipeCategoryWriter.writeNewCategory(id, categoryName);
     }
 
     /**
-     * Removes recipe category from save file.
+     * Removes recipe category from the database.
      *
-     * @param id           id of category
-     * @param categoryName name of category
+     * @param id id of category
      */
-    public static void deleteRecipeCategory(String id, String categoryName) {
+    public static void deleteRecipeCategory(String id) {
 
-        try {
-            RecipeCategoryWriter.removeCategory(id, categoryName);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        RecipeCategoryWriter.removeCategory(id);
     }
 
     /**
-     * Adds new grocery item to save file.
+     * Adds the new grocery item string into the database
      *
-     * @param newItem new grocery item to be saved
+     * @param category    category of the item
+     * @param newItemName name of the item
+     * @return id of newly added item into the database
      */
-    public static void saveNewGroceryItem(GroceryItem newItem) {
-
-        try {
-            String category = newItem.getGroceryCategory().toString();
-            GroceryCategoryWriter.writeItem(category, newItem.toString());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
+    public static int saveNewGroceryItem(GroceryCategory category,
+                                         String newItemName) {
+        return GroceryCategoryWriter.writeItem(category, newItemName);
     }
 }

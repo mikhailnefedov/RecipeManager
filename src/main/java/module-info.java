@@ -2,6 +2,8 @@ module RecipeManager {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.xml;
+    requires java.sql;
+    requires sqlite.jdbc;
 
     opens frontend to javafx.fxml;
     exports frontend;

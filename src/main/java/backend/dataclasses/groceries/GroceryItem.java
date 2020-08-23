@@ -3,8 +3,15 @@ package backend.dataclasses.groceries;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class GroceryItem implements Comparable<GroceryItem>{
+public final class GroceryItem implements Comparable<GroceryItem> {
 
+    /**
+     * Id of this grocery item in database.
+     */
+    private int id;
+    /**
+     * name of this grocery item.
+     */
     private StringProperty name;
     /**
      * Affiliated grocery category, Stringproperty for frontend callbacks.
@@ -15,10 +22,13 @@ public class GroceryItem implements Comparable<GroceryItem>{
      */
     private GroceryCategory affiliatedObjectGroceryCategory;
 
-    public GroceryItem(String name, GroceryCategory affiliatedCategory) {
+    public GroceryItem(int id, String name,
+                       GroceryCategory affiliatedCategory) {
+        this.id = id;
         this.name = new SimpleStringProperty("");
-        this.affiliatedGroceryCategory = new SimpleStringProperty("");
         this.name.set(name);
+
+        this.affiliatedGroceryCategory = new SimpleStringProperty("");
         this.affiliatedGroceryCategory.set(affiliatedCategory.toString());
         this.affiliatedObjectGroceryCategory = affiliatedCategory;
     }
@@ -48,5 +58,9 @@ public class GroceryItem implements Comparable<GroceryItem>{
      */
     public GroceryCategory getGroceryCategory() {
         return affiliatedObjectGroceryCategory;
+    }
+
+    public int getID() {
+        return id;
     }
 }

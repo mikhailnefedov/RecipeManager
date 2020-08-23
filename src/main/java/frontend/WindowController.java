@@ -170,7 +170,7 @@ public class WindowController {
     private void loadRecipeDataIntoTab() {
         Recipe selectedRecipe = recipeTable.getSelectionModel().getSelectedItem();
 
-        recipeIDLabel.setText(selectedRecipe.getId());
+        recipeIDLabel.setText(Integer.toString(selectedRecipe.getId()));
         recipeNameTextField.setText(selectedRecipe.getTitle());
 
         Set<String> categories = ListOfRecipeCategories.
@@ -184,6 +184,8 @@ public class WindowController {
         recipeTimeTextField.setText(Integer.toString(selectedRecipe.getTime()));
         if (selectedRecipe.isVegetarian()) {
             recipeVegetarianCheckbox.setSelected(true);
+        } else {
+            recipeVegetarianCheckbox.setSelected(false);
         }
         recipeSourceTextField.setText(selectedRecipe.getRecipeLink().toString());
 
