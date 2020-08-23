@@ -34,12 +34,8 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        try {
-            DataHandler.initialize();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
 
+        DataHandler.initialize();
 
         launch();
 

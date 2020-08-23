@@ -170,7 +170,7 @@ public class WindowController {
     private void loadRecipeDataIntoTab() {
         Recipe selectedRecipe = recipeTable.getSelectionModel().getSelectedItem();
 
-        recipeIDLabel.setText(selectedRecipe.getId());
+        recipeIDLabel.setText(Integer.toString(selectedRecipe.getId()));
         recipeNameTextField.setText(selectedRecipe.getTitle());
 
         Set<String> categories = ListOfRecipeCategories.

@@ -15,16 +15,12 @@ import java.util.ArrayList;
 public final class DataHandler {
 
     /**
-     * Currently work in progress. Initializes data loading from xml files and
-     * creates new objects based on the data.
+     * Initializes by loading data from database and creating new objects based
+     * on this data.
      *
-     * @throws FileNotFoundException If xml files that will be read/written
-     *                               from/to are not existing
      */
-    public static void initialize() throws FileNotFoundException {
+    public static void initialize() {
 
-
-        //New part for database:
         try {
             Class.forName("org.sqlite.JDBC");
             Connection connection = DriverManager.getConnection
@@ -34,6 +30,7 @@ public final class DataHandler {
             GroceryCategoryWriter.setConnectionToDatabase(connection);
             RecipeCategoryReader.setConnectionToDatabase(connection);
             RecipeCategoryWriter.setConnectionToDatabase(connection);
+            RecipeReader.setConnectionToDatabase(connection);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,7 +47,6 @@ public final class DataHandler {
         ArrayList<Recipe.RecipeBuilder> recipeBuilders = RecipeReader.readRecipes();
         Recipes recipes = Recipes.getInstance();
         recipes.addRecipes(recipeBuilders);
-
 
     }
 

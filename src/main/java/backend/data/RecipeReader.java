@@ -2,150 +2,125 @@ package backend.data;
 
 import backend.dataclasses.recipe.Quantity;
 import backend.dataclasses.recipe.Recipe;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-import java.io.FileNotFoundException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- * Reader for recipes.xml.
+ * Reader for Recipe table from database.
  */
 public final class RecipeReader {
 
     /**
-     * file path to recipes.xml.
+     * Connection to RecipeManagerDB.
      */
-    private static String recXMLPath = "./src/main/resources/recipes.xml";
+    private static Connection connection;
 
     private RecipeReader() {
+    }
+
+    /**
+     * Sets the connection to the database.
+     *
+     * @param c Connection to database (should be to RecipeManagerDB)
+     */
+    public static void setConnectionToDatabase(Connection c) {
+        connection = c;
     }
 
     /**
      * Gets the saved Recipes from recipes.xml.
      *
      * @return ArrayList with Recipes that are saved in recipes.xml
-     * @throws FileNotFoundException If recipes.xml is missing
      */
-    public static ArrayList<Recipe.RecipeBuilder> readRecipes()
-            throws FileNotFoundException {
+    public static ArrayList<Recipe.RecipeBuilder> readRecipes() {
 
-        Document doc = XMLHandler.getDocument(recXMLPath);
-        return readDocument(doc);
-    }
+        ArrayList<Recipe.RecipeBuilder> recipes = new ArrayList<>();
 
-    /**
-     * Reads the document for the recipes nodes and returns the recipes saved in
-     * it.
-     *
-     * @param doc Document of file which will be parsed
-     * @return Recipes saved in doc
-     */
-    private static ArrayList<Recipe.RecipeBuilder> readDocument(Document doc) {
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM Recipe;");
 
-        ArrayList<Recipe.RecipeBuilder> recipes =
-                new ArrayList<>();
+            while (rs.next()) {
 
-        NodeList nList = doc.getDocumentElement().getElementsByTagName("recipe");
+                Recipe.RecipeBuilder builder = new Recipe.RecipeBuilder();
 
-        for (int i = 0; i < nList.getLength(); i++) {
-            Node node = nList.item(i);
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                recipes.add(handleRecipe((Element) node));
+                int recipeID = rs.getInt("id");
+                builder.id(recipeID);
+
+                String recipeCategory = rs.getString("recipecategoryID");
+                builder.category(recipeCategory);
+
+                String title = rs.getString("title");
+                builder.title(title);
+
+                String source = rs.getString("source");
+                builder.recipeLink(source);
+
+                String portionsize = rs.getString("portionsize");
+                //TODO: Add portionsize
+
+                int time = rs.getInt("time");
+                builder.time(time);
+
+                int vegetarian = rs.getInt("vegetarian");
+                builder.vegetarian(vegetarian);
+
+                String comment = rs.getString("comment");
+                builder.comment(comment);
+
+                handleIngredientList(recipeID, builder);
+
+                recipes.add(builder);
             }
+            stmt.close();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return recipes;
     }
 
     /**
-     * Handles reading of one Recipes and its items.
-     * @param node category node
-     * @return RecipeBuilder created from the saved data of the xml element
-     */
-    private static Recipe.RecipeBuilder handleRecipe(Element node) {
-
-        Recipe.RecipeBuilder builder = new Recipe.RecipeBuilder();
-
-        Node itemNode = node.getElementsByTagName("id").item(0);
-        builder.id(itemNode.getTextContent());
-
-        Node titleNode = node.getElementsByTagName("title").item(0);
-        builder.title(titleNode.getTextContent());
-
-        Node categoryNode = node.getElementsByTagName("category").item(0);
-        builder.category(categoryNode.getTextContent());
-
-        Node linkNode = node.getElementsByTagName("link").item(0);
-        builder.recipeLink(linkNode.getTextContent());
-
-
-        Node timeNode = node.getElementsByTagName("time").item(0);
-        builder.time(timeNode.getTextContent());
-
-        Node vegetarianNode = node.getElementsByTagName("vegetarian").item(0);
-        builder.vegetarian(vegetarianNode.getTextContent());
-
-        handleIngredientList(node, builder);
-
-        Node commentNode = node.getElementsByTagName("comment").item(0);
-        builder.comment(commentNode.getTextContent());
-
-        return builder;
-    }
-
-    /**
-     * Inserts every ingredient into the Recipebuilder.
+     * Inserts every ingredient of the recipe into the Recipebuilder.
      *
-     * @param node xml node of the recipe
-     * @param builder Recipebuilder to which the ingredients will be added
+     * @param recipeID id of the recipe
+     * @param builder  Recipebuilder to which the ingredients will be added
      */
-    private static void handleIngredientList(Element node,
+    private static void handleIngredientList(int recipeID,
                                              Recipe.RecipeBuilder builder) {
         builder.ingredientsInitializer();
 
-        Node ingredients = node.getElementsByTagName("ingredients").item(0);
-        Element ingredientsElement = (Element) ingredients;
-        NodeList categories = ingredientsElement.getElementsByTagName("categoryOfIngridient");
+        try {
+            Statement stmt = connection.createStatement();
+            String sqlQuery = "Select GroceryItem.name as itemName,"
+                    + " GroceryCategory.name as catName,"
+                    + " amount, unit "
+                    + " From Recipe "
+                    + " INNER JOIN uses on Recipe.id = uses.recipeID"
+                    + " INNER JOIN GroceryItem on uses.groceryitemID = GroceryItem.id"
+                    + " INNER JOIN GroceryCategory on GroceryItem.grocerycategoryID = GroceryCategory.id"
+                    + " WHERE Recipe.id = " + recipeID + ";";
+            ResultSet rs = stmt.executeQuery(sqlQuery);
 
-        for (int i = 0; i < categories.getLength(); i++) {
-            Node category = categories.item(i);
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                handleItems((Element) category, builder);
-            }
-        }
-    }
+            while (rs.next()) {
+                String ingredientName = rs.getString("itemName");
+                String grocCategoryName = rs.getString("catName");
+                String amount = String.valueOf(rs.getFloat("amount"));
+                String unit = rs.getString("unit");
 
-    /**
-     * Handles insertion of grocery items of a category.
-     *
-     * @param categoryNode the category node
-     * @param builder Recipebuilder to which the ingredients will be added
-     */
-    private static void handleItems(Element categoryNode,
-                                    Recipe.RecipeBuilder builder) {
-        String categoryName = categoryNode.getAttribute("categoryName");
-
-        NodeList ingredients = categoryNode.getElementsByTagName("ingredient");
-
-        for (int i = 0; i < ingredients.getLength(); i++) {
-            Node ingredient = ingredients.item(i);
-            if (ingredient.getNodeType() == Node.ELEMENT_NODE) {
-                Element ingredientElement = (Element) ingredient;
-
-                String ingredientName = ingredientElement
-                        .getAttribute("name");
-                String amount = ingredientElement.getAttribute("amount");
-                String unit = ingredientElement.getAttribute("unit");
-
-
-                builder.addGroceryItem(categoryName, ingredientName,
+                builder.addGroceryItem(grocCategoryName, ingredientName,
                         new Quantity(amount, unit));
             }
+            stmt.close();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
-
 
 }

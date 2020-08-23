@@ -48,13 +48,13 @@ public class ListOfRecipeCategories {
      * Get the recipe category object corresponding to the parameter:
      * categoryName.
      *
-     * @param categoryName name of the wanted category
+     * @param categoryID id of the wanted category
      * @return category corresponding to the categoryName
      */
-    public RecipeCategory getRecipeCategory(String categoryName) {
+    public RecipeCategory getRecipeCategory(String categoryID) {
         Supplier<Stream<RecipeCategory>> categoryStream = () ->
                 savedRecipeCategories.stream().filter(category ->
-                        category.getName().equals(categoryName));
+                        category.getId().equals(categoryID));
         if (categoryStream.get().findFirst().isPresent()){
             return categoryStream.get().findFirst().get();
         } else {
