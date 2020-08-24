@@ -20,7 +20,7 @@ public class Recipe {
     private String title;
     private RecipeCategory category;
     private URL recipeLink;
-    //private Amount && Unit
+    private Portionsize portionsize;
     private int time;
     private boolean vegetarian;
     private ObservableList<Ingredient> ingredients;
@@ -76,6 +76,14 @@ public class Recipe {
         this.recipeLink = recipeLink;
     }
 
+    public Portionsize getPortionsize() {
+        return portionsize;
+    }
+
+    public void setPortionsize(Portionsize portionsize) {
+        this.portionsize = portionsize;
+    }
+
     public int getTime() {
         return time;
     }
@@ -110,7 +118,7 @@ public class Recipe {
         private String title;
         private RecipeCategory category;
         private URL recipeLink;
-        //private Amount && Unit 
+        private Portionsize portionsize;
         private int time;
         private boolean vegetarian;
         private ObservableList<Ingredient> ingredients;
@@ -145,6 +153,11 @@ public class Recipe {
             return this;
         }
 
+        public RecipeBuilder portionsize(double amount, String unit) {
+            this.portionsize = new Portionsize(amount, unit);
+            return this;
+        }
+
         public RecipeBuilder time(int time) {
             this.time = time;
             return this;
@@ -171,6 +184,7 @@ public class Recipe {
 
         /**
          * Necessary method for initializing ingredients HashMap
+         *
          * @return self
          */
         public RecipeBuilder ingredientsInitializer() {
@@ -183,16 +197,16 @@ public class Recipe {
          * ingredients list.
          *
          * @param categoryName name of the category
-         * @param itemName name of the item
-         * @param amount quantity of item
+         * @param itemName     name of the item
+         * @param amount       quantity of item
          * @return self
          */
         public RecipeBuilder addGroceryItem(String categoryName,
                                             String itemName, Quantity amount) {
             GroceryCategory category = ShoppingList.getInstance()
                     .getGroceryCategory(categoryName);
-           GroceryItem item = ShoppingList.getInstance()
-                   .getGroceryItem(category, itemName);
+            GroceryItem item = ShoppingList.getInstance()
+                    .getGroceryItem(category, itemName);
 
             this.ingredients.add(new Ingredient(category, item, amount));
             return this;
@@ -209,6 +223,7 @@ public class Recipe {
             recipe.title = this.title;
             recipe.category = this.category;
             recipe.recipeLink = this.recipeLink;
+            recipe.portionsize = this.portionsize;
             recipe.time = this.time;
             recipe.vegetarian = this.vegetarian;
             recipe.ingredients = FXCollections.observableArrayList();

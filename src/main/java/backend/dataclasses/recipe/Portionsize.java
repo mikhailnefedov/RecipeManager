@@ -42,14 +42,14 @@ public class Portionsize {
      *
      * @return set of portion units
      */
-    public Set<PortionUnit> getPortionUnits() {
+    public static Set<PortionUnit> getPortionUnits() {
         return Set.of(PortionUnit.values());
     }
 
     /**
      * Different portion units. Currently only in german.
      */
-    private enum PortionUnit {
+    public enum PortionUnit {
         Brot,           //bread
         Brötchen,       //bun
         Kuchen,         //cake

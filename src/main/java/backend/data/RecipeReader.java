@@ -61,7 +61,10 @@ public final class RecipeReader {
                 builder.recipeLink(source);
 
                 String portionsize = rs.getString("portionsize");
-                //TODO: Add portionsize
+                String[] portionArray = portionsize.split(" "); //"1 Brot"
+                String amount = portionArray[0];    //"1"
+                String unit = portionArray[1];      //"Bread"
+                builder.portionsize(Double.parseDouble(amount), unit);
 
                 int time = rs.getInt("time");
                 builder.time(time);
