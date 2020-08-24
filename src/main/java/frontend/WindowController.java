@@ -1,6 +1,7 @@
 package frontend;
 
 import backend.dataclasses.recipe.Ingredient;
+import backend.dataclasses.recipe.Portionsize;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
 import backend.dataclasses.recipecategories.ListOfRecipeCategories;
@@ -56,6 +57,10 @@ public class WindowController {
     private CheckBox recipeVegetarianCheckbox; //Checkbox if recipe is vegetarian
     @FXML
     private TextField recipeSourceTextField; //textfield for shown recipe source
+    @FXML
+    private TextField recipePortionsizeAmountTextField;
+    @FXML
+    private ComboBox<Portionsize.PortionUnit> recipePortionsizeUnitComboBox;
     @FXML
     private TableView<Ingredient> recipeTabIngredientTable;
     @FXML
@@ -182,6 +187,13 @@ public class WindowController {
 
 
         recipeTimeTextField.setText(Integer.toString(selectedRecipe.getTime()));
+
+        Portionsize portion = selectedRecipe.getPortionsize();
+        recipePortionsizeAmountTextField.setText(Double.toString(portion.getAmount()));
+        recipePortionsizeUnitComboBox.getItems().addAll(Portionsize.getPortionUnits());
+        recipePortionsizeUnitComboBox.getSelectionModel().
+                select(portion.getUnit());
+
         if (selectedRecipe.isVegetarian()) {
             recipeVegetarianCheckbox.setSelected(true);
         } else {
