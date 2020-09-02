@@ -4,80 +4,48 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="300.0"
-            xmlns="http://javafx.com/javafx/10.0.2-internal"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="frontend.RecipeCategoriesWindowController">
-    <GridPane prefHeight="400.0" prefWidth="300.0">
+<AnchorPane prefHeight="550.0" prefWidth="400.0" stylesheets="@stylesheets/RecipeCategoriesWindow.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.RecipeCategoriesWindowController">
+    <GridPane prefHeight="550.0" prefWidth="400.0" styleClass="gridpane" stylesheets="@stylesheets/RecipeCategoriesWindow.css">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="218.0"
-                               minWidth="10.0" prefWidth="59.0"/>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="218.0"
-                               minWidth="10.0" prefWidth="141.0"/>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="145.0"
-                               minWidth="10.0" prefWidth="102.0"/>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="90.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="176.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="145.0" minWidth="10.0" prefWidth="102.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="129.0" minHeight="0.0" prefHeight="32.0"
-                            vgrow="SOMETIMES"/>
-            <RowConstraints maxHeight="303.0" minHeight="10.0" prefHeight="47.0"
-                            vgrow="SOMETIMES"/>
-            <RowConstraints maxHeight="320.0" minHeight="10.0"
-                            prefHeight="320.0" vgrow="SOMETIMES"/>
+         <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="400.0" minHeight="10.0" prefHeight="400.0" vgrow="SOMETIMES" />
         </rowConstraints>
-        <TextField fx:id="recipeCategoryIDTextField" disable="true"
-                   onAction="#enterPressedOnTextFields" prefHeight="25.0"
-                   prefWidth="102.0" GridPane.rowIndex="1">
+        <TextField fx:id="recipeCategoryIDTextField" disable="true" onAction="#enterPressedOnTextFields" prefHeight="30.0" GridPane.rowIndex="1">
             <GridPane.margin>
-                <Insets left="5.0" right="5.0"/>
+                <Insets />
             </GridPane.margin>
         </TextField>
-        <TextField fx:id="recipeCategoryNameTextField" disable="true"
-                   onAction="#enterPressedOnTextFields"
-                   onKeyTyped="#updateNewShownID" prefHeight="25.0"
-                   prefWidth="108.0" GridPane.columnIndex="1"
-                   GridPane.rowIndex="1">
+        <TextField fx:id="recipeCategoryNameTextField" disable="true" onAction="#enterPressedOnTextFields" onKeyTyped="#updateNewShownID" prefHeight="30.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <GridPane.margin>
-                <Insets left="5.0" right="5.0"/>
+                <Insets />
             </GridPane.margin>
         </TextField>
-        <TableView fx:id="recipeCategoryTable"
-                   onMouseClicked="#enableChangeButton" prefHeight="200.0"
-                   prefWidth="200.0" GridPane.columnSpan="2"
-                   GridPane.rowIndex="2">
+        <TableView fx:id="recipeCategoryTable" onMouseClicked="#enableChangeButton" stylesheets="@stylesheets/RecipeCategoriesWindow.css" GridPane.columnSpan="3" GridPane.rowIndex="3">
             <columns>
-                <TableColumn fx:id="recipeCategoryTableIDColumn"
-                             prefWidth="49.0" text="ID"/>
-                <TableColumn fx:id="recipeCategoryTableNameColumn"
-                             prefWidth="148.0"
-                             text="%recipeCatTable.recipeCategories"/>
+                <TableColumn fx:id="recipeCategoryTableIDColumn" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" text="ID" />
+                <TableColumn fx:id="recipeCategoryTableNameColumn" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="-1.0" text="%recipeCatTable.recipeCategories" />
             </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
         </TableView>
-        <GridPane GridPane.columnIndex="2" GridPane.rowIndex="2">
-            <columnConstraints>
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES"
-                                   minWidth="10.0" prefWidth="100.0"/>
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0"
-                                vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0"
-                                vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0"
-                                vgrow="SOMETIMES"/>
-            </rowConstraints>
-            <Button mnemonicParsing="false" onAction="#newCategoryClick"
-                    text="%recipeCatTable.newCategory"/>
-            <Button fx:id="recipeCategoryChangeButton" disable="true"
-                    mnemonicParsing="false"
-                    onAction="#changeCategoryClick"
-                    text="%recipeCatTable.changeCategory"
-                    GridPane.rowIndex="1"/>
-            <Button fx:id="recipeCategoryDeleteButton" disable="true"
-                    mnemonicParsing="false"
-                    onAction="#deleteCategoryClick"
-                    text="%recipeCatTable.deleteCategory"
-                    GridPane.rowIndex="2"/>
-        </GridPane>
+         <Button maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="20.0" mnemonicParsing="false" onAction="#newCategoryClick" prefHeight="20.0" stylesheets="@stylesheets/RecipeCategoriesWindow.css" text="%recipeCatTable.newCategory">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin></Button>
+         <Button fx:id="recipeCategoryChangeButton" disable="true" maxHeight="30.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#changeCategoryClick" stylesheets="@stylesheets/RecipeCategoriesWindow.css" text="%recipeCatTable.changeCategory" GridPane.columnIndex="1" />
+         <Button fx:id="recipeCategoryDeleteButton" disable="true" maxHeight="30.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteCategoryClick" stylesheets="@stylesheets/RecipeCategoriesWindow.css" text="%recipeCatTable.deleteCategory" GridPane.columnIndex="2" />
+      <Button fx:id="recipeCategorySaveButton" maxHeight="30.0" mnemonicParsing="false" stylesheets="@stylesheets/RecipeCategoriesWindow.css" text="%recipeCategory.save" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Label fx:id="recipeCategoryCheckLabel" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <opaqueInsets>
+         <Insets />
+      </opaqueInsets>
     </GridPane>
 </AnchorPane>

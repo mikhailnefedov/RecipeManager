@@ -5,11 +5,13 @@ import backend.dataclasses.recipecategories.ListOfRecipeCategories;
 import backend.dataclasses.recipecategories.RecipeCategory;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class RecipeCategoriesWindowController {
 
@@ -27,11 +29,19 @@ public class RecipeCategoriesWindowController {
     private Button recipeCategoryChangeButton;
     @FXML
     private Button recipeCategoryDeleteButton;
+    @FXML
+    private Button recipeCategorySaveButton;
+    @FXML
+    public Label recipeCategoryCheckLabel;
     /**
      * Represents last button click, can be: "new", "change".
      */
     private String currentState = "";
 
+    /**
+     * Initializer for RecipeCategoriesWindow.fxml. Sets up all necessary data
+     * in frontend, e.g. loads data into table, svg into frontend components.
+     */
     @FXML
     protected void initialize() {
         loadDataIntoCategoryTable();

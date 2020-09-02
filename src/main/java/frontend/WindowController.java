@@ -120,12 +120,14 @@ public class WindowController {
      * Opens a new window corresponding to the name of the fxml resource.
      *
      * @param nameOfFXMLFile name of fxml (without .fxml) that will be loaded
+     * @param titleOfWindow window title
      * @throws IOException failed or interrupted I/O operations
      */
-    public void openNewWindow(String nameOfFXMLFile) throws IOException {
+    public void openNewWindow(String nameOfFXMLFile, String titleOfWindow)
+            throws IOException {
         Scene scene = new Scene(loadFXML(nameOfFXMLFile));
         Stage stage = new Stage();
-        stage.setTitle("RecipeManager");
+        stage.setTitle(titleOfWindow);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -138,7 +140,8 @@ public class WindowController {
      * @throws IOException failed or interrupted I/O operations
      */
     public void handleCategoriesClick() throws IOException {
-        openNewWindow("RecipeCategoriesWindow");
+        openNewWindow("RecipeCategoriesWindow",
+                "Rezeptkategorien bearbeiten");
     }
 
     /**
@@ -148,7 +151,8 @@ public class WindowController {
      * @throws IOException failed or interrupted I/O operations
      */
     public void handleGroceryItemsClick() throws IOException {
-        openNewWindow("GroceryItemsWindow");
+        openNewWindow("GroceryItemsWindow",
+                "Zutaten bearbeiten");
     }
 
     /**
