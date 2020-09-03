@@ -78,13 +78,22 @@ public class RecipeCategoriesWindowController {
     }
 
     /**
-     * Delete Click handler. Deletes Category from data.
+     * Delete button click handler. Deletes recipe category from data and
+     * database.
      */
     @FXML
     public void deleteCategoryClick() {
-        RecipeCategory selectedCategory = recipeCategoryTable.getSelectionModel().getSelectedItem();
-        getCategories().remove(selectedCategory);
-        DataHandler.deleteRecipeCategory(selectedCategory.getId());
+        RecipeCategory selectedCategory = recipeCategoryTable
+                .getSelectionModel().getSelectedItem();
+        try {
+            DataHandler.deleteRecipeCategory(selectedCategory);
+            getCategories().remove(selectedCategory);
+        } catch (IllegalArgumentException e) {
+            String message = "Löschen der Kategorie nicht möglich. Es exsistie"
+                    + "ren Rezepte, die dieser Kategorie zugewiesen sind";
+            Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
+            alert.showAndWait();
+        }
     }
 
     @FXML

@@ -7,7 +7,6 @@ import backend.dataclasses.recipe.Recipes;
 import backend.dataclasses.recipecategories.ListOfRecipeCategories;
 import backend.dataclasses.recipecategories.RecipeCategory;
 
-import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
@@ -77,11 +76,14 @@ public final class DataHandler {
     /**
      * Removes recipe category from the database.
      *
-     * @param id id of category
+     * @param cat category itself
      */
-    public static void deleteRecipeCategory(String id) {
-
-        RecipeCategoryWriter.removeCategory(id);
+    public static void deleteRecipeCategory(RecipeCategory cat) {
+        int number = RecipeCategoryReader.getNumberOfRecipesToCategory(cat);
+        if (number == 0) {
+            String id = cat.getId();
+            RecipeCategoryWriter.removeCategory(id);
+        } else throw new IllegalArgumentException();
     }
 
     /**
@@ -95,4 +97,5 @@ public final class DataHandler {
                                          String newItemName) {
         return GroceryCategoryWriter.writeItem(category, newItemName);
     }
+
 }
