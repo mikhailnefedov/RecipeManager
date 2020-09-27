@@ -7,14 +7,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class RecipeCategoriesWindowController {
 
+    @FXML
+    public Label recipeCategoryCheckLabel;
     @FXML
     private TableView<RecipeCategory> recipeCategoryTable;
     @FXML
@@ -31,8 +28,6 @@ public class RecipeCategoriesWindowController {
     private Button recipeCategoryDeleteButton;
     @FXML
     private Button recipeCategorySaveButton;
-    @FXML
-    public Label recipeCategoryCheckLabel;
     /**
      * Represents last button click, can be: "new", "change".
      */
@@ -48,33 +43,63 @@ public class RecipeCategoriesWindowController {
         recipeCategoryTable.getSortOrder().add(recipeCategoryTableNameColumn);
     }
 
-    private void loadDataIntoCategoryTable() {
-        recipeCategoryTableIDColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        recipeCategoryTableNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-
-        recipeCategoryTable.setItems(getCategories());
-    }
-
+    /**
+     * @return Observable list of the saved recipe categories.
+     */
     private ObservableList<RecipeCategory> getCategories() {
         return ListOfRecipeCategories.getInstance().getSavedRecipeCategories();
     }
 
-    @FXML
-    public void newCategoryClick() {
-        currentState = "new";
+    /**
+     * Loads the recipe categories into the table.
+     */
+    private void loadDataIntoCategoryTable() {
+        recipeCategoryTableIDColumn.setCellValueFactory(
+                new PropertyValueFactory<>("id"));
+        recipeCategoryTableNameColumn.setCellValueFactory(
+                new PropertyValueFactory<>("name"));
+        recipeCategoryTable.setItems(getCategories());
+    }
+
+    /**
+     * Activates the textfield for the recipe category name and focuses the
+     * mouse on it.
+     */
+    private void activateNameTextfield() {
         recipeCategoryNameTextField.setDisable(false);
         recipeCategoryNameTextField.requestFocus();
     }
 
+    /**
+     * Used for click on new category button. Changes frontend elements to
+     * allow user inputs.
+     */
+    @FXML
+    public void newCategoryClick() {
+        currentState = "new";       //Change currentState for "new" state
+        activateNameTextfield();
+    }
+
+    /**
+     * @return selected recipe category from frontend table view
+     * (recipeCategoryTable).
+     */
+    private RecipeCategory getSelectedCategory() {
+        return recipeCategoryTable.getSelectionModel().getSelectedItem();
+    }
+
+    /**
+     * Used for click on change category button. Changes frontend elements to
+     * allow user inputs.
+     */
     @FXML
     public void changeCategoryClick() {
-        currentState = "change";
-        RecipeCategory selectedCategory = recipeCategoryTable.getSelectionModel().getSelectedItem();
+        currentState = "change";    //Change currentState for "change" state
+        RecipeCategory selectedCategory = getSelectedCategory();
+        activateNameTextfield();
+        recipeCategoryNameTextField.setText(selectedCategory.getName());
         recipeCategoryIDTextField.setDisable(false);
         recipeCategoryIDTextField.setText(selectedCategory.getId());
-        recipeCategoryNameTextField.setDisable(false);
-        recipeCategoryNameTextField.setText(selectedCategory.getName());
-        recipeCategoryNameTextField.requestFocus();
     }
 
     /**
@@ -83,8 +108,7 @@ public class RecipeCategoriesWindowController {
      */
     @FXML
     public void deleteCategoryClick() {
-        RecipeCategory selectedCategory = recipeCategoryTable
-                .getSelectionModel().getSelectedItem();
+        RecipeCategory selectedCategory = getSelectedCategory();
         try {
             DataHandler.deleteRecipeCategory(selectedCategory);
             getCategories().remove(selectedCategory);
@@ -96,29 +120,29 @@ public class RecipeCategoriesWindowController {
         }
     }
 
+    /**
+     * Save button click handler. Saves the user input/changes into/to the
+     * database/objects.
+     */
     @FXML
-    public void enterPressedOnTextFields() {
+    public void saveButtonClick() {
         if (currentState.equals("new")) {
-            createNewCategory();
+            //createNewCategory();
         } else if (currentState.equals("change")) {
             changeCategory();
         }
     }
 
+    //ListOfRecipeCategories listOfCategories = ListOfRecipeCategories.getInstance();
+    //used for computing id String newID = listOfCategories.computeIDForRecipeCategory(newCatName);
+
     @FXML
     public void createNewCategory() {
         String newCatName = recipeCategoryNameTextField.getText();
-
-        ListOfRecipeCategories listOfCategories = ListOfRecipeCategories.getInstance();
-        try {
-            String newID = listOfCategories.computeIDForRecipeCategory(newCatName);
-            recipeCategoryIDTextField.setText(newID);
-            listOfCategories.addRecipeCategory(newCatName);
-            DataHandler.saveNewRecipeCategory(newID, newCatName);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Category already exists");
-        }
-
+        String newID = recipeCategoryIDTextField.getId();
+        //TODO : change to add recipecategory(id, catname)
+        //listOfCategories.addRecipeCategory(newCatName);
+        DataHandler.saveNewRecipeCategory(newID, newCatName);
     }
 
     @FXML
@@ -130,22 +154,20 @@ public class RecipeCategoriesWindowController {
         }
     }
 
+    /**
+     * Changes id/name of recipe category in database/program to user inputs.
+     */
     @FXML
-    public void changeCategory() {
+    private void changeCategory() {
 
-        RecipeCategory selectedCategory = recipeCategoryTable.getSelectionModel().getSelectedItem();
+        RecipeCategory selectedCategory = getSelectedCategory();
         String oldID = selectedCategory.getId();
-        String oldName = selectedCategory.getName();
         String newID = recipeCategoryIDTextField.getText();
         String newName = recipeCategoryNameTextField.getText();
 
-        if (checkChangeCondition(oldID, oldName, newID, newName)) {
-            selectedCategory.setId(newID);
-            selectedCategory.setName(newName);
-            DataHandler.changeRecipeCategory(oldID, newID, newName);
-        } else {
-            System.out.println("Category already exists");
-        }
+        selectedCategory.setId(newID);
+        selectedCategory.setName(newName);
+        DataHandler.changeRecipeCategory(oldID, newID, newName);
     }
 
     /**
@@ -174,11 +196,19 @@ public class RecipeCategoriesWindowController {
     }
 
     /**
-     * Enables the Change category and Delete Category buttons.
+     * Enables the change category and delete Category buttons.
      */
     @FXML
     public void enableChangeButton() {
         recipeCategoryChangeButton.setDisable(false);
         recipeCategoryDeleteButton.setDisable(false);
+    }
+
+    /**
+     * Disables the change category and delete category buttons.
+     */
+    private void DisableChangeButton() {
+        recipeCategoryChangeButton.setDisable(true);
+        recipeCategoryDeleteButton.setDisable(true);
     }
 }

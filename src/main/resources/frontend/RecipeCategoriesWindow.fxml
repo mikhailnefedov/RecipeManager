@@ -17,12 +17,12 @@
          <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="400.0" minHeight="10.0" prefHeight="400.0" vgrow="SOMETIMES" />
         </rowConstraints>
-        <TextField fx:id="recipeCategoryIDTextField" disable="true" onAction="#enterPressedOnTextFields" prefHeight="30.0" GridPane.rowIndex="1">
+        <TextField fx:id="recipeCategoryIDTextField" disable="true" prefHeight="30.0" GridPane.rowIndex="1">
             <GridPane.margin>
                 <Insets />
             </GridPane.margin>
         </TextField>
-        <TextField fx:id="recipeCategoryNameTextField" disable="true" onAction="#enterPressedOnTextFields" onKeyTyped="#updateNewShownID" prefHeight="30.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <TextField fx:id="recipeCategoryNameTextField" disable="true" onKeyTyped="#updateNewShownID" prefHeight="30.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <GridPane.margin>
                 <Insets />
             </GridPane.margin>
@@ -42,7 +42,7 @@
          </GridPane.margin></Button>
          <Button fx:id="recipeCategoryChangeButton" disable="true" maxHeight="30.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#changeCategoryClick" stylesheets="@stylesheets/RecipeCategoriesWindow.css" text="%recipeCatTable.changeCategory" GridPane.columnIndex="1" />
          <Button fx:id="recipeCategoryDeleteButton" disable="true" maxHeight="30.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteCategoryClick" stylesheets="@stylesheets/RecipeCategoriesWindow.css" text="%recipeCatTable.deleteCategory" GridPane.columnIndex="2" />
-      <Button fx:id="recipeCategorySaveButton" maxHeight="30.0" mnemonicParsing="false" stylesheets="@stylesheets/RecipeCategoriesWindow.css" text="%recipeCategory.save" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Button fx:id="recipeCategorySaveButton" maxHeight="30.0" mnemonicParsing="false" onAction="#saveButtonClick" stylesheets="@stylesheets/RecipeCategoriesWindow.css" text="%recipeCategory.save" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Label fx:id="recipeCategoryCheckLabel" GridPane.columnIndex="2" GridPane.rowIndex="1" />
       <opaqueInsets>
          <Insets />
