@@ -1,6 +1,7 @@
 package backend.dataclasses.recipecategories;
 
 import javafx.collections.ObservableList;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -24,42 +25,15 @@ public class IDCreationTest {
     }
 
     @Test
-    void CategoryNameAlreadyExists() {
-
-        try {
-            list.addRecipeCategory("ABC");
-        } catch (IllegalArgumentException e) {
-            assertTrue(true);
-        }
+    void categoryNameAlreadyExists() {
+        Assertions.assertFalse(list.isCategoryNameNonExistent("ABC"));
+        Assertions.assertTrue(list.isCategoryNameNonExistent("CBA"));
     }
 
     @Test
-    void addCategories() {
-        try {
-            list.addRecipeCategory("ABCDEF");
-            list.addRecipeCategory("Salate");
-            list.addRecipeCategory("Saucen");
-            list.addRecipeCategory("Suppen");
-        } catch (IllegalArgumentException e) {
-            fail();
-        }
-
-        ObservableList<RecipeCategory> ids = list.getSavedRecipeCategories();
-        for (RecipeCategory category : ids) {
-            switch (category.getName()) {
-                case "ABCDEF":
-                    assertEquals("ABCD", category.getId());
-                    break;
-                case "Salate":
-                    assertEquals("S", category.getId());
-                    break;
-                case "Saucen":
-                    assertEquals("Sa", category.getId());
-                    break;
-                case "Suppen":
-                    assertEquals("Su", category.getId());
-                    break;
-            }
-        }
+    void idAlreadyExists() {
+        Assertions.assertFalse(list.isIDNonExistent("ABC"));
+        Assertions.assertTrue(list.isIDNonExistent("C"));
     }
+
 }

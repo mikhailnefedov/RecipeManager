@@ -78,6 +78,8 @@ public class RecipeCategoriesWindowController {
     public void newCategoryClick() {
         currentState = "new";       //Change currentState for "new" state
         activateNameTextfield();
+        recipeCategoryIDTextField.setDisable(false);
+        deleteStylesFromTextfields();
     }
 
     /**
@@ -100,6 +102,7 @@ public class RecipeCategoriesWindowController {
         recipeCategoryNameTextField.setText(selectedCategory.getName());
         recipeCategoryIDTextField.setDisable(false);
         recipeCategoryIDTextField.setText(selectedCategory.getId());
+        deleteStylesFromTextfields();
     }
 
     /**
@@ -121,37 +124,160 @@ public class RecipeCategoriesWindowController {
     }
 
     /**
+     * Computes if id and category name already exists when the user types in
+     * the textfields.
+     */
+    public void onUserInput() {
+
+        String id = recipeCategoryIDTextField.getText();
+        String categoryName = recipeCategoryNameTextField.getText();
+
+        boolean everythingOkay;  //no double existence or empty strings
+
+        boolean noDoubleExistence = checkForDoubleExistence(id, categoryName);
+        boolean noEmptyStrings = checkForEmptyStrings(id, categoryName);
+        everythingOkay = noDoubleExistence && noEmptyStrings;
+
+        if (everythingOkay) {
+            recipeCategorySaveButton.setDisable(false);
+        } else {
+            if (currentState.equals("change")) {
+                checkForJustAUserChange(id, categoryName);
+            } else {
+                recipeCategorySaveButton.setDisable(true);
+            }
+        }
+    }
+
+    /**
+     * Checks if id and recipe category name already exist in the system. Colors
+     * the frontend elements if the user typed in an already existing one.
+     *
+     * @param id           id from user input
+     * @param categoryName category name from user input
+     * @return true, if id and categoryName don't exist already | false, else
+     */
+    private boolean checkForDoubleExistence(String id, String categoryName) {
+
+        boolean noDoubleExistence = true;
+        if (ListOfRecipeCategories.getInstance().isIDNonExistent(id)) {
+            clearTextFieldStyle(recipeCategoryIDTextField);
+        } else {
+            colorTextFieldInErrorColor(recipeCategoryIDTextField);
+            noDoubleExistence = false;
+        }
+
+        if (ListOfRecipeCategories.getInstance()
+                .isCategoryNameNonExistent(categoryName)) {
+            clearTextFieldStyle(recipeCategoryNameTextField);
+        } else {
+            colorTextFieldInErrorColor(recipeCategoryNameTextField);
+            noDoubleExistence = false;
+        }
+        return noDoubleExistence;
+    }
+
+    /**
+     * Checks if id and recipe category name are empty strings. If so the
+     * Textfields will be colored to show an error.
+     *
+     * @param id           id from user input
+     * @param categoryName category name from user input
+     * @return true, if id and categoryName not empty | false, else
+     */
+    private boolean checkForEmptyStrings(String id, String categoryName) {
+
+        boolean noEmptyStrings = true;
+        if (id.length() == 0) {
+            colorTextFieldInErrorColor(recipeCategoryIDTextField);
+            noEmptyStrings = false;
+        }
+
+        if (categoryName.length() == 0) {
+            colorTextFieldInErrorColor(recipeCategoryNameTextField);
+            noEmptyStrings = false;
+        }
+        return noEmptyStrings;
+    }
+
+    /**
+     * Checks if user input is only a change of a category. In that case it is
+     * allowed that the id or name already exists in the program. Will enable
+     * the change button. Disable it otherwise.
+     *
+     * @param id           id from user input
+     * @param categoryName category name from user input
+     */
+    private void checkForJustAUserChange(String id, String categoryName) {
+
+        RecipeCategory selectedCategory = getSelectedCategory();
+        String oldID = selectedCategory.getId();
+        String oldName = selectedCategory.getName();
+
+        clearTextFieldStyle(recipeCategoryIDTextField);
+        clearTextFieldStyle(recipeCategoryNameTextField);
+
+        if ((oldID.equals(id) || oldName.equals(categoryName))
+                && (id.length() > 0) && (categoryName.length() > 0)) {
+            recipeCategorySaveButton.setDisable(false);
+        } else {
+            recipeCategorySaveButton.setDisable(true);
+            checkForEmptyStrings(id, categoryName);
+        }
+    }
+
+    /**
+     * Changes style of textfield to an error style.
+     *
+     * @param textField textfield in which the error occurred
+     */
+    private void colorTextFieldInErrorColor(TextField textField) {
+        textField.setStyle("-fx-background-color: #ffdddc; -fx-border-color: grey");
+    }
+
+    /**
+     * Clears the Style of the given textfield.
+     *
+     * @param textField textfield of which the style shall be removed
+     */
+    private void clearTextFieldStyle(TextField textField) {
+        textField.setStyle("");
+    }
+
+    /**
      * Save button click handler. Saves the user input/changes into/to the
      * database/objects.
      */
     @FXML
     public void saveButtonClick() {
         if (currentState.equals("new")) {
-            //createNewCategory();
+            createNewCategory();
         } else if (currentState.equals("change")) {
             changeCategory();
         }
+        recipeCategoryIDTextField.clear();
+        recipeCategoryNameTextField.clear();
+        recipeCategorySaveButton.setDisable(true);
     }
 
-    //ListOfRecipeCategories listOfCategories = ListOfRecipeCategories.getInstance();
-    //used for computing id String newID = listOfCategories.computeIDForRecipeCategory(newCatName);
+    /**
+     * Deletes the styles of the 2 textfields : recipeCategoryIDTextField,
+     * recipeCategoryNameTextField
+     */
+    private void deleteStylesFromTextfields() {
+        recipeCategoryIDTextField.setStyle("");
+        recipeCategoryNameTextField.setStyle("");
+    }
 
+    /**
+     * Saves the new recipe category to the database and creates an object of it.
+     */
     @FXML
     public void createNewCategory() {
         String newCatName = recipeCategoryNameTextField.getText();
-        String newID = recipeCategoryIDTextField.getId();
-        //TODO : change to add recipecategory(id, catname)
-        //listOfCategories.addRecipeCategory(newCatName);
+        String newID = recipeCategoryIDTextField.getText();
+        ListOfRecipeCategories.getInstance().addRecipeCategory(newID, newCatName);
         DataHandler.saveNewRecipeCategory(newID, newCatName);
-    }
-
-    @FXML
-    public void updateNewShownID() {
-        if (currentState.equals("new")) {
-            String newCategoryName = recipeCategoryNameTextField.getText();
-            String newID = ListOfRecipeCategories.getInstance().computeIDForRecipeCategory(newCategoryName);
-            recipeCategoryIDTextField.setText(newID);
-        }
     }
 
     /**
@@ -170,30 +296,6 @@ public class RecipeCategoriesWindowController {
         DataHandler.changeRecipeCategory(oldID, newID, newName);
     }
 
-    /**
-     * Checks Change conditions.
-     *
-     * @return true, if newID or newName don't exist | false, else
-     */
-    private boolean checkChangeCondition(String oldID, String oldName,
-                                         String newID, String newName) {
-        ListOfRecipeCategories listOfCategories = ListOfRecipeCategories.getInstance();
-        //Change only to the id --> Check if ID already exists
-        if (!newID.equals(oldID) && newName.equals(oldName) &&
-                listOfCategories.isIDNonExistent(newID)) {
-            return true;
-        }
-        //Change only to the name --> Check if Name already exists
-        if (newID.equals(oldID) && !newName.equals(oldName) &&
-                listOfCategories.isCategoryNameNonExistent(newName)) {
-            return true;
-        }
-        //Change to id and name --> Check if name and id already exist
-        return !newID.equals(oldID) && !newName.equals(oldName) &&
-                listOfCategories.isIDNonExistent(newID) &&
-                listOfCategories.isCategoryNameNonExistent(newName);
-        //else: false
-    }
 
     /**
      * Enables the change category and delete Category buttons.
@@ -204,11 +306,4 @@ public class RecipeCategoriesWindowController {
         recipeCategoryDeleteButton.setDisable(false);
     }
 
-    /**
-     * Disables the change category and delete category buttons.
-     */
-    private void DisableChangeButton() {
-        recipeCategoryChangeButton.setDisable(true);
-        recipeCategoryDeleteButton.setDisable(true);
-    }
 }
