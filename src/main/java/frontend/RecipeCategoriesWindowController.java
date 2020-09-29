@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Duration;
 
 public class RecipeCategoriesWindowController {
 
@@ -28,10 +29,16 @@ public class RecipeCategoriesWindowController {
     private Button recipeCategoryDeleteButton;
     @FXML
     private Button recipeCategorySaveButton;
+    @FXML
+    private Label recipeCategoryErrorLabel;
     /**
      * Represents last button click, can be: "new", "change".
      */
     private String currentState = "";
+    /**
+     * Represents tooltip for showing user specific errors on his input.
+     */
+    private ErrorTooltip errorTooltip;
 
     /**
      * Initializer for RecipeCategoriesWindow.fxml. Sets up all necessary data
@@ -41,6 +48,8 @@ public class RecipeCategoriesWindowController {
     protected void initialize() {
         loadDataIntoCategoryTable();
         recipeCategoryTable.getSortOrder().add(recipeCategoryTableNameColumn);
+        errorTooltip = new ErrorTooltip();
+        recipeCategoryErrorLabel.setTooltip(errorTooltip);
     }
 
     /**
@@ -129,20 +138,30 @@ public class RecipeCategoriesWindowController {
      */
     public void onUserInput() {
 
+        clearTextFieldStyle(recipeCategoryIDTextField);
+        clearTextFieldStyle(recipeCategoryNameTextField);
+        errorTooltip.clearText();
+
         String id = recipeCategoryIDTextField.getText();
         String categoryName = recipeCategoryNameTextField.getText();
 
-        boolean everythingOkay;  //no double existence or empty strings
-
-        boolean noDoubleExistence = checkForDoubleExistence(id, categoryName);
-        boolean noEmptyStrings = checkForEmptyStrings(id, categoryName);
-        everythingOkay = noDoubleExistence && noEmptyStrings;
-
-        if (everythingOkay) {
-            recipeCategorySaveButton.setDisable(false);
-        } else {
-            if (currentState.equals("change")) {
+        if (currentState.equals("change")) {
+            boolean noEmptyStrings = checkForEmptyStrings(id, categoryName);
+            if (noEmptyStrings) {
                 checkForJustAUserChange(id, categoryName);
+            } else {
+                recipeCategorySaveButton.setDisable(true);
+            }
+        } else {
+            boolean everythingOkay;  //no double existence or empty strings
+
+            boolean noDoubleExistence = checkForDoubleExistence(id, categoryName);
+            boolean noEmptyStrings = checkForEmptyStrings(id, categoryName);
+            everythingOkay = noDoubleExistence && noEmptyStrings;
+
+            if (everythingOkay) {
+                recipeCategorySaveButton.setDisable(false);
+                recipeCategoryErrorLabel.setVisible(false);
             } else {
                 recipeCategorySaveButton.setDisable(true);
             }
@@ -160,19 +179,23 @@ public class RecipeCategoriesWindowController {
     private boolean checkForDoubleExistence(String id, String categoryName) {
 
         boolean noDoubleExistence = true;
-        if (ListOfRecipeCategories.getInstance().isIDNonExistent(id)) {
-            clearTextFieldStyle(recipeCategoryIDTextField);
-        } else {
+        if (!ListOfRecipeCategories.getInstance().isIDNonExistent(id)) {
             colorTextFieldInErrorColor(recipeCategoryIDTextField);
             noDoubleExistence = false;
+
+            recipeCategoryErrorLabel.setVisible(true);
+            errorTooltip.addErrorMessage("ID darf nicht doppelt "
+                    + "vorkommen!");
         }
 
-        if (ListOfRecipeCategories.getInstance()
+        if (!ListOfRecipeCategories.getInstance()
                 .isCategoryNameNonExistent(categoryName)) {
-            clearTextFieldStyle(recipeCategoryNameTextField);
-        } else {
             colorTextFieldInErrorColor(recipeCategoryNameTextField);
             noDoubleExistence = false;
+
+            recipeCategoryErrorLabel.setVisible(true);
+            errorTooltip.addErrorMessage("Name darf nicht doppelt "
+                    + "vorkommen!");
         }
         return noDoubleExistence;
     }
@@ -191,11 +214,17 @@ public class RecipeCategoriesWindowController {
         if (id.length() == 0) {
             colorTextFieldInErrorColor(recipeCategoryIDTextField);
             noEmptyStrings = false;
+
+            recipeCategoryErrorLabel.setVisible(true);
+            errorTooltip.addErrorMessage("ID darf nicht leer sein!");
         }
 
         if (categoryName.length() == 0) {
             colorTextFieldInErrorColor(recipeCategoryNameTextField);
             noEmptyStrings = false;
+
+            recipeCategoryErrorLabel.setVisible(true);
+            errorTooltip.addErrorMessage("Name darf nicht leer sein!");
         }
         return noEmptyStrings;
     }
@@ -214,15 +243,65 @@ public class RecipeCategoriesWindowController {
         String oldID = selectedCategory.getId();
         String oldName = selectedCategory.getName();
 
-        clearTextFieldStyle(recipeCategoryIDTextField);
-        clearTextFieldStyle(recipeCategoryNameTextField);
+        ListOfRecipeCategories categoriesList = ListOfRecipeCategories
+                .getInstance();
 
-        if ((oldID.equals(id) || oldName.equals(categoryName))
-                && (id.length() > 0) && (categoryName.length() > 0)) {
+        boolean changeOnId = !oldID.equals(id);
+        boolean changeOnName = !oldName.equals(categoryName);
+
+        if (changeOnId && !changeOnName) {
+            boolean correctChangeOnID = categoriesList.isIDNonExistent(id);
+            if (correctChangeOnID) {
+                recipeCategorySaveButton.setDisable(false);
+                recipeCategoryErrorLabel.setVisible(false);
+            } else {
+                colorTextFieldInErrorColor(recipeCategoryIDTextField);
+                recipeCategorySaveButton.setDisable(true);
+
+                recipeCategoryErrorLabel.setVisible(true);
+                errorTooltip.addErrorMessage("ID darf nicht doppelt "
+                        + "vorkommen!");
+            }
+        } else if (!changeOnId && changeOnName) {
+            boolean correctChangeOnName = categoriesList
+                    .isCategoryNameNonExistent(categoryName);
+            if (correctChangeOnName) {
+                recipeCategorySaveButton.setDisable(false);
+                recipeCategoryErrorLabel.setVisible(false);
+            } else {
+                colorTextFieldInErrorColor(recipeCategoryNameTextField);
+                recipeCategorySaveButton.setDisable(true);
+
+                recipeCategoryErrorLabel.setVisible(true);
+                errorTooltip.addErrorMessage("Name darf nicht doppelt "
+                        + "vorkommen!");
+            }
+        } else if (changeOnId && changeOnName) {
+            boolean correctChangeOnID = categoriesList.isIDNonExistent(id);
+            boolean correctChangeOnName = categoriesList
+                    .isCategoryNameNonExistent(categoryName);
+            if (correctChangeOnName && correctChangeOnID) {
+                recipeCategorySaveButton.setDisable(false);
+                recipeCategoryErrorLabel.setVisible(false);
+            } else {
+                if (!correctChangeOnID) {
+                    colorTextFieldInErrorColor(recipeCategoryIDTextField);
+
+                    errorTooltip.addErrorMessage("ID darf nicht doppelt "
+                            + "vorkommen!");
+                }
+                if (!correctChangeOnName) {
+                    colorTextFieldInErrorColor(recipeCategoryNameTextField);
+
+                    errorTooltip.addErrorMessage("Name darf nicht doppelt "
+                            + "vorkommen!");
+                }
+                recipeCategorySaveButton.setDisable(true);
+                recipeCategoryErrorLabel.setVisible(true);
+            }
+        } else {    //basically the input completely equals the old category
             recipeCategorySaveButton.setDisable(false);
-        } else {
-            recipeCategorySaveButton.setDisable(true);
-            checkForEmptyStrings(id, categoryName);
+            recipeCategoryErrorLabel.setVisible(false);
         }
     }
 
@@ -304,6 +383,33 @@ public class RecipeCategoriesWindowController {
     public void enableChangeButton() {
         recipeCategoryChangeButton.setDisable(false);
         recipeCategoryDeleteButton.setDisable(false);
+    }
+
+    /**
+     * Represents extended Tooltip class for Error label when user makes faulty
+     * inputs.
+     */
+    private class ErrorTooltip extends Tooltip {
+
+        public ErrorTooltip() {
+            this.setShowDelay(Duration.millis(300));
+        }
+
+        public void clearText() {
+            this.setText("");
+        }
+
+        public void addErrorMessage(String newError) {
+            String existingErrorMessage = this.getText();
+            String newErrorMessage;
+            if (existingErrorMessage.length() > 0) {
+                newErrorMessage = existingErrorMessage + "\n" + newError;
+            } else {
+                newErrorMessage = newError;
+            }
+            this.setText(newErrorMessage);
+        }
+
     }
 
 }

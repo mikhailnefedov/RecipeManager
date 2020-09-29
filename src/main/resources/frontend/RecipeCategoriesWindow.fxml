@@ -3,6 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
 <AnchorPane prefHeight="550.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.RecipeCategoriesWindowController">
     <GridPane prefHeight="550.0" prefWidth="400.0" styleClass="gridpane" stylesheets="@stylesheets/RecipeCategoriesWindow.css">
@@ -44,6 +45,10 @@
          <Button fx:id="recipeCategoryDeleteButton" disable="true" maxHeight="30.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteCategoryClick" stylesheets="@stylesheets/RecipeCategoriesWindow.css" text="%recipeCatTable.deleteCategory" GridPane.columnIndex="2" />
       <Button fx:id="recipeCategorySaveButton" disable="true" maxHeight="30.0" mnemonicParsing="false" onAction="#saveButtonClick" stylesheets="@stylesheets/RecipeCategoriesWindow.css" text="%recipeCategory.save" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Label fx:id="recipeCategoryCheckLabel" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <Label fx:id="recipeCategoryErrorLabel" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <graphic>
+            <SVGPath content="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" fill="#bb0000" fillRule="EVEN_ODD" />
+         </graphic></Label>
       <opaqueInsets>
          <Insets />
       </opaqueInsets>

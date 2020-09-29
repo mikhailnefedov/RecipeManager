@@ -80,9 +80,6 @@ public class ListOfRecipeCategories {
      * @return true, if nonexistent | false, if name already exists or empty
      */
     public boolean isCategoryNameNonExistent(String categoryName) {
-        if (categoryName.length() == 0) {
-            return false;
-        }
         for (RecipeCategory category : savedRecipeCategories) {
             if (categoryName.equals(category.getName())) {
                 return false;
@@ -98,9 +95,6 @@ public class ListOfRecipeCategories {
      * @return true, if nonexistent | false, if id already exists or empty
      */
     public boolean isIDNonExistent(String id) {
-        if (id.length() == 0) {
-            return false;
-        }
         for (RecipeCategory category : savedRecipeCategories) {
             if (id.equals(category.getId())) {
                 return false;
