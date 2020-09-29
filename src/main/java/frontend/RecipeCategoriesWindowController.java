@@ -383,6 +383,10 @@ public class RecipeCategoriesWindowController {
     public void enableChangeButton() {
         recipeCategoryChangeButton.setDisable(false);
         recipeCategoryDeleteButton.setDisable(false);
+
+        RecipeCategory selectedCategory = getSelectedCategory();
+        recipeCategoryIDTextField.setText(selectedCategory.getId());
+        recipeCategoryNameTextField.setText(selectedCategory.getName());
     }
 
     /**

@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.*?>
 
 <AnchorPane prefHeight="550.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.RecipeCategoriesWindowController">
-    <GridPane prefHeight="550.0" prefWidth="400.0" styleClass="gridpane" stylesheets="@stylesheets/RecipeCategoriesWindow.css">
+    <GridPane hgap="10.0" prefHeight="550.0" prefWidth="400.0">
         <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="90.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="176.0" />
@@ -28,7 +28,7 @@
                 <Insets />
             </GridPane.margin>
         </TextField>
-        <TableView fx:id="recipeCategoryTable" onMouseClicked="#enableChangeButton" stylesheets="@stylesheets/RecipeCategoriesWindow.css" GridPane.columnSpan="3" GridPane.rowIndex="3">
+        <TableView fx:id="recipeCategoryTable" focusTraversable="false" onMouseClicked="#enableChangeButton" GridPane.columnSpan="3" GridPane.rowIndex="3">
             <columns>
                 <TableColumn fx:id="recipeCategoryTableIDColumn" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" text="ID" />
                 <TableColumn fx:id="recipeCategoryTableNameColumn" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="-1.0" text="%recipeCatTable.recipeCategories" />
@@ -37,13 +37,13 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
         </TableView>
-         <Button fx:id="recipeCategoryNewButton" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="20.0" mnemonicParsing="false" onAction="#newCategoryClick" prefHeight="20.0" stylesheets="@stylesheets/RecipeCategoriesWindow.css" text="%recipeCatTable.newCategory">
+         <Button maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="20.0" mnemonicParsing="false" onAction="#newCategoryClick" prefHeight="20.0" text="%recipeCatTable.newCategory">
          <GridPane.margin>
             <Insets />
          </GridPane.margin></Button>
-         <Button fx:id="recipeCategoryChangeButton" disable="true" maxHeight="30.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#changeCategoryClick" stylesheets="@stylesheets/RecipeCategoriesWindow.css" text="%recipeCatTable.changeCategory" GridPane.columnIndex="1" />
-         <Button fx:id="recipeCategoryDeleteButton" disable="true" maxHeight="30.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteCategoryClick" stylesheets="@stylesheets/RecipeCategoriesWindow.css" text="%recipeCatTable.deleteCategory" GridPane.columnIndex="2" />
-      <Button fx:id="recipeCategorySaveButton" disable="true" maxHeight="30.0" mnemonicParsing="false" onAction="#saveButtonClick" stylesheets="@stylesheets/RecipeCategoriesWindow.css" text="%recipeCategory.save" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         <Button fx:id="recipeCategoryChangeButton" disable="true" maxHeight="30.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#changeCategoryClick" text="%recipeCatTable.changeCategory" GridPane.columnIndex="1" />
+         <Button fx:id="recipeCategoryDeleteButton" disable="true" maxHeight="30.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteCategoryClick" text="%recipeCatTable.deleteCategory" GridPane.columnIndex="2" />
+      <Button fx:id="recipeCategorySaveButton" disable="true" maxHeight="30.0" mnemonicParsing="false" onAction="#saveButtonClick" text="%recipeCategory.save" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Label fx:id="recipeCategoryCheckLabel" GridPane.columnIndex="2" GridPane.rowIndex="1" />
       <Label fx:id="recipeCategoryErrorLabel" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <graphic>
@@ -52,5 +52,8 @@
       <opaqueInsets>
          <Insets />
       </opaqueInsets>
+      <padding>
+         <Insets bottom="5.0" left="5.0" right="5.0" />
+      </padding>
     </GridPane>
 </AnchorPane>
