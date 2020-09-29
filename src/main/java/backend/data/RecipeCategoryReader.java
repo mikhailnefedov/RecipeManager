@@ -61,4 +61,31 @@ public final class RecipeCategoryReader {
         return recipeCategories;
     }
 
+    /**
+     * Returns number of recipes associated to the recipe category from database.
+     *
+     * @param category recipes are associated with this category
+     * @return number of recipes
+     */
+    public static int getNumberOfRecipesToCategory(RecipeCategory category) {
+
+        int sum = 0;
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(r.id) AS total "
+                    + "FROM Recipe r, RecipeCategory c "
+                    + "WHERE r.recipecategoryID = c.id and c.id = '"
+                    + category.getId() + "';");
+
+            while (rs.next()) {
+                sum = rs.getInt("total");
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sum;
+    }
+
 }
