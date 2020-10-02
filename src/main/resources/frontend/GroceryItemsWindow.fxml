@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.GroceryItemsWindowController">
-    <GridPane prefHeight="400.0" prefWidth="300.0">
+<AnchorPane prefHeight="550.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.GroceryItemsWindowController">
+    <GridPane hgap="10.0" layoutY="-2.0" prefHeight="550.0" prefWidth="400.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="59.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="134.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="145.0" minWidth="10.0" prefWidth="108.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="150.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="177.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="145.0" minWidth="10.0" prefWidth="42.0" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints maxHeight="129.0" minHeight="0.0" prefHeight="32.0" vgrow="SOMETIMES" />
@@ -16,16 +18,65 @@
             <RowConstraints maxHeight="303.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="320.0" minHeight="10.0" prefHeight="320.0" vgrow="SOMETIMES" />
         </rowConstraints>
-        <TableView fx:id="groceryTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="3">
+        <TableView fx:id="groceryTable" focusTraversable="false" pickOnBounds="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="3">
             <columns>
-                <TableColumn fx:id="groceryTableCategoryColumn" prefWidth="140.0" text="%groceryTable.Category" />
-                <TableColumn fx:id="groceryTableItemColumn" prefWidth="159.0" text="%groceryTable.Item" />
+                <TableColumn fx:id="groceryTableCategoryColumn" prefWidth="150.0" text="%groceryTable.Category" />
+                <TableColumn fx:id="groceryTableItemColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="225.0" text="%groceryTable.Item" />
             </columns>
         </TableView>
-      <Button mnemonicParsing="false" onAction="#handleNewItemClick" text="%groceryTask.addNewItem" GridPane.rowIndex="1" />
-      <ComboBox fx:id="groceryCategoryComboBox" disable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Button mnemonicParsing="false" onAction="#handleSaveClick" prefHeight="25.0" prefWidth="142.0" text="%grocery.saveButton" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <TextField fx:id="groceryItemTextField" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <ComboBox fx:id="groceryCategoryComboBox" disable="true" prefWidth="150.0" GridPane.rowIndex="1" />
+      <TextField fx:id="groceryItemTextField" disable="true" prefHeight="25.0" prefWidth="166.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <GridPane hgap="10.0" prefHeight="72.0" prefWidth="144.0"
+                  GridPane.columnSpan="3" GridPane.rowIndex="2">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+                                   prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+                                   prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+                                   prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0"
+                                vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <Button fx:id="grocerySaveButton" disable="true"
+                    mnemonicParsing="false" onAction="#handleSaveClick"
+                    prefHeight="25.0" prefWidth="142.0"
+                    text="%grocery.saveButton" GridPane.columnIndex="1"
+                    GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+        </GridPane>
+        <GridPane hgap="10.0" GridPane.columnSpan="3"
+                  GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES"
+                                   minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES"
+                                   minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES"
+                                   minWidth="10.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0"
+                                vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <Button fx:id="groceryNewItemButton" mnemonicParsing="false"
+                    onAction="#handleNewItemClick"
+                    text="%groceryTask.addNewItem"/>
+            <Button fx:id="groceryChangeItemButton" disable="true"
+                    mnemonicParsing="false" text="%groceryTask.ChangeItem"
+                    GridPane.columnIndex="1"/>
+            <Button fx:id="groceryDeleteItemButton" disable="true"
+                    mnemonicParsing="false" text="%groceryTask.DeleteItem"
+                    GridPane.columnIndex="2"/>
+        </GridPane>
+      <Label fx:id="groceryItemErrorLabel" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <graphic>
+            <SVGPath content="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" fill="#bb0000" fillRule="EVEN_ODD" />
+         </graphic></Label>
+      <padding>
+         <Insets bottom="5.0" left="5.0" right="5.0" />
+      </padding>
     </GridPane>
 
 </AnchorPane>
