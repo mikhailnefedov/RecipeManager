@@ -1,6 +1,7 @@
 package backend.data;
 
 import backend.dataclasses.groceries.GroceryCategory;
+import backend.dataclasses.groceries.GroceryItem;
 import backend.dataclasses.groceries.ShoppingList;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
@@ -16,7 +17,6 @@ public final class DataHandler {
     /**
      * Initializes by loading data from database and creating new objects based
      * on this data.
-     *
      */
     public static void initialize() {
 
@@ -59,7 +59,7 @@ public final class DataHandler {
     public static void changeRecipeCategory(String oldID, String newID,
                                             String newCatName) {
 
-            RecipeCategoryWriter.changeCategory(oldID, newID, newCatName);
+        RecipeCategoryWriter.changeCategory(oldID, newID, newCatName);
     }
 
     /**
@@ -96,6 +96,37 @@ public final class DataHandler {
     public static int saveNewGroceryItem(GroceryCategory category,
                                          String newItemName) {
         return GroceryCategoryWriter.writeItem(category, newItemName);
+    }
+
+    /**
+     * Deletes grocery item from database.
+     *
+     * @param item grocery item itself
+     * @throws IllegalArgumentException if the grocery item is used by a recipe
+     */
+    public static void deleteGroceryItem(GroceryItem item)
+            throws IllegalArgumentException {
+        int numberOfRecipes = GroceryCategoryReader
+                .getNumberOfRecipesToCategory(item);
+        if (numberOfRecipes == 0) {
+            int id = item.getID();
+            GroceryCategoryWriter.removeGroceryItem(id);
+        } else throw new IllegalArgumentException();
+    }
+
+    /**
+     * Changes the saved information of the grocery item in the database.
+     *
+     * @param item item itself
+     * @param newName the changed name of the category
+     * @param affiliatedCategory the changed category that the item belongs to
+     */
+    public static void changeGroceryItem(GroceryItem item, String newName,
+                                         GroceryCategory affiliatedCategory) {
+
+        int itemID = item.getID();
+        int categoryID = affiliatedCategory.getID();
+        GroceryCategoryWriter.changeItem(itemID, newName, categoryID);
     }
 
 }

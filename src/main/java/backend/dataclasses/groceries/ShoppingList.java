@@ -153,4 +153,13 @@ public class ShoppingList {
         }
     }
 
+    /**
+     * Removes the grocery item from the observable list and the hashmap.
+     * @param item grocery item that shall be deleted
+     */
+    public void deleteGroceryItem(GroceryItem item) {
+        observableItems.remove(item);
+        categoriesAndItems.get(item.getGroceryCategory()).remove(item);
+    }
+
 }

@@ -40,8 +40,15 @@ public final class GroceryItem implements Comparable<GroceryItem> {
 
     public int compareTo(GroceryItem other) {
 
-        String otherName = other.toString();
-        return name.get().compareTo(otherName);
+        int categoryCompare = this.affiliatedObjectGroceryCategory
+                .compareTo(other.getGroceryCategory());
+        if (categoryCompare == 0) {
+            String otherName = other.toString();
+            return name.get().compareTo(otherName);
+        } else {
+            return categoryCompare;
+        }
+
     }
 
     public StringProperty nameProperty() {
@@ -62,5 +69,14 @@ public final class GroceryItem implements Comparable<GroceryItem> {
 
     public int getID() {
         return id;
+    }
+
+    public void setName(String name) {
+        this.name.set(name);
+    }
+
+    public void setAffiliatedGroceryCategory(GroceryCategory category) {
+        this.affiliatedObjectGroceryCategory = category;
+        this.affiliatedGroceryCategory.set(category.toString());
     }
 }
