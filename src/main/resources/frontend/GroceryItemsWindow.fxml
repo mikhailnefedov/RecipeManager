@@ -24,7 +24,7 @@
                 <TableColumn fx:id="groceryTableItemColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="225.0" text="%groceryTable.Item" />
             </columns>
         </TableView>
-      <ComboBox fx:id="groceryCategoryComboBox" disable="true" onAction="#onUserInput" prefWidth="150.0" GridPane.rowIndex="1" />
+      <ComboBox fx:id="groceryCategoryComboBox" disable="true" onInputMethodTextChanged="#onUserInput" prefWidth="150.0" GridPane.rowIndex="1" />
       <TextField fx:id="groceryItemTextField" disable="true" onKeyTyped="#onUserInput" prefHeight="25.0" prefWidth="166.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <GridPane hgap="10.0" prefHeight="72.0" prefWidth="144.0" GridPane.columnSpan="3" GridPane.rowIndex="2">
             <columnConstraints>
@@ -46,7 +46,7 @@
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
-            <Button fx:id="groceryNewItemButton" mnemonicParsing="false" onAction="#newItemClick" text="%groceryTask.addNewItem" />
+            <Button mnemonicParsing="false" onAction="#newItemClick" text="%groceryTask.addNewItem" />
             <Button fx:id="groceryChangeItemButton" disable="true" mnemonicParsing="false" onAction="#changeItemClick" text="%groceryTask.ChangeItem" GridPane.columnIndex="1" />
             <Button fx:id="groceryDeleteItemButton" disable="true" mnemonicParsing="false" onAction="#deleteItemClick" text="%groceryTask.DeleteItem" GridPane.columnIndex="2" />
         </GridPane>

@@ -40,15 +40,8 @@ public final class GroceryItem implements Comparable<GroceryItem> {
 
     public int compareTo(GroceryItem other) {
 
-        int categoryCompare = this.affiliatedObjectGroceryCategory
-                .compareTo(other.getGroceryCategory());
-        if (categoryCompare == 0) {
-            String otherName = other.toString();
-            return name.get().compareTo(otherName);
-        } else {
-            return categoryCompare;
-        }
-
+        String otherName = other.toString();
+        return name.get().compareTo(otherName);
     }
 
     public StringProperty nameProperty() {

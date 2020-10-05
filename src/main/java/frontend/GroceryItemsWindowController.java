@@ -4,11 +4,15 @@ import backend.data.DataHandler;
 import backend.dataclasses.groceries.GroceryCategory;
 import backend.dataclasses.groceries.GroceryItem;
 import backend.dataclasses.groceries.ShoppingList;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 import javafx.util.Duration;
+
+import java.util.Comparator;
 
 public class GroceryItemsWindowController {
 
@@ -45,14 +49,41 @@ public class GroceryItemsWindowController {
      */
     @FXML
     protected void initialize() {
+        setSortPolicy();
         loadItemsIntoCategoryTable();
         groceryTable.getSortOrder().add(groceryTableCategoryColumn);
 
-        groceryCategoryComboBox.getItems().addAll(      //load into combobox
-                ShoppingList.getInstance().getGroceryCategories());
+        groceryCategoryComboBox.getItems()          //load into combobox
+                .addAll(ShoppingList.getInstance().getGroceryCategories());
 
         errorTooltip = new ErrorTooltip();
         groceryItemErrorLabel.setTooltip(errorTooltip);
+    }
+
+    private void setSortPolicy() {
+        groceryTable.setSortPolicy(new Callback<TableView<GroceryItem>, Boolean>() {
+
+            @Override
+            public Boolean call(TableView<GroceryItem> groceryItemTableView) {
+                Comparator<GroceryItem> comparator = new Comparator<GroceryItem>() {
+                    @Override
+                    public int compare(GroceryItem item1, GroceryItem item2) {
+                        int categoryCompare = item1.getGroceryCategory()
+                                .compareTo(item2.getGroceryCategory());
+                        if (categoryCompare == 0) {
+                            String otherName = item2.toString();
+                            return item1.toString().compareTo(otherName);
+                        } else {
+                            return categoryCompare;
+                        }
+                    }
+                };
+                FXCollections.sort(groceryTable.getItems(), comparator);
+                return true;
+            }
+        });
+
+        groceryTable.getSortOrder().remove(groceryTableItemColumn);
     }
 
     /**
@@ -88,7 +119,9 @@ public class GroceryItemsWindowController {
     public void newItemClick() {
         currentState = "newItem";
         activateUserInputElements();
-        deleteStylesFromInputElements();
+        deleteErrorStyling();
+        groceryCategoryComboBox.getSelectionModel().clearSelection();
+        groceryItemTextField.setText("");
     }
 
     /**
@@ -99,7 +132,7 @@ public class GroceryItemsWindowController {
     public void changeItemClick() {
         currentState = "changeItem";
         activateUserInputElements();
-        deleteStylesFromInputElements();
+        deleteErrorStyling();
         GroceryItem selectedItem = getSelectedItem();
         groceryCategoryComboBox.setValue(selectedItem.getGroceryCategory());
         groceryItemTextField.setText(selectedItem.toString());
@@ -130,8 +163,7 @@ public class GroceryItemsWindowController {
      */
     @FXML
     public void onUserInput() {
-        deleteStylesFromInputElements();
-        errorTooltip.clearText();
+        deleteErrorStyling();
 
         GroceryCategory categoryInput = groceryCategoryComboBox
                 .getSelectionModel().getSelectedItem();
@@ -157,7 +189,6 @@ public class GroceryItemsWindowController {
 
         enableEditingButtons();
         disableAllInputFields();
-        errorTooltip.clearText();
     }
 
     /**
@@ -173,6 +204,9 @@ public class GroceryItemsWindowController {
         focusTableOnNewItem(newItem);
     }
 
+    /**
+     * Changes the attributes of the selected item with input of user.
+     */
     private void changeItem() {
         GroceryItem selectedItem = getSelectedItem();
 
@@ -191,6 +225,7 @@ public class GroceryItemsWindowController {
      * @param item item itself
      */
     public void focusTableOnNewItem(GroceryItem item) {
+        groceryTable.getSortOrder().add(groceryTableCategoryColumn);
         groceryTable.getSelectionModel().select(item);
         groceryTable.getFocusModel().focus(
                 groceryTable.getSelectionModel().getSelectedIndex());
@@ -208,16 +243,22 @@ public class GroceryItemsWindowController {
     public boolean checkItemCreationCondition(String newItemName,
                                               GroceryCategory category) {
         if (category == null) {
+            groceryCategoryComboBox
+                    .setStyle("-fx-background-color: #ffdddc; -fx-border-color: grey");
             groceryItemErrorLabel.setVisible(true);
             errorTooltip.addErrorMessage("Keine Kategorie ausgewählt");
             return false;
         }
         if (newItemName.length() == 0) {
+            groceryItemTextField
+                    .setStyle("-fx-background-color: #ffdddc; -fx-border-color: grey");
             groceryItemErrorLabel.setVisible(true);
             errorTooltip.addErrorMessage("Name darf nicht leer sein!");
             return false;
         }
         if (ShoppingList.getInstance().isItemInList(newItemName, category)) {
+            groceryItemTextField
+                    .setStyle("-fx-background-color: #ffdddc; -fx-border-color: grey");
             groceryItemErrorLabel.setVisible(true);
             errorTooltip.addErrorMessage("Zutat existiert bereits!");
             return false;
@@ -237,20 +278,21 @@ public class GroceryItemsWindowController {
         GroceryItem selectedItem = getSelectedItem();
         groceryCategoryComboBox.setValue(selectedItem.getGroceryCategory());
         groceryItemTextField.setText(selectedItem.toString());
+    }
 
+    /**
+     * Deletes error markings on input elements and disables the error label.
+     */
+    private void deleteErrorStyling() {
+        groceryCategoryComboBox.setStyle("");
+        groceryItemTextField.setStyle("");
+
+        errorTooltip.clearText();
         groceryItemErrorLabel.setVisible(false);
     }
 
     /**
-     * Deletes the styles from the user input elements.
-     */
-    private void deleteStylesFromInputElements() {
-        groceryCategoryComboBox.setStyle("");
-        groceryItemTextField.setStyle("");
-    }
-
-    /**
-     * Disables all frontend input fields of the user
+     * Disables all frontend input fields of the user.
      */
     private void disableAllInputFields() {
         groceryCategoryComboBox.setDisable(true);
@@ -273,7 +315,7 @@ public class GroceryItemsWindowController {
      */
     private class ErrorTooltip extends Tooltip {
 
-        public ErrorTooltip() {
+        ErrorTooltip() {
             this.setShowDelay(Duration.millis(300));
         }
 
