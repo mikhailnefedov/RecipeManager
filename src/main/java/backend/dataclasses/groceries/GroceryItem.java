@@ -63,4 +63,13 @@ public final class GroceryItem implements Comparable<GroceryItem> {
     public int getID() {
         return id;
     }
+
+    public void setName(String name) {
+        this.name.set(name);
+    }
+
+    public void setAffiliatedGroceryCategory(GroceryCategory category) {
+        this.affiliatedObjectGroceryCategory = category;
+        this.affiliatedGroceryCategory.set(category.toString());
+    }
 }

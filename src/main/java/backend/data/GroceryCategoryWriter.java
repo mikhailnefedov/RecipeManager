@@ -53,4 +53,43 @@ public final class GroceryCategoryWriter {
         }
     }
 
+    /**
+     * Removes record of grocery item from database.
+     *
+     * @param id id of the grocery item
+     */
+    public static void removeGroceryItem(int id) {
+        try {
+            Statement stmt = connection.createStatement();
+            String query = "DELETE FROM GroceryItem "
+                    + " WHERE id='" + id + "';";
+            stmt.execute(query);
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Changes the name and the affiliated grocery category of a grocery item
+     * in the database.
+     *
+     * @param itemID id of the item that has changes to id
+     * @param newName changed name of the item
+     * @param categoryID id of the changed category, the item belongs to
+     */
+    public static void changeItem(int itemID, String newName, int categoryID) {
+        try {
+            Statement stmt = connection.createStatement();
+            String query = "UPDATE GroceryItem "
+                    + "SET name='" + newName
+                    + "',grocerycategoryID='" + categoryID + "' "
+                    + "WHERE id='" + itemID + "';";
+            stmt.execute(query);
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

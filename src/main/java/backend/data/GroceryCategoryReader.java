@@ -2,6 +2,7 @@ package backend.data;
 
 import backend.dataclasses.groceries.GroceryCategory;
 import backend.dataclasses.groceries.GroceryItem;
+import backend.dataclasses.recipecategories.RecipeCategory;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -93,5 +94,33 @@ public final class GroceryCategoryReader {
         }
 
         return items;
+    }
+
+    /**
+     * Returns number of recipes that use the grocery item from database.
+     *
+     * @param item grocery item used/not used by recipes
+     * @return number of recipes
+     */
+    public static int getNumberOfRecipesToCategory(GroceryItem item) {
+
+        int sum = 0;
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(r.id) AS total "
+                    + "FROM Recipe r, uses u, GroceryItem g "
+                    + "WHERE r.id = u.recipeID "
+                    + "AND u.groceryitemID = g.id "
+                    + "AND g.id = " + item.getID() + ";");
+
+            while (rs.next()) {
+                sum = rs.getInt("total");
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sum;
     }
 }
