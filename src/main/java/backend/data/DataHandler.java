@@ -3,21 +3,16 @@ package backend.data;
 import backend.dataclasses.groceries.GroceryCategory;
 import backend.dataclasses.groceries.GroceryItem;
 import backend.dataclasses.groceries.ShoppingList;
-import backend.dataclasses.recipe.PreparationStep;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
 import backend.dataclasses.recipecategories.ListOfRecipeCategories;
 import backend.dataclasses.recipecategories.RecipeCategory;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
-import java.util.List;
 
 public final class DataHandler {
 
@@ -27,7 +22,10 @@ public final class DataHandler {
      */
     public static void initialize() {
 
-        hibernateTest();
+        SessionFactory sessionFactory = new Configuration().configure()
+                .buildSessionFactory();
+
+        RecipeCategoryHandler.initialize(sessionFactory);
 
         try {
             Class.forName("org.sqlite.JDBC");
@@ -36,8 +34,6 @@ public final class DataHandler {
 
             GroceryCategoryReader.setConnectionToDatabase(connection);
             GroceryCategoryWriter.setConnectionToDatabase(connection);
-            RecipeCategoryReader.setConnectionToDatabase(connection);
-            RecipeCategoryWriter.setConnectionToDatabase(connection);
             RecipeReader.setConnectionToDatabase(connection);
 
         } catch (Exception e) {
@@ -48,7 +44,7 @@ public final class DataHandler {
         ShoppingList shopList = ShoppingList.getInstance();
         shopList.initialize(GroceryCategoryReader.readCategories());
 
-        ArrayList<RecipeCategory> recipeCategories = RecipeCategoryReader.readRecipeCategories();
+        ArrayList<RecipeCategory> recipeCategories = RecipeCategoryHandler.readRecipeCategories();
         ListOfRecipeCategories listOfRecCats = ListOfRecipeCategories.getInstance();
         listOfRecCats.addListOfRecipeCategories(recipeCategories);
 
@@ -59,27 +55,26 @@ public final class DataHandler {
     }
 
     /**
-     * Changes saved information of a recipe category in the database.
+     * Updates the saved information of a recipe category in the database.
      *
-     * @param oldID      current id of category
-     * @param newID      new id of category
-     * @param newCatName new name of category
+     * @param categoryToUpdate category which shall be updated
+     * @param newID            new id of the category
+     * @param newName          new name of the category
      */
-    public static void changeRecipeCategory(String oldID, String newID,
-                                            String newCatName) {
+    public static void updateRecipeCategory(RecipeCategory categoryToUpdate,
+                                            String newID, String newName) {
 
-        RecipeCategoryWriter.changeCategory(oldID, newID, newCatName);
+        RecipeCategoryHandler.updateCategory(categoryToUpdate, newID, newName);
     }
 
     /**
      * Saves new recipe category into the database.
      *
-     * @param id           id of new category
-     * @param categoryName name of new category
+     * @param cat category to be saved
      */
-    public static void saveNewRecipeCategory(String id, String categoryName) {
+    public static void saveNewRecipeCategory(RecipeCategory cat) {
 
-        RecipeCategoryWriter.writeNewCategory(id, categoryName);
+        RecipeCategoryHandler.writeNewCategory(cat);
     }
 
     /**
@@ -88,10 +83,9 @@ public final class DataHandler {
      * @param cat category itself
      */
     public static void deleteRecipeCategory(RecipeCategory cat) {
-        int number = RecipeCategoryReader.getNumberOfRecipesToCategory(cat);
+        int number = RecipeCategoryHandler.getNumberOfRecipesToCategory(cat);
         if (number == 0) {
-            String id = cat.getId();
-            RecipeCategoryWriter.removeCategory(id);
+            RecipeCategoryHandler.removeCategory(cat);
         } else throw new IllegalArgumentException();
     }
 
@@ -126,8 +120,8 @@ public final class DataHandler {
     /**
      * Changes the saved information of the grocery item in the database.
      *
-     * @param item item itself
-     * @param newName the changed name of the category
+     * @param item               item itself
+     * @param newName            the changed name of the category
      * @param affiliatedCategory the changed category that the item belongs to
      */
     public static void changeGroceryItem(GroceryItem item, String newName,
@@ -136,35 +130,6 @@ public final class DataHandler {
         int itemID = item.getID();
         int categoryID = affiliatedCategory.getID();
         GroceryCategoryWriter.changeItem(itemID, newName, categoryID);
-    }
-
-    public static void hibernateTest() {
-        SessionFactory sessionFactory = null;
-
-        sessionFactory = new Configuration().configure().buildSessionFactory();
-
-        Session session = sessionFactory.openSession();
-        Transaction tx = null;
-
-        try {
-            List result = session.createQuery( "from PreparationStep " ).list();
-            for ( PreparationStep c : (List<PreparationStep>) result ) {
-                System.out.println(c.toString());
-            }
-
-            List resultCategories = session.createQuery("from RecipeCategory ").list();
-            for (RecipeCategory r : (List<RecipeCategory>) resultCategories) {
-                System.out.println(r.getId() + " " + r.hashCode());
-            }
-
-        } catch (HibernateException e) {
-            if (tx != null) tx.rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-
-
     }
 
 }

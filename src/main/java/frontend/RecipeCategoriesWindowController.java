@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Duration;
 
 public class RecipeCategoriesWindowController {
 
@@ -355,8 +354,9 @@ public class RecipeCategoriesWindowController {
     public void createNewCategory() {
         String newCatName = recipeCategoryNameTextField.getText();
         String newID = recipeCategoryIDTextField.getText();
-        ListOfRecipeCategories.getInstance().addRecipeCategory(newID, newCatName);
-        DataHandler.saveNewRecipeCategory(newID, newCatName);
+        RecipeCategory recipeCategory = new RecipeCategory(newID, newCatName);
+        ListOfRecipeCategories.getInstance().addRecipeCategory(recipeCategory);
+        DataHandler.saveNewRecipeCategory(recipeCategory);
     }
 
     /**
@@ -366,13 +366,10 @@ public class RecipeCategoriesWindowController {
     private void changeCategory() {
 
         RecipeCategory selectedCategory = getSelectedCategory();
-        String oldID = selectedCategory.getId();
         String newID = recipeCategoryIDTextField.getText();
         String newName = recipeCategoryNameTextField.getText();
 
-        selectedCategory.setId(newID);
-        selectedCategory.setName(newName);
-        DataHandler.changeRecipeCategory(oldID, newID, newName);
+        DataHandler.updateRecipeCategory(selectedCategory, newID, newName);
     }
 
 

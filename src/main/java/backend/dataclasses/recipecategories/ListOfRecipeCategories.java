@@ -106,10 +106,9 @@ public class ListOfRecipeCategories {
     /**
      * Adds a new RecipeCategory to the saved list.
      *
-     * @param id name of the id
-     * @param categoryName name of the new category
+     * @param recipeCategory category to be added
      */
-    public void addRecipeCategory(String id, String categoryName) {
-        savedRecipeCategories.add(new RecipeCategory(id, categoryName));
+    public void addRecipeCategory(RecipeCategory recipeCategory) {
+        savedRecipeCategories.add(recipeCategory);
     }
 }
