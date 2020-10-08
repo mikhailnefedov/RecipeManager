@@ -3,14 +3,21 @@ package backend.data;
 import backend.dataclasses.groceries.GroceryCategory;
 import backend.dataclasses.groceries.GroceryItem;
 import backend.dataclasses.groceries.ShoppingList;
+import backend.dataclasses.recipe.PreparationStep;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
 import backend.dataclasses.recipecategories.ListOfRecipeCategories;
 import backend.dataclasses.recipecategories.RecipeCategory;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
+import java.util.List;
 
 public final class DataHandler {
 
@@ -19,6 +26,8 @@ public final class DataHandler {
      * on this data.
      */
     public static void initialize() {
+
+        hibernateTest();
 
         try {
             Class.forName("org.sqlite.JDBC");
@@ -127,6 +136,35 @@ public final class DataHandler {
         int itemID = item.getID();
         int categoryID = affiliatedCategory.getID();
         GroceryCategoryWriter.changeItem(itemID, newName, categoryID);
+    }
+
+    public static void hibernateTest() {
+        SessionFactory sessionFactory = null;
+
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+        Transaction tx = null;
+
+        try {
+            List result = session.createQuery( "from PreparationStep " ).list();
+            for ( PreparationStep c : (List<PreparationStep>) result ) {
+                System.out.println(c.toString());
+            }
+
+            List resultCategories = session.createQuery("from RecipeCategory ").list();
+            for (RecipeCategory r : (List<RecipeCategory>) resultCategories) {
+                System.out.println(r.getId() + " " + r.hashCode());
+            }
+
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+
     }
 
 }
