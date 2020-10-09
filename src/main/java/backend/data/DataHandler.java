@@ -10,6 +10,9 @@ import backend.dataclasses.recipecategories.RecipeCategory;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
@@ -24,16 +27,19 @@ public final class DataHandler {
 
         SessionFactory sessionFactory = new Configuration().configure()
                 .buildSessionFactory();
+        EntityManagerFactory emF = Persistence
+                .createEntityManagerFactory("PersistenceProvider");
+        EntityManager entityManager = emF.createEntityManager();
 
-        RecipeCategoryHandler.initialize(sessionFactory);
+        RecipeCategoryHandler.initialize(sessionFactory, entityManager);
+        GroceryCategoryHandler.initialize(sessionFactory, entityManager);
 
         try {
             Class.forName("org.sqlite.JDBC");
             Connection connection = DriverManager.getConnection
                     ("jdbc:sqlite:src/main/resources/RecipeManagerDB.db");
 
-            GroceryCategoryReader.setConnectionToDatabase(connection);
-            GroceryCategoryWriter.setConnectionToDatabase(connection);
+            GroceryCategoryHandler.setConnectionToDatabase(connection);
             RecipeReader.setConnectionToDatabase(connection);
 
         } catch (Exception e) {
@@ -42,7 +48,7 @@ public final class DataHandler {
 
 
         ShoppingList shopList = ShoppingList.getInstance();
-        shopList.initialize(GroceryCategoryReader.readCategories());
+        shopList.initialize(GroceryCategoryHandler.readCategories());
 
         ArrayList<RecipeCategory> recipeCategories = RecipeCategoryHandler.readRecipeCategories();
         ListOfRecipeCategories listOfRecCats = ListOfRecipeCategories.getInstance();
@@ -90,15 +96,17 @@ public final class DataHandler {
     }
 
     /**
-     * Adds the new grocery item string into the database
+     * Creates a new grocery item and saves it into the database.
      *
      * @param category    category of the item
      * @param newItemName name of the item
-     * @return id of newly added item into the database
+     * @return the newly created GroceryItem
      */
-    public static int saveNewGroceryItem(GroceryCategory category,
-                                         String newItemName) {
-        return GroceryCategoryWriter.writeItem(category, newItemName);
+    public static GroceryItem saveNewGroceryItem(GroceryCategory category,
+                                                 String newItemName) {
+        GroceryItem newItem = new GroceryItem(category, newItemName);
+        GroceryCategoryHandler.saveItem(newItem);
+        return newItem;
     }
 
     /**
@@ -109,11 +117,11 @@ public final class DataHandler {
      */
     public static void deleteGroceryItem(GroceryItem item)
             throws IllegalArgumentException {
-        int numberOfRecipes = GroceryCategoryReader
+        int numberOfRecipes = GroceryCategoryHandler
                 .getNumberOfRecipesToCategory(item);
+        System.out.println(numberOfRecipes);
         if (numberOfRecipes == 0) {
-            int id = item.getID();
-            GroceryCategoryWriter.removeGroceryItem(id);
+            GroceryCategoryHandler.removeGroceryItem(item);
         } else throw new IllegalArgumentException();
     }
 
@@ -124,12 +132,10 @@ public final class DataHandler {
      * @param newName            the changed name of the category
      * @param affiliatedCategory the changed category that the item belongs to
      */
-    public static void changeGroceryItem(GroceryItem item, String newName,
+    public static void updateGroceryItem(GroceryItem item, String newName,
                                          GroceryCategory affiliatedCategory) {
 
-        int itemID = item.getID();
-        int categoryID = affiliatedCategory.getID();
-        GroceryCategoryWriter.changeItem(itemID, newName, categoryID);
+        GroceryCategoryHandler.updateItem(item, affiliatedCategory, newName);
     }
 
 }

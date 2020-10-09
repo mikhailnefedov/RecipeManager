@@ -7,8 +7,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,21 +29,12 @@ public final class RecipeCategoryHandler {
     /**
      * Initializes SessionFactory and EntityManager.
      *
-     * @param sF SessionFactory of program
+     * @param sF         SessionFactory of program
+     * @param entManager Entitymanager of program
      */
-    public static void initialize(SessionFactory sF) {
+    public static void initialize(SessionFactory sF, EntityManager entManager) {
         sessionFactory = sF;
-        EntityManagerFactory emF = Persistence
-                .createEntityManagerFactory("PersistenceProvider");
-        entityManager = emF.createEntityManager();
-    }
-
-    /**
-     * Flush and clear persistence context.
-     */
-    private static void flushAndClear() {
-        entityManager.flush();
-        entityManager.clear();
+        entityManager = entManager;
     }
 
     /**

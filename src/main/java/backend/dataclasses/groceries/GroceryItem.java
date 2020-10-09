@@ -3,6 +3,9 @@ package backend.dataclasses.groceries;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import javax.persistence.*;
+
+@Entity
 public final class GroceryItem implements Comparable<GroceryItem> {
 
     /**
@@ -22,15 +25,64 @@ public final class GroceryItem implements Comparable<GroceryItem> {
      */
     private GroceryCategory affiliatedObjectGroceryCategory;
 
-    public GroceryItem(int id, String name,
-                       GroceryCategory affiliatedCategory) {
-        this.id = id;
+    public GroceryItem() {
+    }
+
+    public GroceryItem(GroceryCategory affiliatedCategory, String name) {
         this.name = new SimpleStringProperty("");
         this.name.set(name);
 
         this.affiliatedGroceryCategory = new SimpleStringProperty("");
         this.affiliatedGroceryCategory.set(affiliatedCategory.toString());
         this.affiliatedObjectGroceryCategory = affiliatedCategory;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int getID() {
+        return this.id;
+    }
+
+    /**
+     * Setter for hibernate
+     */
+    public void setID(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return this.name.get();
+    }
+
+    /**
+     * Setter for hibernate
+     */
+    public void setName(String name) {
+        this.name = new SimpleStringProperty();
+        this.name.set(name);
+    }
+
+    /**
+     * Get the grocery category this item belongs to.
+     *
+     * @return grocery category
+     */
+    @ManyToOne()
+    @JoinColumn(name = "groceryCategoryID")
+    public GroceryCategory getGroceryCategory() {
+        return affiliatedObjectGroceryCategory;
+    }
+
+    /**
+     * Setter for hibernate.
+     *
+     * @param category
+     */
+    public void setGroceryCategory(GroceryCategory category) {
+        this.affiliatedObjectGroceryCategory = category;
+
+        this.affiliatedGroceryCategory = new SimpleStringProperty("");
+        this.affiliatedGroceryCategory.set(category.toString());
     }
 
     @Override
@@ -52,23 +104,11 @@ public final class GroceryItem implements Comparable<GroceryItem> {
         return affiliatedGroceryCategory;
     }
 
-    /**
-     * Get the grocery category this item belongs to.
-     * @return grocery category
-     */
-    public GroceryCategory getGroceryCategory() {
-        return affiliatedObjectGroceryCategory;
-    }
-
-    public int getID() {
-        return id;
-    }
-
-    public void setName(String name) {
+    public void updateName(String name) {
         this.name.set(name);
     }
 
-    public void setAffiliatedGroceryCategory(GroceryCategory category) {
+    public void updateAffiliatedGroceryCategory(GroceryCategory category) {
         this.affiliatedObjectGroceryCategory = category;
         this.affiliatedGroceryCategory.set(category.toString());
     }

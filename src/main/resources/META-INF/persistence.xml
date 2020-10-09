@@ -10,6 +10,8 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <class>backend.dataclasses.recipecategories.RecipeCategory</class>
+        <class>backend.dataclasses.groceries.GroceryItem</class>
+        <class>backend.dataclasses.groceries.GroceryCategory</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
