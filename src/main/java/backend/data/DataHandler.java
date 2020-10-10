@@ -38,9 +38,7 @@ public final class DataHandler {
             Class.forName("org.sqlite.JDBC");
             Connection connection = DriverManager.getConnection
                     ("jdbc:sqlite:src/main/resources/RecipeManagerDB.db");
-
-            GroceryCategoryHandler.setConnectionToDatabase(connection);
-            RecipeReader.setConnectionToDatabase(connection);
+            RecipeHandler.setConnectionToDatabase(connection);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,7 +52,7 @@ public final class DataHandler {
         ListOfRecipeCategories listOfRecCats = ListOfRecipeCategories.getInstance();
         listOfRecCats.addListOfRecipeCategories(recipeCategories);
 
-        ArrayList<Recipe.RecipeBuilder> recipeBuilders = RecipeReader.readRecipes();
+        ArrayList<Recipe.RecipeBuilder> recipeBuilders = RecipeHandler.readRecipes();
         Recipes recipes = Recipes.getInstance();
         recipes.addRecipes(recipeBuilders);
 

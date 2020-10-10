@@ -9,7 +9,6 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import javax.persistence.EntityManager;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,10 +21,6 @@ public final class GroceryCategoryHandler {
     private static SessionFactory sessionFactory;
 
     private static EntityManager entityManager;
-    /**
-     * Connection to RecipeManagerDB.
-     */
-    private static Connection connection;
 
     private GroceryCategoryHandler() {
     }
@@ -39,15 +34,6 @@ public final class GroceryCategoryHandler {
     public static void initialize(SessionFactory sF, EntityManager entManager) {
         sessionFactory = sF;
         entityManager = entManager;
-    }
-
-    /**
-     * Sets the connection to the database.
-     *
-     * @param c Connection to database (should be to RecipeManagerDB)
-     */
-    public static void setConnectionToDatabase(Connection c) {
-        connection = c;
     }
 
     /**
