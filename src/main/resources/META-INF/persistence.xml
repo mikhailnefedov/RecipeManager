@@ -12,6 +12,7 @@
         <class>backend.dataclasses.recipecategories.RecipeCategory</class>
         <class>backend.dataclasses.groceries.GroceryItem</class>
         <class>backend.dataclasses.groceries.GroceryCategory</class>
+        <class>backend.dataclasses.recipe.Recipe</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 

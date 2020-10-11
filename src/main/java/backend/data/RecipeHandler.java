@@ -2,24 +2,44 @@ package backend.data;
 
 import backend.dataclasses.recipe.Quantity;
 import backend.dataclasses.recipe.Recipe;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
+import javax.persistence.EntityManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Reader for Recipe table from database.
  */
-public final class RecipeReader {
+public final class RecipeHandler {
 
     /**
      * Connection to RecipeManagerDB.
      */
     private static Connection connection;
 
-    private RecipeReader() {
+    private static SessionFactory sessionFactory;
+
+    private static EntityManager entityManager;
+
+    private RecipeHandler() {
+    }
+
+    /**
+     * Initializes SessionFactory and EntityManager.
+     *
+     * @param sF         SessionFactory of program
+     * @param entManager Entitymanager of program
+     */
+    public static void initialize(SessionFactory sF, EntityManager entManager) {
+        sessionFactory = sF;
+        entityManager = entManager;
     }
 
     /**
@@ -37,6 +57,9 @@ public final class RecipeReader {
      * @return ArrayList with Recipes that are saved in the database
      */
     public static ArrayList<Recipe.RecipeBuilder> readRecipes() {
+
+
+
 
         ArrayList<Recipe.RecipeBuilder> recipes = new ArrayList<>();
 
@@ -86,6 +109,18 @@ public final class RecipeReader {
         }
 
         return recipes;
+    }
+
+    public static ArrayList<Recipe> getRecipes(Session session) {
+
+        List recipesTest = new ArrayList();
+        try {
+            recipesTest = session.createQuery("from Recipe ").list();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+
+        return (ArrayList<Recipe>) recipesTest;
     }
 
     /**

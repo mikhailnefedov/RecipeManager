@@ -38,23 +38,21 @@ public final class RecipeCategoryHandler {
     }
 
     /**
-     * Gets a list with the saved recipe categories from the database.
+     * Gets a list with the saved recipe categories from the database. Usage for
+     * initialization. Use only combined with getting all the other data from
+     * the database.
      *
+     * @param session current loading session (all categories, recipes, etc...)
      * @return list of saved recipe categories
      */
-    public static ArrayList<RecipeCategory> readRecipeCategories() {
-
-        Session session = sessionFactory.openSession();
+    public static ArrayList<RecipeCategory>
+    readRecipeCategories(Session session) {
 
         List resultCategories = new ArrayList();
         try {
             resultCategories = session.createQuery("from RecipeCategory ").list();
         } catch (HibernateException e) {
             e.printStackTrace();
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
         }
 
         return (ArrayList<RecipeCategory>) resultCategories;

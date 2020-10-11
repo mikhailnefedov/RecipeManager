@@ -8,18 +8,18 @@ import backend.dataclasses.recipecategories.RecipeCategory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import javax.persistence.*;
 
 /**
  * Models a recipe of the user.
  */
+@Entity
 public class Recipe {
 
     private int id;
     private String title;
     private RecipeCategory category;
-    private URL recipeLink;
+    private String source;
     private Portionsize portionsize;
     private int time;
     private boolean vegetarian;
@@ -27,14 +27,16 @@ public class Recipe {
     //TODO: Implement data structure for preparation
     private String comment;
 
-    private Recipe() {
+    public Recipe() {
     }
 
-    public int getId() {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int getID() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setID(int id) {
         this.id = id;
     }
 
@@ -51,6 +53,8 @@ public class Recipe {
      *
      * @return object of recipe category
      */
+    @ManyToOne()
+    @JoinColumn(name = "recipecategoryID")
     public RecipeCategory getCategory() {
         return category;
     }
@@ -64,18 +68,20 @@ public class Recipe {
      *
      * @return name of recipe category
      */
+    @Transient
     public String getRecipeCategory() {
         return category.getName();
     }
 
-    public URL getRecipeLink() {
-        return recipeLink;
+    public String getSource() {
+        return source;
     }
 
-    public void setRecipeLink(URL recipeLink) {
-        this.recipeLink = recipeLink;
+    public void setSource(String source) {
+        this.source = source;
     }
 
+    @Convert(converter = backend.converter.PortionSizeConverter.class)
     public Portionsize getPortionsize() {
         return portionsize;
     }
@@ -100,6 +106,7 @@ public class Recipe {
         this.vegetarian = vegetarian;
     }
 
+    @Transient
     public ObservableList<Ingredient> getIngredients() {
         return ingredients;
     }
@@ -117,7 +124,7 @@ public class Recipe {
         private int id;
         private String title;
         private RecipeCategory category;
-        private URL recipeLink;
+        private String recipeLink;
         private Portionsize portionsize;
         private int time;
         private boolean vegetarian;
@@ -145,11 +152,7 @@ public class Recipe {
         }
 
         public RecipeBuilder recipeLink(String link) {
-            try {
-                this.recipeLink = new URL(link);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
+            this.recipeLink = link;
             return this;
         }
 
@@ -222,7 +225,7 @@ public class Recipe {
             recipe.id = this.id;
             recipe.title = this.title;
             recipe.category = this.category;
-            recipe.recipeLink = this.recipeLink;
+            recipe.source = this.recipeLink;
             recipe.portionsize = this.portionsize;
             recipe.time = this.time;
             recipe.vegetarian = this.vegetarian;
@@ -232,5 +235,20 @@ public class Recipe {
 
             return recipe;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", category=" + category +
+                ", source='" + source + '\'' +
+                ", " + portionsize.toString() +
+                ", time=" + time +
+                ", vegetarian=" + vegetarian +
+                ", ingredients=" + ingredients +
+                ", comment='" + comment + '\'' +
+                '}';
     }
 }

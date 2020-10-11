@@ -7,6 +7,7 @@ import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
 import backend.dataclasses.recipecategories.ListOfRecipeCategories;
 import backend.dataclasses.recipecategories.RecipeCategory;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -33,6 +34,9 @@ public final class DataHandler {
 
         RecipeCategoryHandler.initialize(sessionFactory, entityManager);
         GroceryCategoryHandler.initialize(sessionFactory, entityManager);
+        RecipeHandler.initialize(sessionFactory, entityManager);
+
+        Session session = sessionFactory.openSession();
 
         try {
             Class.forName("org.sqlite.JDBC");
@@ -46,15 +50,33 @@ public final class DataHandler {
 
 
         ShoppingList shopList = ShoppingList.getInstance();
-        shopList.initialize(GroceryCategoryHandler.readCategories());
+        shopList.initialize(GroceryCategoryHandler.readCategories(session));
 
-        ArrayList<RecipeCategory> recipeCategories = RecipeCategoryHandler.readRecipeCategories();
+        ArrayList<RecipeCategory> recipeCategories = RecipeCategoryHandler
+                .readRecipeCategories(session);
         ListOfRecipeCategories listOfRecCats = ListOfRecipeCategories.getInstance();
         listOfRecCats.addListOfRecipeCategories(recipeCategories);
 
-        ArrayList<Recipe.RecipeBuilder> recipeBuilders = RecipeHandler.readRecipes();
+        ArrayList<Recipe.RecipeBuilder> recipeBuilders = RecipeHandler
+                .readRecipes();
         Recipes recipes = Recipes.getInstance();
         recipes.addRecipes(recipeBuilders);
+
+        ArrayList<Recipe> test = RecipeHandler.getRecipes(session);
+        for (Recipe r : test) {
+            System.out.println(r.getCategory().getId() + "," + r.getCategory().getName());
+            System.out.println(r.getCategory().hashCode());
+            System.out.println(r.toString());
+        }
+
+        System.out.println("----");
+        for (RecipeCategory r : recipeCategories) {
+            System.out.println(r.hashCode());
+        }
+
+        if (session.isOpen()) {
+            session.close();
+        }
 
     }
 

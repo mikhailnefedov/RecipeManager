@@ -23,6 +23,7 @@
         <mapping class="backend.dataclasses.recipe.PreparationStep"/>
         <mapping class="backend.dataclasses.groceries.GroceryCategory"/>
         <mapping class="backend.dataclasses.groceries.GroceryItem"/>
+        <mapping class="backend.dataclasses.recipe.Recipe"/>
 
     </session-factory>
 </hibernate-configuration>

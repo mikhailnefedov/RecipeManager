@@ -6,6 +6,7 @@ import javafx.beans.property.StringProperty;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 public class GroceryCategory implements Comparable<GroceryCategory> {
@@ -54,6 +55,19 @@ public class GroceryCategory implements Comparable<GroceryCategory> {
 
         String otherName = other.toString();
         return name.get().compareTo(otherName);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (getClass() != obj.getClass()) return false;
+        GroceryCategory other = (GroceryCategory) obj;
+        return Objects.equals(id, other.getID());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 
 }

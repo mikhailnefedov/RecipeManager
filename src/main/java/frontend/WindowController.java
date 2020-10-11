@@ -83,11 +83,11 @@ public class WindowController {
      * Loads the recipes into the table view.
      */
     private void loadRecipesIntoTable() {
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("RecipeCategory"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
-        sourceColumn.setCellValueFactory(new PropertyValueFactory<>("recipeLink"));
+        sourceColumn.setCellValueFactory(new PropertyValueFactory<>("source"));
 
         recipeTable.setItems(getRecipes());
     }
@@ -179,7 +179,7 @@ public class WindowController {
     private void loadRecipeDataIntoTab() {
         Recipe selectedRecipe = recipeTable.getSelectionModel().getSelectedItem();
 
-        recipeIDLabel.setText(Integer.toString(selectedRecipe.getId()));
+        recipeIDLabel.setText(Integer.toString(selectedRecipe.getID()));
         recipeNameTextField.setText(selectedRecipe.getTitle());
 
         Set<String> categories = ListOfRecipeCategories.
@@ -203,7 +203,7 @@ public class WindowController {
         } else {
             recipeVegetarianCheckbox.setSelected(false);
         }
-        recipeSourceTextField.setText(selectedRecipe.getRecipeLink().toString());
+        recipeSourceTextField.setText(selectedRecipe.getSource().toString());
 
         recipeTabIngredientCategoryColumn.setCellValueFactory(new PropertyValueFactory<>("categoryString"));
         recipeTabIngredientItemColumn.setCellValueFactory(new PropertyValueFactory<>("itemString"));

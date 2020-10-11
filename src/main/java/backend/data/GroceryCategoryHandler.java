@@ -38,17 +38,17 @@ public final class GroceryCategoryHandler {
 
     /**
      * Gets the grocery categories and their grocery items as a HashMap from the
-     * database.
+     * database. Usage for initialization. Use only combined with getting all
+     * the other data from the database.
      *
+     * @param session current loading session (all categories, recipes, etc...)
      * @return HashMap with grocery categories and their items.
      */
     public static HashMap<GroceryCategory, ArrayList<GroceryItem>>
-    readCategories() {
+    readCategories(Session session) {
 
         HashMap<GroceryCategory, ArrayList<GroceryItem>> categoriesAndItems =
                 new HashMap<>();
-
-        Session session = sessionFactory.openSession();
 
         List categories = new ArrayList();
         try {
@@ -59,10 +59,6 @@ public final class GroceryCategoryHandler {
 
         for (GroceryCategory cat : (ArrayList<GroceryCategory>) categories) {
             categoriesAndItems.put(cat, getItems(session, cat));
-        }
-
-        if (session.isOpen()) {
-            session.close();
         }
 
         return categoriesAndItems;
