@@ -1,11 +1,7 @@
 package backend.dataclasses.recipe;
 
-import backend.dataclasses.groceries.GroceryCategory;
-import backend.dataclasses.groceries.GroceryItem;
-import backend.dataclasses.groceries.ShoppingList;
+import backend.converter.PortionsizeConverter;
 import backend.dataclasses.recipe.uses.Ingredient;
-import backend.dataclasses.recipe.uses.Quantity;
-import backend.dataclasses.recipecategories.ListOfRecipeCategories;
 import backend.dataclasses.recipecategories.RecipeCategory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -84,7 +80,7 @@ public class Recipe {
         this.source = source;
     }
 
-    @Convert(converter = backend.converter.PortionSizeConverter.class)
+    @Convert(converter = PortionsizeConverter.class)
     public Portionsize getPortionsize() {
         return portionsize;
     }
