@@ -1,12 +1,10 @@
 package backend.dataclasses.groceries;
 
-import backend.dataclasses.recipe.Quantity;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.function.Supplier;

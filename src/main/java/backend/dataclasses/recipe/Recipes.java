@@ -23,14 +23,8 @@ public class Recipes {
         return instance;
     }
 
-    public void addRecipes(ArrayList<Recipe.RecipeBuilder> builders) {
-        for (Recipe.RecipeBuilder builder : builders) {
-            savedRecipes.add(builder.build());
-        }
-    }
-
-    public void addRecipe(Recipe.RecipeBuilder builder) {
-        savedRecipes.add(builder.build());
+    public void addRecipes(ArrayList<Recipe> recipes) {
+        savedRecipes.addAll(recipes);
     }
 
     public ObservableList<Recipe> getSavedRecipes() {

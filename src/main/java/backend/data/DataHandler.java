@@ -14,8 +14,6 @@ import org.hibernate.cfg.Configuration;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.ArrayList;
 
 public final class DataHandler {
@@ -38,17 +36,6 @@ public final class DataHandler {
 
         Session session = sessionFactory.openSession();
 
-        try {
-            Class.forName("org.sqlite.JDBC");
-            Connection connection = DriverManager.getConnection
-                    ("jdbc:sqlite:src/main/resources/RecipeManagerDB.db");
-            RecipeHandler.setConnectionToDatabase(connection);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
         ShoppingList shopList = ShoppingList.getInstance();
         shopList.initialize(GroceryCategoryHandler.readCategories(session));
 
@@ -57,27 +44,13 @@ public final class DataHandler {
         ListOfRecipeCategories listOfRecCats = ListOfRecipeCategories.getInstance();
         listOfRecCats.addListOfRecipeCategories(recipeCategories);
 
-        ArrayList<Recipe.RecipeBuilder> recipeBuilders = RecipeHandler
-                .readRecipes();
-        Recipes recipes = Recipes.getInstance();
-        recipes.addRecipes(recipeBuilders);
-
-        ArrayList<Recipe> test = RecipeHandler.getRecipes(session);
-        for (Recipe r : test) {
-            System.out.println(r.getCategory().getId() + "," + r.getCategory().getName());
-            System.out.println(r.getCategory().hashCode());
-            System.out.println(r.toString());
-        }
-
-        System.out.println("----");
-        for (RecipeCategory r : recipeCategories) {
-            System.out.println(r.hashCode());
-        }
+        ArrayList<Recipe> recipes = RecipeHandler.getRecipes(session);
+        Recipes recipesInstance = Recipes.getInstance();
+        recipesInstance.addRecipes(recipes);
 
         if (session.isOpen()) {
             session.close();
         }
-
     }
 
     /**

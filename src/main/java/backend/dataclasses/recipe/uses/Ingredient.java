@@ -1,13 +1,34 @@
-package backend.dataclasses.recipe;
+package backend.dataclasses.recipe.uses;
 
 import backend.dataclasses.groceries.GroceryCategory;
 import backend.dataclasses.groceries.GroceryItem;
+import backend.dataclasses.recipe.Recipe;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "uses")
 public class Ingredient {
 
-    private GroceryCategory category;
+
+    @Id
+    @GeneratedValue
+    @Column(name = "usesID")
+    private int id;
+    @ManyToOne
+    @JoinColumn(name = "recipeID")
+    private Recipe recipe;
+    @ManyToOne
+    @JoinColumn(name = "groceryitemID")
     private GroceryItem item;
+    @Transient
+    private GroceryCategory category;
+    @Convert(converter = backend.converter.QuantityConverter.class)
     private Quantity quantity;
+
+    public Ingredient() {
+
+    }
 
     public Ingredient(GroceryCategory category, GroceryItem item,
                       Quantity quantity) {
@@ -17,7 +38,7 @@ public class Ingredient {
     }
 
     public String getCategoryString() {
-        return category.toString();
+        return item.getGroceryCategory().toString();
     }
 
     public GroceryItem getItem() {

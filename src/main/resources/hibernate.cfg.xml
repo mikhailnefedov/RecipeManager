@@ -25,5 +25,8 @@
         <mapping class="backend.dataclasses.groceries.GroceryItem"/>
         <mapping class="backend.dataclasses.recipe.Recipe"/>
 
+
+        <mapping class="backend.dataclasses.recipe.uses.Ingredient"/>
+
     </session-factory>
 </hibernate-configuration>

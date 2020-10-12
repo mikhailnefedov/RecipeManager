@@ -6,13 +6,15 @@
      http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 
     <persistence-unit name="PersistenceProvider">
-        <description></description>
+
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <class>backend.dataclasses.recipecategories.RecipeCategory</class>
         <class>backend.dataclasses.groceries.GroceryItem</class>
         <class>backend.dataclasses.groceries.GroceryCategory</class>
         <class>backend.dataclasses.recipe.Recipe</class>
+
+        <class>backend.dataclasses.recipe.uses.Ingredient</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 

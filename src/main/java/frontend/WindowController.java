@@ -1,6 +1,6 @@
 package frontend;
 
-import backend.dataclasses.recipe.Ingredient;
+import backend.dataclasses.recipe.uses.Ingredient;
 import backend.dataclasses.recipe.Portionsize;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
@@ -203,13 +203,13 @@ public class WindowController {
         } else {
             recipeVegetarianCheckbox.setSelected(false);
         }
-        recipeSourceTextField.setText(selectedRecipe.getSource().toString());
+        recipeSourceTextField.setText(selectedRecipe.getSource());
 
         recipeTabIngredientCategoryColumn.setCellValueFactory(new PropertyValueFactory<>("categoryString"));
         recipeTabIngredientItemColumn.setCellValueFactory(new PropertyValueFactory<>("itemString"));
         recipeTabIngredientQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
-        recipeTabIngredientTable.setItems(selectedRecipe.getIngredients());
+        recipeTabIngredientTable.setItems(selectedRecipe.getObservableIngredients());
 
 
     }
