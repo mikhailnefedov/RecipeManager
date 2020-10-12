@@ -3,6 +3,7 @@ package backend.dataclasses.groceries;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,7 +12,10 @@ import java.util.Objects;
 @Entity
 public class GroceryCategory implements Comparable<GroceryCategory> {
 
+    @Id
+    @GeneratedValue
     private int id;
+    @Convert(converter = backend.converter.StringPropertyConverter.class)
     private StringProperty name;
 
     public GroceryCategory() {
@@ -23,8 +27,6 @@ public class GroceryCategory implements Comparable<GroceryCategory> {
         this.name.set(name);
     }
 
-    @Id
-    @GeneratedValue
     public int getID() {
         return this.id;
     }
@@ -60,6 +62,7 @@ public class GroceryCategory implements Comparable<GroceryCategory> {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
+        if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         GroceryCategory other = (GroceryCategory) obj;
         return Objects.equals(id, other.getID());

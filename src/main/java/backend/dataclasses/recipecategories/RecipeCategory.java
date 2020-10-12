@@ -3,11 +3,13 @@ package backend.dataclasses.recipecategories;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
 public class RecipeCategory {
+
 
     private StringProperty id;
     private StringProperty name;
