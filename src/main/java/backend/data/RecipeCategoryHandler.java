@@ -74,7 +74,7 @@ public final class RecipeCategoryHandler {
                     "SELECT COUNT(r.id) AS total"
                             + " FROM Recipe r, RecipeCategory c"
                             + " WHERE r.recipecategoryID = c.id and c.id = '"
-                            + category.getId() + "';");
+                            + category.getID() + "';");
 
             sum = ((Number) query.getSingleResult()).intValue();
         } catch (HibernateException e) {
@@ -99,8 +99,8 @@ public final class RecipeCategoryHandler {
 
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
-        recipeCategory.updateID(newID);
-        recipeCategory.updateName(newName);
+        recipeCategory.setAbbreviation(newID);
+        recipeCategory.setName(newName);
         session.update(recipeCategory);
         tx.commit();
         session.close();
@@ -126,7 +126,7 @@ public final class RecipeCategoryHandler {
     public static void removeCategory(RecipeCategory category) {
 
         entityManager.getTransaction().begin();
-        category = entityManager.find(RecipeCategory.class, category.getId());
+        category = entityManager.find(RecipeCategory.class, category.getID());
         entityManager.remove(category);
         entityManager.getTransaction().commit();
     }

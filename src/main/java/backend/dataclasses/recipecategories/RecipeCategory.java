@@ -5,37 +5,44 @@ import javafx.beans.property.StringProperty;
 
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class RecipeCategory {
 
-
-    private StringProperty id;
+    @Id
+    @GeneratedValue
+    private int id;
+    @Convert(converter = backend.converter.StringPropertyConverter.class)
+    private StringProperty abbreviation;
+    @Convert(converter = backend.converter.StringPropertyConverter.class)
     private StringProperty name;
 
     public RecipeCategory() {
         //no-arg constructor for ORMLite
     }
 
-    public RecipeCategory(String id, String name) {
-        this.id = new SimpleStringProperty("");
+    public RecipeCategory(String abbreviation, String name) {
+        this.abbreviation = new SimpleStringProperty("");
         this.name = new SimpleStringProperty("");
-        this.id.set(id);
+        this.abbreviation.set(abbreviation);
         this.name.set(name);
     }
 
-    @Id
-    public String getId() {
-        return id.get();
+    public int getID() {
+        return id;
+    }
+
+    public String getAbbreviation() {
+        return abbreviation.get();
     }
 
     /**
-     * Existence purely for hibernate. Do not use for changing attribute!
+     * Use for changing/updating id of this object
      */
-    public void setId(String id) {
-        this.id = new SimpleStringProperty("");
-        this.id.set(id);
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation.set(abbreviation);
     }
 
     public String getName() {
@@ -43,10 +50,9 @@ public class RecipeCategory {
     }
 
     /**
-     * Existence purely for hibernate. Do not use for changing attribute!
+     * Use for changing/updating name of this object
      */
     public void setName(String name) {
-        this.name = new SimpleStringProperty("");
         this.name.set(name);
     }
 
@@ -54,22 +60,8 @@ public class RecipeCategory {
         return name;
     }
 
-    public StringProperty idProperty() {
-        return id;
-    }
-
-    /**
-     * Use for changing/updating id of this object
-     */
-    public void updateID(String id) {
-        this.id.set(id);
-    }
-
-    /**
-     * Use for changing/updating name of this object
-     */
-    public void updateName(String name) {
-        this.name.set(name);
+    public StringProperty abbreviationProperty() {
+        return abbreviation;
     }
 
 }
