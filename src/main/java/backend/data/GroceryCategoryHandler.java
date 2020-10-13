@@ -8,19 +8,19 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 /**
- * Gets database records from GroceryCategory and GroceryItem tables.
+ * Handles the GroceryCategory and GroceryItem tables from the database.
  */
 public final class GroceryCategoryHandler {
 
+    /**
+     * Unique SessionFactory from DataHandler.
+     */
     private static SessionFactory sessionFactory;
-
-    private static EntityManager entityManager;
 
     private GroceryCategoryHandler() {
     }
@@ -28,12 +28,10 @@ public final class GroceryCategoryHandler {
     /**
      * Initializes SessionFactory and EntityManager.
      *
-     * @param sF         SessionFactory of program
-     * @param entManager Entitymanager of program
+     * @param sF SessionFactory of program
      */
-    public static void initialize(SessionFactory sF, EntityManager entManager) {
+    public static void initialize(SessionFactory sF) {
         sessionFactory = sF;
-        entityManager = entManager;
     }
 
     /**
@@ -45,7 +43,7 @@ public final class GroceryCategoryHandler {
      * @return HashMap with grocery categories and their items.
      */
     public static HashMap<GroceryCategory, ArrayList<GroceryItem>>
-    readCategories(Session session) {
+    getCategories(Session session) {
 
         HashMap<GroceryCategory, ArrayList<GroceryItem>> categoriesAndItems =
                 new HashMap<>();
@@ -76,8 +74,8 @@ public final class GroceryCategoryHandler {
 
         List items = new ArrayList();
         try {
-            Query query = session.createQuery("from GroceryItem " +
-                    "WHERE groceryCategory =:category");
+            Query query = session.createQuery("from GroceryItem "
+                    + " WHERE groceryCategory =:category");
             query.setParameter("category", category);
             items = query.list();
         } catch (HibernateException e) {
@@ -99,7 +97,7 @@ public final class GroceryCategoryHandler {
         int sum = 0;
 
         try {
-            javax.persistence.Query query = session.createSQLQuery(
+            Query query = session.createSQLQuery(
                     "SELECT COUNT(r.id) AS total"
                             + " FROM Recipe r, uses u, GroceryItem g"
                             + " WHERE r.id = u.recipeID"
@@ -114,8 +112,6 @@ public final class GroceryCategoryHandler {
                 session.close();
             }
         }
-        System.out.println(sum);
-        System.out.println("----");
         return sum;
     }
 
@@ -125,11 +121,11 @@ public final class GroceryCategoryHandler {
      * @param newItem item to be persisted
      */
     public static void saveItem(GroceryItem newItem) {
-
-        entityManager.getTransaction().begin();
-        entityManager.persist(newItem);
-        entityManager.flush();
-        entityManager.getTransaction().commit();
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        session.persist(newItem);
+        tx.commit();
+        session.close();
     }
 
     /**

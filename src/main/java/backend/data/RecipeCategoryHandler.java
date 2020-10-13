@@ -6,22 +6,19 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Gets data from RecipeCategory table from database.
+ * Handles the RecipeCategory table from the database.
  */
 public final class RecipeCategoryHandler {
 
     /**
-     * Creater of sessions.
+     * Unique SessionFactory from DataHandler.
      */
     private static SessionFactory sessionFactory;
-
-    private static EntityManager entityManager;
 
     private RecipeCategoryHandler() {
     }
@@ -29,12 +26,10 @@ public final class RecipeCategoryHandler {
     /**
      * Initializes SessionFactory and EntityManager.
      *
-     * @param sF         SessionFactory of program
-     * @param entManager Entitymanager of program
+     * @param sF SessionFactory of program
      */
-    public static void initialize(SessionFactory sF, EntityManager entManager) {
+    public static void initialize(SessionFactory sF) {
         sessionFactory = sF;
-        entityManager = entManager;
     }
 
     /**
@@ -46,16 +41,16 @@ public final class RecipeCategoryHandler {
      * @return list of saved recipe categories
      */
     public static ArrayList<RecipeCategory>
-    readRecipeCategories(Session session) {
+    getRecipeCategories(Session session) {
 
-        List resultCategories = new ArrayList();
+        List categories = new ArrayList();
         try {
-            resultCategories = session.createQuery("from RecipeCategory ").list();
+            categories = session.createQuery("from RecipeCategory ").list();
         } catch (HibernateException e) {
             e.printStackTrace();
         }
 
-        return (ArrayList<RecipeCategory>) resultCategories;
+        return (ArrayList<RecipeCategory>) categories;
     }
 
     /**
@@ -111,11 +106,13 @@ public final class RecipeCategoryHandler {
      *
      * @param recipeCategory recipeCategory to persist
      */
-    public static void writeNewCategory(RecipeCategory recipeCategory) {
+    public static void saveCategory(RecipeCategory recipeCategory) {
 
-        entityManager.getTransaction().begin();
-        entityManager.persist(recipeCategory);
-        entityManager.getTransaction().commit();
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        session.persist(recipeCategory);
+        tx.commit();
+        session.close();
     }
 
     /**
@@ -125,10 +122,11 @@ public final class RecipeCategoryHandler {
      */
     public static void removeCategory(RecipeCategory category) {
 
-        entityManager.getTransaction().begin();
-        category = entityManager.find(RecipeCategory.class, category.getID());
-        entityManager.remove(category);
-        entityManager.getTransaction().commit();
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        session.remove(category);
+        tx.commit();
+        session.close();
     }
 
 }

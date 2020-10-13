@@ -16,6 +16,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.ArrayList;
 
+/**
+ * Works as a facade for the database classes that handle the saving/updating/
+ * deleting of objects.
+ */
 public final class DataHandler {
 
     /**
@@ -30,19 +34,19 @@ public final class DataHandler {
                 .createEntityManagerFactory("PersistenceProvider");
         EntityManager entityManager = emF.createEntityManager();
 
-        RecipeCategoryHandler.initialize(sessionFactory, entityManager);
-        GroceryCategoryHandler.initialize(sessionFactory, entityManager);
-        RecipeHandler.initialize(sessionFactory, entityManager);
+        RecipeCategoryHandler.initialize(sessionFactory);
+        GroceryCategoryHandler.initialize(sessionFactory);
+        RecipeHandler.initialize(sessionFactory);
 
         Session session = sessionFactory.openSession();
 
         ShoppingList shopList = ShoppingList.getInstance();
-        shopList.initialize(GroceryCategoryHandler.readCategories(session));
+        shopList.initialize(GroceryCategoryHandler.getCategories(session));
 
         ArrayList<RecipeCategory> recipeCategories = RecipeCategoryHandler
-                .readRecipeCategories(session);
-        ListOfRecipeCategories listOfRecCats = ListOfRecipeCategories.getInstance();
-        listOfRecCats.addListOfRecipeCategories(recipeCategories);
+                .getRecipeCategories(session);
+        ListOfRecipeCategories lRecCats = ListOfRecipeCategories.getInstance();
+        lRecCats.addListOfRecipeCategories(recipeCategories);
 
         ArrayList<Recipe> recipes = RecipeHandler.getRecipes(session);
         Recipes recipesInstance = Recipes.getInstance();
@@ -73,7 +77,7 @@ public final class DataHandler {
      */
     public static void saveNewRecipeCategory(RecipeCategory cat) {
 
-        RecipeCategoryHandler.writeNewCategory(cat);
+        RecipeCategoryHandler.saveCategory(cat);
     }
 
     /**
@@ -85,7 +89,9 @@ public final class DataHandler {
         int number = RecipeCategoryHandler.getNumberOfRecipesToCategory(cat);
         if (number == 0) {
             RecipeCategoryHandler.removeCategory(cat);
-        } else throw new IllegalArgumentException();
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     /**
@@ -115,7 +121,9 @@ public final class DataHandler {
         System.out.println(numberOfRecipes);
         if (numberOfRecipes == 0) {
             GroceryCategoryHandler.removeGroceryItem(item);
-        } else throw new IllegalArgumentException();
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     /**
