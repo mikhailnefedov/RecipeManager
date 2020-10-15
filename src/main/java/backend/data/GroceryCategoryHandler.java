@@ -75,7 +75,7 @@ public final class GroceryCategoryHandler {
         List items = new ArrayList();
         try {
             Query query = session.createQuery("from GroceryItem "
-                    + " WHERE groceryCategory =:category");
+                    + " WHERE affiliatedGroceryCategory =:category");
             query.setParameter("category", category);
             items = query.list();
         } catch (HibernateException e) {
@@ -154,8 +154,8 @@ public final class GroceryCategoryHandler {
 
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
-        item.updateAffiliatedGroceryCategory(affiliatedCategory);
-        item.updateName(newName);
+        item.setGroceryCategory(affiliatedCategory);
+        item.setName(newName);
         session.update(item);
         tx.commit();
         session.close();

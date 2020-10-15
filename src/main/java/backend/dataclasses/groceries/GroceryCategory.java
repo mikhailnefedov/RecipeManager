@@ -9,6 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Objects;
 
+/**
+ * Models the grocery category of a grocery item.
+ */
 @Entity
 public class GroceryCategory implements Comparable<GroceryCategory> {
 
@@ -31,9 +34,7 @@ public class GroceryCategory implements Comparable<GroceryCategory> {
         return this.id;
     }
 
-    /**
-     * Setter for hibernate.
-     */
+
     public void setID(int id) {
         this.id = id;
     }
@@ -47,6 +48,9 @@ public class GroceryCategory implements Comparable<GroceryCategory> {
         this.name.set(name);
     }
 
+    public StringProperty nameProperty() {
+        return name;
+    }
 
     @Override
     public String toString() {
@@ -54,16 +58,21 @@ public class GroceryCategory implements Comparable<GroceryCategory> {
     }
 
     public int compareTo(GroceryCategory other) {
-
         String otherName = other.toString();
         return name.get().compareTo(otherName);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
         GroceryCategory other = (GroceryCategory) obj;
         return Objects.equals(id, other.getID());
     }
