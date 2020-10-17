@@ -1,13 +1,10 @@
 package backend.dataclasses.recipecategories;
 
-import javafx.collections.ObservableList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class IDCreationTest {
 
@@ -32,8 +29,8 @@ public class IDCreationTest {
 
     @Test
     void idAlreadyExists() {
-        Assertions.assertFalse(list.isIDNonExistent("ABC"));
-        Assertions.assertTrue(list.isIDNonExistent("C"));
+        Assertions.assertFalse(list.isAbbreviationNonExistent("ABC"));
+        Assertions.assertTrue(list.isAbbreviationNonExistent("C"));
     }
 
 }

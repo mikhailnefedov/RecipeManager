@@ -3,26 +3,40 @@ package backend.dataclasses.recipecategories;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import javax.persistence.*;
+import java.util.Objects;
+
+@Entity
 public class RecipeCategory {
 
-    //Uses StringProperty, so that it can be observed. If a change happens the
-    //frontend will be updated
-    private StringProperty id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Convert(converter = backend.converter.StringPropertyConverter.class)
+    private StringProperty abbreviation;
+    @Convert(converter = backend.converter.StringPropertyConverter.class)
     private StringProperty name;
 
-    public RecipeCategory(String id, String name) {
-        this.id = new SimpleStringProperty("");
+    public RecipeCategory() {
+    }
+
+    public RecipeCategory(String abbreviation, String name) {
+        this.abbreviation = new SimpleStringProperty("");
         this.name = new SimpleStringProperty("");
-        this.id.set(id);
+        this.abbreviation.set(abbreviation);
         this.name.set(name);
     }
 
-    public String getId() {
-        return id.get();
+    public int getID() {
+        return id;
     }
 
-    public void setId(String id) {
-        this.id.set(id);
+    public String getAbbreviation() {
+        return abbreviation.get();
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation.set(abbreviation);
     }
 
     public String getName() {
@@ -37,7 +51,28 @@ public class RecipeCategory {
         return name;
     }
 
-    public StringProperty idProperty() {
-        return id;
+    public StringProperty abbreviationProperty() {
+        return abbreviation;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        RecipeCategory other = (RecipeCategory) obj;
+        return Objects.equals(id, other.getID());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
 }

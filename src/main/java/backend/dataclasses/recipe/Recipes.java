@@ -11,26 +11,22 @@ public class Recipes {
     private static ObservableList<Recipe> savedRecipes;
 
     private Recipes() {
-
         savedRecipes = FXCollections.observableArrayList();
     }
 
     public static Recipes getInstance() {
-
         if (instance == null) {
             instance = new Recipes();
         }
         return instance;
     }
 
-    public void addRecipes(ArrayList<Recipe.RecipeBuilder> builders) {
-        for (Recipe.RecipeBuilder builder : builders) {
-            savedRecipes.add(builder.build());
-        }
+    public void addRecipes(ArrayList<Recipe> recipes) {
+        savedRecipes.addAll(recipes);
     }
 
-    public void addRecipe(Recipe.RecipeBuilder builder) {
-        savedRecipes.add(builder.build());
+    public void addRecipe(Recipe recipe) {
+        savedRecipes.add(recipe);
     }
 
     public ObservableList<Recipe> getSavedRecipes() {

@@ -5,8 +5,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 public class ListOfRecipeCategories {
 
@@ -27,7 +25,7 @@ public class ListOfRecipeCategories {
         savedRecipeCategories = FXCollections.observableArrayList(
                 recipeCategory -> new Observable[]
                         {recipeCategory.nameProperty(),
-                                recipeCategory.idProperty()});
+                                recipeCategory.abbreviationProperty()});
         //Callback exists, so that if there is a change to a RecipeCategory item
         //the frontend table view will be updated
     }
@@ -42,24 +40,6 @@ public class ListOfRecipeCategories {
 
     public ObservableList<RecipeCategory> getSavedRecipeCategories() {
         return savedRecipeCategories;
-    }
-
-    /**
-     * Get the recipe category object corresponding to the parameter:
-     * categoryName.
-     *
-     * @param categoryID id of the wanted category
-     * @return category corresponding to the categoryName
-     */
-    public RecipeCategory getRecipeCategory(String categoryID) {
-        Supplier<Stream<RecipeCategory>> categoryStream = () ->
-                savedRecipeCategories.stream().filter(category ->
-                        category.getId().equals(categoryID));
-        if (categoryStream.get().findFirst().isPresent()){
-            return categoryStream.get().findFirst().get();
-        } else {
-            throw new IllegalArgumentException("category Name does not exist");
-        }
     }
 
     /**
@@ -91,12 +71,12 @@ public class ListOfRecipeCategories {
     /**
      * Checks if an id is already given.
      *
-     * @param id id that shall be checked.
+     * @param abbreviation abbreviation that shall be checked.
      * @return true, if nonexistent | false, if id already exists or empty
      */
-    public boolean isIDNonExistent(String id) {
+    public boolean isAbbreviationNonExistent(String abbreviation) {
         for (RecipeCategory category : savedRecipeCategories) {
-            if (id.equals(category.getId())) {
+            if (abbreviation.equals(category.getAbbreviation())) {
                 return false;
             }
         }
@@ -106,10 +86,9 @@ public class ListOfRecipeCategories {
     /**
      * Adds a new RecipeCategory to the saved list.
      *
-     * @param id name of the id
-     * @param categoryName name of the new category
+     * @param recipeCategory category to be added
      */
-    public void addRecipeCategory(String id, String categoryName) {
-        savedRecipeCategories.add(new RecipeCategory(id, categoryName));
+    public void addRecipeCategory(RecipeCategory recipeCategory) {
+        savedRecipeCategories.add(recipeCategory);
     }
 }

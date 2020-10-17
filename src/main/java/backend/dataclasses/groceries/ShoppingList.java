@@ -1,17 +1,18 @@
 package backend.dataclasses.groceries;
 
-import backend.dataclasses.recipe.Quantity;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+/**
+ * Represents the list of grocery items of the program.
+ */
 public class ShoppingList {
 
     private static ShoppingList instance = null;
@@ -22,8 +23,10 @@ public class ShoppingList {
      * shopping list, the amounts can be merged together.
      */
     private HashMap<GroceryCategory, ArrayList<GroceryItem>> categoriesAndItems;
+    //TODO: Rethink if HashMap is still necessary.
+
     /**
-     * Observable Map for frontend view
+     * Observable Map for frontend view.
      */
     private ObservableList<GroceryItem> observableItems;
 
@@ -43,8 +46,6 @@ public class ShoppingList {
         }
         return instance;
     }
-
-    //TODO: if something is added deleted --> add to Observable
 
     /**
      * Initializes ShoppingList by loading data into an observable list and a
@@ -66,7 +67,6 @@ public class ShoppingList {
      * @param items list of GroceryItem
      */
     private void addItemListToObservable(ArrayList<GroceryItem> items) {
-
         observableItems.addAll(items);
     }
 
@@ -119,7 +119,6 @@ public class ShoppingList {
      * @return grocery category
      */
     public GroceryCategory getGroceryCategory(String categoryName) {
-        //TODO: Think its better to work with observator pattern, but for now this should work fine
 
         Supplier<Stream<GroceryCategory>> stream = () ->
                 categoriesAndItems.keySet().stream()
@@ -136,12 +135,12 @@ public class ShoppingList {
     /**
      * Gets the corresponding grocery item to the parameter of a category.
      *
-     * @param category category of the item
+     * @param category        category of the item
      * @param groceryItemName name of the item
      * @return grocery item corresponding to the data
      */
     public GroceryItem getGroceryItem(GroceryCategory category,
-                                          String groceryItemName) {
+                                      String groceryItemName) {
 
         Supplier<Stream<GroceryItem>> items = () -> categoriesAndItems
                 .get(category).stream()
@@ -155,6 +154,7 @@ public class ShoppingList {
 
     /**
      * Removes the grocery item from the observable list and the hashmap.
+     *
      * @param item grocery item that shall be deleted
      */
     public void deleteGroceryItem(GroceryItem item) {

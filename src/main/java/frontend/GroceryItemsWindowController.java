@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
-import javafx.util.Duration;
 
 import java.util.Comparator;
 
@@ -150,6 +149,7 @@ public class GroceryItemsWindowController {
             ShoppingList.getInstance().deleteGroceryItem(selectedItem);
             enableEditingButtons();
         } catch (IllegalArgumentException e) {
+            e.printStackTrace();
             String message = "Löschen der Zutat nicht möglich. Es exsistie"
                     + "ren Rezepte, die diese Zutat benutzen";
             Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
@@ -198,8 +198,8 @@ public class GroceryItemsWindowController {
         GroceryCategory relatedCategory = groceryCategoryComboBox.
                 getSelectionModel().getSelectedItem();
         String newName = groceryItemTextField.getText();
-        int id = DataHandler.saveNewGroceryItem(relatedCategory, newName);
-        GroceryItem newItem = new GroceryItem(id, newName, relatedCategory);
+        GroceryItem newItem = DataHandler
+                .saveNewGroceryItem(relatedCategory, newName);
         ShoppingList.getInstance().addGroceryItem(newItem);
         focusTableOnNewItem(newItem);
     }
@@ -215,8 +215,8 @@ public class GroceryItemsWindowController {
         String inputName = groceryItemTextField.getText();
 
         selectedItem.setName(inputName);
-        selectedItem.setAffiliatedGroceryCategory(inputCategory);
-        DataHandler.changeGroceryItem(selectedItem, inputName, inputCategory);
+        selectedItem.setGroceryCategory(inputCategory);
+        DataHandler.updateGroceryItem(selectedItem, inputName, inputCategory);
     }
 
     /**

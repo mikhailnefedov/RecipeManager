@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Duration;
 
 public class RecipeCategoriesWindowController {
 
@@ -64,7 +63,7 @@ public class RecipeCategoriesWindowController {
      */
     private void loadDataIntoCategoryTable() {
         recipeCategoryTableIDColumn.setCellValueFactory(
-                new PropertyValueFactory<>("id"));
+                new PropertyValueFactory<>("abbreviation"));
         recipeCategoryTableNameColumn.setCellValueFactory(
                 new PropertyValueFactory<>("name"));
         recipeCategoryTable.setItems(getCategories());
@@ -110,7 +109,7 @@ public class RecipeCategoriesWindowController {
         activateNameTextfield();
         recipeCategoryNameTextField.setText(selectedCategory.getName());
         recipeCategoryIDTextField.setDisable(false);
-        recipeCategoryIDTextField.setText(selectedCategory.getId());
+        recipeCategoryIDTextField.setText(selectedCategory.getAbbreviation());
         deleteStylesFromTextfields();
     }
 
@@ -179,7 +178,7 @@ public class RecipeCategoriesWindowController {
     private boolean checkForDoubleExistence(String id, String categoryName) {
 
         boolean noDoubleExistence = true;
-        if (!ListOfRecipeCategories.getInstance().isIDNonExistent(id)) {
+        if (!ListOfRecipeCategories.getInstance().isAbbreviationNonExistent(id)) {
             colorTextFieldInErrorColor(recipeCategoryIDTextField);
             noDoubleExistence = false;
 
@@ -240,7 +239,7 @@ public class RecipeCategoriesWindowController {
     private void checkForJustAUserChange(String id, String categoryName) {
 
         RecipeCategory selectedCategory = getSelectedCategory();
-        String oldID = selectedCategory.getId();
+        String oldID = selectedCategory.getAbbreviation();
         String oldName = selectedCategory.getName();
 
         ListOfRecipeCategories categoriesList = ListOfRecipeCategories
@@ -250,7 +249,7 @@ public class RecipeCategoriesWindowController {
         boolean changeOnName = !oldName.equals(categoryName);
 
         if (changeOnId && !changeOnName) {
-            boolean correctChangeOnID = categoriesList.isIDNonExistent(id);
+            boolean correctChangeOnID = categoriesList.isAbbreviationNonExistent(id);
             if (correctChangeOnID) {
                 recipeCategorySaveButton.setDisable(false);
                 recipeCategoryErrorLabel.setVisible(false);
@@ -277,7 +276,7 @@ public class RecipeCategoriesWindowController {
                         + "vorkommen!");
             }
         } else if (changeOnId && changeOnName) {
-            boolean correctChangeOnID = categoriesList.isIDNonExistent(id);
+            boolean correctChangeOnID = categoriesList.isAbbreviationNonExistent(id);
             boolean correctChangeOnName = categoriesList
                     .isCategoryNameNonExistent(categoryName);
             if (correctChangeOnName && correctChangeOnID) {
@@ -355,8 +354,9 @@ public class RecipeCategoriesWindowController {
     public void createNewCategory() {
         String newCatName = recipeCategoryNameTextField.getText();
         String newID = recipeCategoryIDTextField.getText();
-        ListOfRecipeCategories.getInstance().addRecipeCategory(newID, newCatName);
-        DataHandler.saveNewRecipeCategory(newID, newCatName);
+        RecipeCategory recipeCategory = new RecipeCategory(newID, newCatName);
+        ListOfRecipeCategories.getInstance().addRecipeCategory(recipeCategory);
+        DataHandler.saveNewRecipeCategory(recipeCategory);
     }
 
     /**
@@ -366,13 +366,10 @@ public class RecipeCategoriesWindowController {
     private void changeCategory() {
 
         RecipeCategory selectedCategory = getSelectedCategory();
-        String oldID = selectedCategory.getId();
         String newID = recipeCategoryIDTextField.getText();
         String newName = recipeCategoryNameTextField.getText();
 
-        selectedCategory.setId(newID);
-        selectedCategory.setName(newName);
-        DataHandler.changeRecipeCategory(oldID, newID, newName);
+        DataHandler.updateRecipeCategory(selectedCategory, newID, newName);
     }
 
 
@@ -385,7 +382,7 @@ public class RecipeCategoriesWindowController {
         recipeCategoryDeleteButton.setDisable(false);
 
         RecipeCategory selectedCategory = getSelectedCategory();
-        recipeCategoryIDTextField.setText(selectedCategory.getId());
+        recipeCategoryIDTextField.setText(selectedCategory.getAbbreviation());
         recipeCategoryNameTextField.setText(selectedCategory.getName());
     }
 

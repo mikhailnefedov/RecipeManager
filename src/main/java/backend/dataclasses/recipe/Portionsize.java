@@ -16,7 +16,7 @@ public class Portionsize {
      * @param amount amount of portions.
      * @param unit String of unit of this portion.
      */
-    Portionsize(double amount, String unit) {
+    public Portionsize(double amount, String unit) {
         this.amount = amount;
         this.unit = PortionUnit.valueOf(unit);
     }
@@ -56,5 +56,13 @@ public class Portionsize {
         Portionen,      //portions
         Stücke,         //pieces
         Torte,          //cake
+    }
+
+    @Override
+    public String toString() {
+        return "Portionsize{" +
+                "amount=" + amount +
+                ", unit=" + unit +
+                '}';
     }
 }
