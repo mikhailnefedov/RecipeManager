@@ -5,8 +5,11 @@ import backend.dataclasses.recipe.Portionsize;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
+/**
+ * Converter for converting Portionsize <--> String.
+ */
 @Converter
-public class PortionSizeConverter implements
+public class PortionsizeConverter implements
         AttributeConverter<Portionsize, String> {
 
     @Override

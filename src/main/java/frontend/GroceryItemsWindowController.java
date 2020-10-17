@@ -214,8 +214,8 @@ public class GroceryItemsWindowController {
                 getSelectionModel().getSelectedItem();
         String inputName = groceryItemTextField.getText();
 
-        selectedItem.updateName(inputName);
-        selectedItem.updateAffiliatedGroceryCategory(inputCategory);
+        selectedItem.setName(inputName);
+        selectedItem.setGroceryCategory(inputCategory);
         DataHandler.updateGroceryItem(selectedItem, inputName, inputCategory);
     }
 

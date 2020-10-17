@@ -1,27 +1,22 @@
 package backend.data;
 
-import backend.dataclasses.recipe.uses.Quantity;
 import backend.dataclasses.recipe.Recipe;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import javax.persistence.EntityManager;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Reader for Recipe table from database.
+ * Handles the Recipe table from the database.
  */
 public final class RecipeHandler {
 
+    /**
+     * Unique SessionFactory from DataHandler.
+     */
     private static SessionFactory sessionFactory;
-
-    private static EntityManager entityManager;
 
     private RecipeHandler() {
     }
@@ -29,14 +24,20 @@ public final class RecipeHandler {
     /**
      * Initializes SessionFactory and EntityManager.
      *
-     * @param sF         SessionFactory of program
-     * @param entManager Entitymanager of program
+     * @param sF SessionFactory of program
      */
-    public static void initialize(SessionFactory sF, EntityManager entManager) {
+    public static void initialize(SessionFactory sF) {
         sessionFactory = sF;
-        entityManager = entManager;
     }
 
+    /**
+     * Gets a list with the saved recipes from the database. Usage for
+     * initialization. Use only combined with getting all the other data from
+     * the database.
+     *
+     * @param session current loading session (all categories, recipes, etc...)
+     * @return list of saved recipes
+     */
     public static ArrayList<Recipe> getRecipes(Session session) {
 
         List recipesTest = new ArrayList();

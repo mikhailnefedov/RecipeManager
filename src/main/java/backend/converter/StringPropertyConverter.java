@@ -5,7 +5,11 @@ import javafx.beans.property.StringProperty;
 
 import javax.persistence.AttributeConverter;
 
-public class StringPropertyConverter implements AttributeConverter<StringProperty, String> {
+/**
+ * Converter for converting StringProperty <--> String.
+ */
+public class StringPropertyConverter implements
+        AttributeConverter<StringProperty, String> {
 
     @Override
     public String convertToDatabaseColumn(StringProperty stringProperty) {

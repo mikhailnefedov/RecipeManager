@@ -4,7 +4,10 @@ import backend.dataclasses.recipe.uses.Quantity;
 
 import javax.persistence.AttributeConverter;
 
-public class QuantityConverter implements AttributeConverter<Quantity,String> {
+/**
+ * Converter for converting Quantity <--> String.
+ */
+public class QuantityConverter implements AttributeConverter<Quantity, String> {
 
     @Override
     public String convertToDatabaseColumn(Quantity quantity) {

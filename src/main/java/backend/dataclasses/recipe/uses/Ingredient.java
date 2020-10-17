@@ -1,15 +1,14 @@
 package backend.dataclasses.recipe.uses;
 
-import backend.dataclasses.groceries.GroceryCategory;
 import backend.dataclasses.groceries.GroceryItem;
 import backend.dataclasses.recipe.Recipe;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "uses")
 public class Ingredient {
-
 
     @Id
     @GeneratedValue
@@ -21,20 +20,20 @@ public class Ingredient {
     @ManyToOne
     @JoinColumn(name = "groceryitemID")
     private GroceryItem item;
-    @Transient
-    private GroceryCategory category;
     @Convert(converter = backend.converter.QuantityConverter.class)
     private Quantity quantity;
 
     public Ingredient() {
-
     }
 
-    public Ingredient(GroceryCategory category, GroceryItem item,
+    public Ingredient(GroceryItem item,
                       Quantity quantity) {
-        this.category = category;
         this.item = item;
         this.quantity = quantity;
+    }
+
+    public int getID() {
+        return id;
     }
 
     public String getCategoryString() {
@@ -51,5 +50,25 @@ public class Ingredient {
 
     public String getQuantity() {
         return quantity.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Ingredient other = (Ingredient) obj;
+        return Objects.equals(id, other.getID());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
