@@ -1,6 +1,5 @@
 package backend.dataclasses.recipe.uses;
 
-import java.util.HashMap;
 import java.util.Set;
 
 public class Quantity {
@@ -34,7 +33,7 @@ public class Quantity {
      *
      * @return Set of MeasurementUnits
      */
-    public Set<MeasurementUnits> getAllUnitMeasurements() {
+    public static Set<MeasurementUnits> getAllMeasurementUnits() {
         return Set.of(MeasurementUnits.values());
     }
 
@@ -45,6 +44,7 @@ public class Quantity {
         builder.append(" ");
         builder.append(unit.toString());
         return builder.toString();
+        //e.g. "2.0 Kg"
     }
 
     /**

@@ -5,8 +5,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 public class ListOfRecipeCategories {
 

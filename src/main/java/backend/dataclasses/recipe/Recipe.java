@@ -7,7 +7,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Models a recipe of the user.
@@ -23,7 +25,7 @@ public class Recipe {
     private int time;
     private boolean vegetarian;
     private ObservableList<Ingredient> ingredients;
-    //TODO: Implement data structure for preparation
+    private ArrayList<PreparationStep> preparation;
     private String comment;
 
     public Recipe() {
@@ -106,17 +108,17 @@ public class Recipe {
     }
 
     @OneToMany(mappedBy = "recipe")
-    public List<Ingredient> getIngredients() {
-        return ingredients;
+    public Set<Ingredient> getIngredients() {
+        return new HashSet<>(ingredients);
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients) {
+        this.ingredients = FXCollections.observableArrayList(ingredients);
     }
 
     @Transient
     public ObservableList<Ingredient> getObservableIngredients() {
         return ingredients;
-    }
-
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = FXCollections.observableArrayList(ingredients);
     }
 
     public String getComment() {

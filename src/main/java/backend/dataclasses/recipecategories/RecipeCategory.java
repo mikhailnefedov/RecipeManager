@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class RecipeCategory {
@@ -17,7 +18,6 @@ public class RecipeCategory {
     private StringProperty name;
 
     public RecipeCategory() {
-        //no-arg constructor for ORMLite
     }
 
     public RecipeCategory(String abbreviation, String name) {
@@ -35,9 +35,6 @@ public class RecipeCategory {
         return abbreviation.get();
     }
 
-    /**
-     * Use for changing/updating id of this object
-     */
     public void setAbbreviation(String abbreviation) {
         this.abbreviation.set(abbreviation);
     }
@@ -46,9 +43,6 @@ public class RecipeCategory {
         return name.get();
     }
 
-    /**
-     * Use for changing/updating name of this object
-     */
     public void setName(String name) {
         this.name.set(name);
     }
@@ -59,6 +53,26 @@ public class RecipeCategory {
 
     public StringProperty abbreviationProperty() {
         return abbreviation;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        RecipeCategory other = (RecipeCategory) obj;
+        return Objects.equals(id, other.getID());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 
 }
