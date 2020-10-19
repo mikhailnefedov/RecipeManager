@@ -1,19 +1,18 @@
 package frontend;
 
-import backend.dataclasses.recipe.uses.Ingredient;
 import backend.dataclasses.recipe.Portionsize;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
+import backend.dataclasses.recipe.uses.Ingredient;
 import backend.dataclasses.recipecategories.ListOfRecipeCategories;
 import backend.dataclasses.recipecategories.RecipeCategory;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
+import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -69,6 +68,23 @@ public class WindowController {
     private TableColumn<Ingredient, String> recipeTabIngredientItemColumn;
     @FXML
     private TableColumn<Ingredient, String> recipeTabIngredientQuantityColumn;
+    @FXML
+    private GridPane mainGridPane;
+
+    /**
+     * Loads fxml from path with german Localisation.
+     *
+     * @param fxml name of fxml resource
+     * @return loaded object hierarchy from fxml document.
+     * @throws IOException If resource not found
+     */
+    private static Parent loadFXML(String fxml) throws IOException {
+        Locale locale = new Locale("de", "DE");
+        String resourcePath = "RecipeManager";
+        ResourceBundle bundle = ResourceBundle.getBundle(resourcePath, locale);
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml + ".fxml"), bundle);
+        return fxmlLoader.load();
+    }
 
     /**
      * Initialization of window. Loads necessary data into the fxml components
@@ -77,6 +93,8 @@ public class WindowController {
     @FXML
     protected void initialize() {
         loadRecipesIntoTable();
+
+        loadWindowTasks();
     }
 
     /**
@@ -102,57 +120,14 @@ public class WindowController {
     }
 
     /**
-     * Loads fxml from path with german Localisation.
-     *
-     * @param fxml name of fxml resource
-     * @return loaded object hierarchy from fxml document.
-     * @throws IOException If resource not found
+     * Loads WindowTasks.fxml into the main gridpane.
      */
-    private static Parent loadFXML(String fxml) throws IOException {
-        Locale locale = new Locale("de", "DE");
-        String resourcePath = "RecipeManager";
-        ResourceBundle bundle = ResourceBundle.getBundle(resourcePath, locale);
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml + ".fxml"), bundle);
-        return fxmlLoader.load();
-    }
-
-    /**
-     * Opens a new window corresponding to the name of the fxml resource.
-     *
-     * @param nameOfFXMLFile name of fxml (without .fxml) that will be loaded
-     * @param titleOfWindow window title
-     * @throws IOException failed or interrupted I/O operations
-     */
-    public void openNewWindow(String nameOfFXMLFile, String titleOfWindow)
-            throws IOException {
-        Scene scene = new Scene(loadFXML(nameOfFXMLFile));
-        Stage stage = new Stage();
-        stage.setTitle(titleOfWindow);
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
-    }
-
-    /**
-     * Handler for a button click on categories. Opens new window for the
-     * recipe categories.
-     *
-     * @throws IOException failed or interrupted I/O operations
-     */
-    public void handleCategoriesClick() throws IOException {
-        openNewWindow("RecipeCategoriesWindow",
-                "Rezeptkategorien bearbeiten");
-    }
-
-    /**
-     * Handler for a button click on grocery items. Opens new window for the
-     * grocery items.
-     *
-     * @throws IOException failed or interrupted I/O operations
-     */
-    public void handleGroceryItemsClick() throws IOException {
-        openNewWindow("GroceryItemsWindow",
-                "Zutaten bearbeiten");
+    private void loadWindowTasks() {
+        try {
+            mainGridPane.add(loadFXML("WindowTasks"), 0, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
