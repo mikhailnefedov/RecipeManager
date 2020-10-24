@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="547.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.WindowRecipeTabController">
+    <GridPane layoutX="-1.0" layoutY="-1.0" prefHeight="547.0" prefWidth="500.0">
+        <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="96.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="397.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="397.0" minHeight="10.0" prefHeight="62.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="397.0" minHeight="10.0" prefHeight="160.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="397.0" minHeight="10.0" prefHeight="127.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="419.0" minHeight="10.0" prefHeight="136.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+        <Button fx:id="recipeSaveButton" disable="true" mnemonicParsing="false" text="%recipeButton.save" GridPane.rowIndex="5" />
+        <Button fx:id="recipeChangeButton" disable="true" mnemonicParsing="false" text="%recipeButton.change" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <Button fx:id="recipeDeleteButton" disable="true" mnemonicParsing="false" text="%recipeButton.delete" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+        <ComboBox fx:id="recipeCategoryComboBox" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="2" />
+        <TextField fx:id="recipeNameTextField" GridPane.columnIndex="1" />
+        <Label fx:id="recipeIDLabel" />
+        <CheckBox fx:id="recipeVegetarianCheckbox" mnemonicParsing="false" text="%recipe.vegetarian" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <TextField fx:id="recipeSourceTextField" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+        <Label text="%recipe.source" GridPane.rowIndex="2" />
+        <TextField fx:id="recipeTimeTextField" GridPane.rowIndex="1" />
+        <TableView fx:id="recipeTabIngredientTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="3">
+            <columns>
+                <TableColumn fx:id="recipeTabIngredientCategoryColumn" prefWidth="208.0" text="Category" />
+                <TableColumn fx:id="recipeTabIngredientItemColumn" prefWidth="132.0" text="Item" />
+                <TableColumn fx:id="recipeTabIngredientQuantityColumn" prefWidth="131.0" text="Quantity" />
+            </columns>
+        </TableView>
+        <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                <TextField fx:id="recipePortionsizeAmountTextField" layoutY="9.0" prefHeight="25.0" prefWidth="80.0" />
+            </AnchorPane>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                <ComboBox fx:id="recipePortionsizeUnitComboBox" layoutX="-1.0" layoutY="9.0" prefHeight="25.0" prefWidth="83.0" />
+            </AnchorPane>
+        </SplitPane>
+    </GridPane>
+</AnchorPane>

@@ -1,16 +1,14 @@
 package frontend;
 
-import backend.dataclasses.recipe.Portionsize;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
-import backend.dataclasses.recipe.uses.Ingredient;
-import backend.dataclasses.recipecategories.ListOfRecipeCategories;
-import backend.dataclasses.recipecategories.RecipeCategory;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 
@@ -18,8 +16,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Class Models controller of the main window.
@@ -39,37 +35,13 @@ public class WindowController {
     @FXML
     private TableColumn<Recipe, URL> sourceColumn; //source column " "
     @FXML
-    private Label recipeIDLabel; //ID label for shown recipe
-    @FXML
-    private TextField recipeNameTextField; //name textfield for shown recipe
-    @FXML
-    private ComboBox<String> recipeCategoryComboBox;
-    @FXML
-    private Button recipeSaveButton; //Button for saving changes/new recipe
-    @FXML
-    private Button recipeChangeButton; //Button for changing a recipe
-    @FXML
-    private Button recipeDeleteButton; //Button for deleting a recipe
-    @FXML
-    private TextField recipeTimeTextField; //Time textfield for shown recipe
-    @FXML
-    private CheckBox recipeVegetarianCheckbox; //Checkbox if recipe is vegetarian
-    @FXML
-    private TextField recipeSourceTextField; //textfield for shown recipe source
-    @FXML
-    private TextField recipePortionsizeAmountTextField;
-    @FXML
-    private ComboBox<Portionsize.PortionUnit> recipePortionsizeUnitComboBox;
-    @FXML
-    private TableView<Ingredient> recipeTabIngredientTable;
-    @FXML
-    private TableColumn<Ingredient, String> recipeTabIngredientCategoryColumn;
-    @FXML
-    private TableColumn<Ingredient, String> recipeTabIngredientItemColumn;
-    @FXML
-    private TableColumn<Ingredient, String> recipeTabIngredientQuantityColumn;
-    @FXML
     private GridPane mainGridPane;
+    @FXML
+    private Tab recipeTab;
+    /**
+     * Controller of the recipe attributes in the tab.
+     */
+    private WindowRecipeTabController recipeTabController;
 
     /**
      * Loads fxml from path with german Localisation.
@@ -95,6 +67,7 @@ public class WindowController {
         loadRecipesIntoTable();
 
         loadWindowTasks();
+        loadRecipeTab();
     }
 
     /**
@@ -131,63 +104,29 @@ public class WindowController {
     }
 
     /**
+     * Loads WindowRecipeTab.fxml into the tab.
+     */
+    private void loadRecipeTab() {
+        try {
+            Locale locale = new Locale("de", "DE");
+            String resourcePath = "RecipeManager";
+            ResourceBundle bundle = ResourceBundle.getBundle(resourcePath, locale);
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("WindowRecipeTab.fxml"), bundle);
+            recipeTab.setContent(fxmlLoader.load());
+            recipeTabController = fxmlLoader.getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * When a recipe on the table is clicked then the data of the recipe is
      * shown in the tab.
      */
     public void handleTableViewClickOnRecipe() {
-        activateRecipeButtons();
-        loadRecipeDataIntoTab();
+        Recipe selectedRecipe = recipeTable.getSelectionModel()
+                .getSelectedItem();
+        recipeTabController.loadRecipeDataIntoTab(selectedRecipe);
     }
-
-    /**
-     * Activates the three buttons for a recipe: save, change, new.
-     */
-    private void activateRecipeButtons() {
-        recipeSaveButton.setDisable(false);
-        recipeChangeButton.setDisable(false);
-        recipeDeleteButton.setDisable(false);
-    }
-
-    /**
-     * Loads the data of the recipe into the tab.
-     */
-    private void loadRecipeDataIntoTab() {
-        Recipe selectedRecipe = recipeTable.getSelectionModel().getSelectedItem();
-
-        recipeIDLabel.setText(Integer.toString(selectedRecipe.getID()));
-        recipeNameTextField.setText(selectedRecipe.getTitle());
-
-        Set<String> categories = ListOfRecipeCategories.
-                getInstance().getSavedRecipeCategories().stream().
-                map(RecipeCategory::getName).collect(Collectors.toSet());
-        recipeCategoryComboBox.getItems().addAll(categories);
-        recipeCategoryComboBox.getSelectionModel().
-                select(selectedRecipe.getRecipeCategory());
-
-
-        recipeTimeTextField.setText(Integer.toString(selectedRecipe.getTime()));
-
-        Portionsize portion = selectedRecipe.getPortionsize();
-        recipePortionsizeAmountTextField.setText(Double.toString(portion.getAmount()));
-        recipePortionsizeUnitComboBox.getItems().addAll(Portionsize.getPortionUnits());
-        recipePortionsizeUnitComboBox.getSelectionModel().
-                select(portion.getUnit());
-
-        if (selectedRecipe.isVegetarian()) {
-            recipeVegetarianCheckbox.setSelected(true);
-        } else {
-            recipeVegetarianCheckbox.setSelected(false);
-        }
-        recipeSourceTextField.setText(selectedRecipe.getSource());
-
-        recipeTabIngredientCategoryColumn.setCellValueFactory(new PropertyValueFactory<>("categoryString"));
-        recipeTabIngredientItemColumn.setCellValueFactory(new PropertyValueFactory<>("itemString"));
-        recipeTabIngredientQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-
-        recipeTabIngredientTable.setItems(selectedRecipe.getObservableIngredients());
-
-
-    }
-
 
 }
