@@ -2,6 +2,7 @@ package frontend;
 
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
+import frontend.RecipeTab.RecipeTabController;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,7 +42,7 @@ public class WindowController {
     /**
      * Controller of the recipe attributes in the tab.
      */
-    private WindowRecipeTabController recipeTabController;
+    private RecipeTabController recipeTabController;
 
     /**
      * Loads fxml from path with german Localisation.
@@ -104,14 +105,14 @@ public class WindowController {
     }
 
     /**
-     * Loads WindowRecipeTab.fxml into the tab.
+     * Loads RecipeTab.fxml into the tab.
      */
     private void loadRecipeTab() {
         try {
             Locale locale = new Locale("de", "DE");
             String resourcePath = "RecipeManager";
             ResourceBundle bundle = ResourceBundle.getBundle(resourcePath, locale);
-            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("WindowRecipeTab.fxml"), bundle);
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("RecipeTab/RecipeTab.fxml"), bundle);
             recipeTab.setContent(fxmlLoader.load());
             recipeTabController = fxmlLoader.getController();
         } catch (IOException e) {

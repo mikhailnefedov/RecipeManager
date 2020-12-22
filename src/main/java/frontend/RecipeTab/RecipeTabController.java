@@ -1,4 +1,4 @@
-package frontend;
+package frontend.RecipeTab;
 
 import backend.dataclasses.recipe.Portionsize;
 import backend.dataclasses.recipe.Recipe;
@@ -12,7 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class WindowRecipeTabController {
+public class RecipeTabController {
 
     @FXML
     private Label recipeIDLabel; //ID label for shown recipe
@@ -59,7 +59,7 @@ public class WindowRecipeTabController {
     /**
      * Loads the data of the recipe into the tab.
      */
-    void loadRecipeDataIntoTab(Recipe selectedRecipe) {
+    public void loadRecipeDataIntoTab(Recipe selectedRecipe) {
 
         recipeIDLabel.setText(Integer.toString(selectedRecipe.getID()));
         recipeNameTextField.setText(selectedRecipe.getTitle());
