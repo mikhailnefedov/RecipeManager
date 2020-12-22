@@ -44,6 +44,8 @@ public class WindowRecipeTabController {
     private TableColumn<Ingredient, String> recipeTabIngredientItemColumn;
     @FXML
     private TableColumn<Ingredient, String> recipeTabIngredientQuantityColumn;
+    @FXML
+    private TextArea recipeCommentTextArea;
 
     /**
      * Activates the three buttons for a recipe: save, change, new.
@@ -90,6 +92,8 @@ public class WindowRecipeTabController {
         recipeTabIngredientQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         recipeTabIngredientTable.setItems(selectedRecipe.getObservableIngredients());
+
+        recipeCommentTextArea.setText(selectedRecipe.getComment());
     }
 
 }
