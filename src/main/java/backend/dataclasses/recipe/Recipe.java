@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,7 +26,7 @@ public class Recipe {
     private int time;
     private boolean vegetarian;
     private ObservableList<Ingredient> ingredients;
-    private ArrayList<PreparationStep> preparation;
+    private List<PreparationStep> preparation;
     private String comment;
 
     public Recipe() {
@@ -116,6 +117,16 @@ public class Recipe {
         this.ingredients = FXCollections.observableArrayList(ingredients);
     }
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "recipeID")
+    public List<PreparationStep> getPreparation() {
+        return preparation;
+    }
+
+    public void setPreparation(List<PreparationStep> preparation) {
+        this.preparation = preparation;
+    }
+
     @Transient
     public ObservableList<Ingredient> getObservableIngredients() {
         return ingredients;
@@ -136,10 +147,11 @@ public class Recipe {
                 ", title='" + title + '\'' +
                 ", category=" + category +
                 ", source='" + source + '\'' +
-                ", " + portionsize.toString() +
+                ", portionsize=" + portionsize +
                 ", time=" + time +
                 ", vegetarian=" + vegetarian +
                 ", ingredients=" + ingredients +
+                ", preparation=" + preparation +
                 ", comment='" + comment + '\'' +
                 '}';
     }

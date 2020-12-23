@@ -13,6 +13,7 @@
         <class>backend.dataclasses.groceries.GroceryItem</class>
         <class>backend.dataclasses.groceries.GroceryCategory</class>
         <class>backend.dataclasses.recipe.Recipe</class>
+        <class>backend.dataclasses.recipe.PreparationStep</class>
 
         <class>backend.dataclasses.recipe.uses.Ingredient</class>
 
