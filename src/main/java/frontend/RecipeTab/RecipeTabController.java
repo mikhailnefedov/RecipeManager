@@ -8,6 +8,7 @@ import backend.dataclasses.recipecategories.RecipeCategory;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,6 +47,10 @@ public class RecipeTabController {
     private TableColumn<Ingredient, String> recipeTabIngredientQuantityColumn;
     @FXML
     private TextArea recipeCommentTextArea;
+    @FXML
+    private AnchorPane preparationStepWidget;
+    @FXML
+    private PreparationStepWidgetController preparationStepWidgetController;
 
     /**
      * Activates the three buttons for a recipe: save, change, new.
@@ -94,6 +99,8 @@ public class RecipeTabController {
         recipeTabIngredientTable.setItems(selectedRecipe.getObservableIngredients());
 
         recipeCommentTextArea.setText(selectedRecipe.getComment());
+
+        preparationStepWidgetController.initialize(selectedRecipe.getPreparation());
     }
 
 }

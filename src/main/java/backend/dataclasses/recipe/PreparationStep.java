@@ -2,6 +2,7 @@ package backend.dataclasses.recipe;
 
 import backend.dataclasses.recipecategories.RecipeCategory;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Objects;
@@ -11,10 +12,9 @@ public class PreparationStep {
 
     @Id
     private int id;
-
-    private int steporder;
-
-    private String steptext;
+    @Column(name = "steporder")
+    private int stepOrder;
+    private String instruction;
 
     public PreparationStep() {
 
@@ -22,6 +22,10 @@ public class PreparationStep {
 
     public int getId() {
         return id;
+    }
+
+    public String getInstruction() {
+        return instruction;
     }
 
     @Override
@@ -48,8 +52,8 @@ public class PreparationStep {
     public String toString() {
         return "PreparationStep{" +
                 "id=" + id +
-                ", steporder=" + steporder +
-                ", steptext='" + steptext + '\'' +
+                ", stepOrder=" + stepOrder +
+                ", instruction='" + instruction + '\'' +
                 '}';
     }
 }
