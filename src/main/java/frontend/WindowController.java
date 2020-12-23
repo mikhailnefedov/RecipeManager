@@ -11,6 +11,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
@@ -36,28 +37,7 @@ public class WindowController {
     @FXML
     private TableColumn<Recipe, URL> sourceColumn; //source column " "
     @FXML
-    private GridPane mainGridPane;
-    @FXML
-    private Tab recipeTab;
-    /**
-     * Controller of the recipe attributes in the tab.
-     */
-    private RecipeTabController recipeTabController;
-
-    /**
-     * Loads fxml from path with german Localisation.
-     *
-     * @param fxml name of fxml resource
-     * @return loaded object hierarchy from fxml document.
-     * @throws IOException If resource not found
-     */
-    private static Parent loadFXML(String fxml) throws IOException {
-        Locale locale = new Locale("de", "DE");
-        String resourcePath = "RecipeManager";
-        ResourceBundle bundle = ResourceBundle.getBundle(resourcePath, locale);
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml + ".fxml"), bundle);
-        return fxmlLoader.load();
-    }
+    private RecipeTabController recipeTabController; //injected controller
 
     /**
      * Initialization of window. Loads necessary data into the fxml components
@@ -66,9 +46,6 @@ public class WindowController {
     @FXML
     protected void initialize() {
         loadRecipesIntoTable();
-
-        loadWindowTasks();
-        loadRecipeTab();
     }
 
     /**
@@ -91,33 +68,6 @@ public class WindowController {
      */
     private ObservableList<Recipe> getRecipes() {
         return Recipes.getInstance().getSavedRecipes();
-    }
-
-    /**
-     * Loads WindowTasks.fxml into the main gridpane.
-     */
-    private void loadWindowTasks() {
-        try {
-            mainGridPane.add(loadFXML("WindowTasks"), 0, 1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Loads RecipeTab.fxml into the tab.
-     */
-    private void loadRecipeTab() {
-        try {
-            Locale locale = new Locale("de", "DE");
-            String resourcePath = "RecipeManager";
-            ResourceBundle bundle = ResourceBundle.getBundle(resourcePath, locale);
-            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("RecipeTab/RecipeTab.fxml"), bundle);
-            recipeTab.setContent(fxmlLoader.load());
-            recipeTabController = fxmlLoader.getController();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
