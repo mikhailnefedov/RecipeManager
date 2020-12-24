@@ -2,13 +2,10 @@ package frontend.RecipeTab;
 
 import backend.dataclasses.recipe.Portionsize;
 import backend.dataclasses.recipe.Recipe;
-import backend.dataclasses.recipe.uses.Ingredient;
 import backend.dataclasses.recipecategories.ListOfRecipeCategories;
 import backend.dataclasses.recipecategories.RecipeCategory;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,19 +35,11 @@ public class RecipeTabController {
     @FXML
     private ComboBox<Portionsize.PortionUnit> recipePortionsizeUnitComboBox;
     @FXML
-    private TableView<Ingredient> recipeTabIngredientTable;
-    @FXML
-    private TableColumn<Ingredient, String> recipeTabIngredientCategoryColumn;
-    @FXML
-    private TableColumn<Ingredient, String> recipeTabIngredientItemColumn;
-    @FXML
-    private TableColumn<Ingredient, String> recipeTabIngredientQuantityColumn;
-    @FXML
     private TextArea recipeCommentTextArea;
     @FXML
-    private AnchorPane preparationStepWidget;
-    @FXML
     private PreparationStepWidgetController preparationStepWidgetController;
+    @FXML
+    private IngredientTableWidgetController ingredientTableWidgetController;
 
     /**
      * Activates the three buttons for a recipe: save, change, new.
@@ -92,11 +81,7 @@ public class RecipeTabController {
         }
         recipeSourceTextField.setText(selectedRecipe.getSource());
 
-        recipeTabIngredientCategoryColumn.setCellValueFactory(new PropertyValueFactory<>("categoryString"));
-        recipeTabIngredientItemColumn.setCellValueFactory(new PropertyValueFactory<>("itemString"));
-        recipeTabIngredientQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-
-        recipeTabIngredientTable.setItems(selectedRecipe.getObservableIngredients());
+        ingredientTableWidgetController.showIngredients(selectedRecipe.getObservableIngredients());
 
         recipeCommentTextArea.setText(selectedRecipe.getComment());
 
