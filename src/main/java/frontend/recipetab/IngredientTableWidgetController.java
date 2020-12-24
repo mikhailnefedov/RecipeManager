@@ -1,4 +1,4 @@
-package frontend.RecipeTab;
+package frontend.recipetab;
 
 import backend.dataclasses.recipe.uses.Ingredient;
 import javafx.collections.ObservableList;

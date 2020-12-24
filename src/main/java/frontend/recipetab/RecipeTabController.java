@@ -1,4 +1,4 @@
-package frontend.RecipeTab;
+package frontend.recipetab;
 
 import backend.dataclasses.recipe.Portionsize;
 import backend.dataclasses.recipe.Recipe;

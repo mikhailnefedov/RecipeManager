@@ -1,10 +1,12 @@
-package frontend.RecipeTab;
+package frontend.recipetab;
 
 import backend.dataclasses.recipe.PreparationStep;
+import frontend.helper.WindowLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 
+import java.io.IOException;
 import java.util.List;
 
 public class PreparationStepWidgetController {
@@ -20,6 +22,11 @@ public class PreparationStepWidgetController {
     private int currentStep;
     private List<PreparationStep> preparationSteps;
 
+    @FXML
+    protected void initialize() {
+        editButton.setDisable(true);
+    }
+
     /**
      * Initializes the controller for a new recipe. Initializes the GUI of the
      * widget.
@@ -29,6 +36,7 @@ public class PreparationStepWidgetController {
     public void initialize(List<PreparationStep> preparationSteps) {
         currentStep = 0;
         this.preparationSteps = preparationSteps;
+        editButton.setDisable(false);
 
         if (preparationSteps == null || preparationSteps.size() == 0) {
             upButton.setDisable(true);
@@ -82,6 +90,15 @@ public class PreparationStepWidgetController {
         currentStep--;
         updateButtons();
         updateTextArea();
+    }
+
+    /**
+     * Opens a new window for editing the instructions.
+     * @throws IOException failed or interrupted I/O operations
+     */
+    public void openEditWindow() throws IOException {
+        WindowLoader.openNewWindow("recipetab/InstructionWidget",
+                "Editiere Anleitung");
     }
 
 

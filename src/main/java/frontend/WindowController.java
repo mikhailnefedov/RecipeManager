@@ -2,22 +2,14 @@ package frontend;
 
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
-import frontend.RecipeTab.RecipeTabController;
+import frontend.recipetab.RecipeTabController;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 /**
  * Class Models controller of the main window.
