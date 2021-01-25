@@ -5,10 +5,13 @@ import backend.dataclasses.recipe.uses.Ingredient;
 import backend.dataclasses.recipecategories.RecipeCategory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,7 +28,7 @@ public class Recipe {
     private int time;
     private boolean vegetarian;
     private ObservableList<Ingredient> ingredients;
-    private ArrayList<PreparationStep> preparation;
+    private List<PreparationStep> preparation;
     private String comment;
 
     public Recipe() {
@@ -116,6 +119,17 @@ public class Recipe {
         this.ingredients = FXCollections.observableArrayList(ingredients);
     }
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @Cascade(CascadeType.SAVE_UPDATE)
+    @JoinColumn(name = "recipeID")
+    public List<PreparationStep> getPreparation() {
+        return preparation;
+    }
+
+    public void setPreparation(List<PreparationStep> preparation) {
+        this.preparation = preparation;
+    }
+
     @Transient
     public ObservableList<Ingredient> getObservableIngredients() {
         return ingredients;
@@ -136,10 +150,11 @@ public class Recipe {
                 ", title='" + title + '\'' +
                 ", category=" + category +
                 ", source='" + source + '\'' +
-                ", " + portionsize.toString() +
+                ", portionsize=" + portionsize +
                 ", time=" + time +
                 ", vegetarian=" + vegetarian +
                 ", ingredients=" + ingredients +
+                ", preparation=" + preparation +
                 ", comment='" + comment + '\'' +
                 '}';
     }

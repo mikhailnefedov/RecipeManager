@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="179.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.recipetab.IngredientTableWidgetController">
+   <children>
+      <TableView fx:id="ingredientTable" prefHeight="179.0" prefWidth="471.0">
+        <columns>
+          <TableColumn fx:id="categoryColumn" prefWidth="150.0" text="Category" />
+          <TableColumn fx:id="itemColumn" minWidth="0.0" prefWidth="185.0" text="Item" />
+            <TableColumn fx:id="quantityColumn" minWidth="0.0" prefWidth="102.0" text="Quantity" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

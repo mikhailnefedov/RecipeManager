@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="800.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.WindowController">
+<AnchorPane prefHeight="800.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.WindowController">
     <GridPane layoutY="1.0" prefHeight="800.0" prefWidth="700.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
@@ -35,76 +44,17 @@
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
         </TableView>
-        <GridPane GridPane.rowIndex="1">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="83.0" minWidth="10.0" prefWidth="49.0" />
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="126.0" minWidth="10.0" prefWidth="121.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="62.0" minWidth="10.0" prefWidth="41.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <Button mnemonicParsing="false" onAction="#handleCategoriesClick" text="%task.recipeCategories" GridPane.columnIndex="1" />
-            <Button mnemonicParsing="false" onAction="#handleGroceryItemsClick" text="%task.groceryItems" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" text="%recipeButton.newRecipe" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        </GridPane>
         <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <Tab text="%tab.recipe">
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                    <GridPane layoutX="-1.0" layoutY="-1.0" prefHeight="574.0" prefWidth="500.0">
-                        <columnConstraints>
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        </columnConstraints>
-                        <rowConstraints>
-                            <RowConstraints maxHeight="96.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="397.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="397.0" minHeight="10.0" prefHeight="62.0" vgrow="SOMETIMES" />
-                     <RowConstraints maxHeight="397.0" minHeight="10.0" prefHeight="160.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="397.0" minHeight="10.0" prefHeight="127.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="419.0" minHeight="10.0" prefHeight="136.0" vgrow="SOMETIMES" />
-                        </rowConstraints>
-                        <Button fx:id="recipeSaveButton" disable="true" mnemonicParsing="false" text="%recipeButton.save" GridPane.rowIndex="5" />
-                        <Button fx:id="recipeChangeButton" disable="true" mnemonicParsing="false" text="%recipeButton.change" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Button fx:id="recipeDeleteButton" disable="true" mnemonicParsing="false" text="%recipeButton.delete" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                        <ComboBox fx:id="recipeCategoryComboBox" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="2" />
-                        <TextField fx:id="recipeNameTextField" GridPane.columnIndex="1" />
-                        <Label fx:id="recipeIDLabel" />
-                        <CheckBox fx:id="recipeVegetarianCheckbox" mnemonicParsing="false" text="%recipe.vegetarian" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <TextField fx:id="recipeSourceTextField" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-                        <Label text="%recipe.source" GridPane.rowIndex="2" />
-                        <TextField fx:id="recipeTimeTextField" GridPane.rowIndex="1" />
-                  <TableView fx:id="recipeTabIngredientTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="3">
-                    <columns>
-                      <TableColumn fx:id="recipeTabIngredientCategoryColumn" prefWidth="208.0" text="Category" />
-                      <TableColumn fx:id="recipeTabIngredientItemColumn" prefWidth="132.0" text="Item" />
-                        <TableColumn fx:id="recipeTabIngredientQuantityColumn" prefWidth="131.0" text="Quantity" />
-                    </columns>
-                  </TableView>
-                        <SplitPane dividerPositions="0.5" prefHeight="160.0"
-                                   prefWidth="200.0" GridPane.columnIndex="1"
-                                   GridPane.rowIndex="1">
-                            <AnchorPane minHeight="0.0" minWidth="0.0"
-                                        prefHeight="160.0" prefWidth="100.0">
-                                <TextField
-                                        fx:id="recipePortionsizeAmountTextField"
-                                        layoutY="9.0" prefHeight="25.0"
-                                        prefWidth="80.0"/>
-                            </AnchorPane>
-                            <AnchorPane minHeight="0.0" minWidth="0.0"
-                                        prefHeight="160.0" prefWidth="100.0">
-                                <ComboBox
-                                        fx:id="recipePortionsizeUnitComboBox"
-                                        layoutX="-1.0" layoutY="9.0"
-                                        prefHeight="25.0" prefWidth="83.0"/>
-                            </AnchorPane>
-                        </SplitPane>
-                    </GridPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
+                            prefWidth="200.0">
+                    <fx:include fx:id="recipeTab"
+                                source="RecipeTab/RecipeTab.fxml"/>
                 </AnchorPane>
             </Tab>
         </TabPane>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+            <fx:include source="WindowTasks.fxml"/>
+        </AnchorPane>
     </GridPane>
 </AnchorPane>

@@ -1,9 +1,11 @@
 package backend.data;
 
 import backend.dataclasses.recipe.Recipe;
+import backend.dataclasses.recipecategories.RecipeCategory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +50,21 @@ public final class RecipeHandler {
         }
 
         return (ArrayList<Recipe>) recipesTest;
+    }
+
+    /**
+     * Updates record of recipe.
+     *
+     * @param recipe recipe itself
+     */
+    public static void updateRecipe(Recipe recipe) {
+
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        //Update here
+        session.update(recipe);
+        tx.commit();
+        session.close();
     }
 
 }
