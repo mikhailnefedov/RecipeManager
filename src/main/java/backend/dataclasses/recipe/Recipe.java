@@ -5,6 +5,8 @@ import backend.dataclasses.recipe.uses.Ingredient;
 import backend.dataclasses.recipecategories.RecipeCategory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -118,6 +120,7 @@ public class Recipe {
     }
 
     @OneToMany(fetch = FetchType.EAGER)
+    @Cascade(CascadeType.SAVE_UPDATE)
     @JoinColumn(name = "recipeID")
     public List<PreparationStep> getPreparation() {
         return preparation;

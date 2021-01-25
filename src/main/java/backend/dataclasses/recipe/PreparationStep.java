@@ -1,17 +1,14 @@
 package backend.dataclasses.recipe;
 
-import backend.dataclasses.recipecategories.RecipeCategory;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 public class PreparationStep {
 
     @Id
-    private int id;
+    @GeneratedValue
+    private Integer id;
     @Column(name = "steporder")
     private int stepOrder;
     private String instruction;
@@ -26,6 +23,10 @@ public class PreparationStep {
 
     public String getInstruction() {
         return instruction;
+    }
+
+    public void setInstruction(String instruction) {
+        this.instruction = instruction;
     }
 
     @Override

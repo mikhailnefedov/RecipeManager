@@ -1,5 +1,6 @@
 package frontend.recipetab;
 
+import backend.data.RecipeHandler;
 import backend.dataclasses.recipe.Recipe;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,6 +22,7 @@ public class RecipeTabController {
     private PreparationStepWidgetController preparationStepWidgetController;
     @FXML
     private IngredientTableWidgetController ingredientTableWidgetController;
+    private Recipe currentRecipe;
 
     /**
      * Activates the three buttons for a recipe: save, change, new.
@@ -36,13 +38,18 @@ public class RecipeTabController {
      */
     public void loadRecipeDataIntoTab(Recipe selectedRecipe) {
 
-        recipeDetailsWidgetController.initializeRecipeDetails(selectedRecipe);
+        currentRecipe = selectedRecipe;
+        recipeDetailsWidgetController.initializeRecipeDetails(currentRecipe);
 
-        ingredientTableWidgetController.showIngredients(selectedRecipe.getObservableIngredients());
+        ingredientTableWidgetController.showIngredients(currentRecipe.getObservableIngredients());
 
-        recipeCommentTextArea.setText(selectedRecipe.getComment());
+        recipeCommentTextArea.setText(currentRecipe.getComment());
 
-        preparationStepWidgetController.initialize(selectedRecipe.getPreparation());
+        preparationStepWidgetController.initialize(currentRecipe.getPreparation());
+    }
+
+    public void saveChanges() {
+        RecipeHandler.updateRecipe(currentRecipe);
     }
 
 }

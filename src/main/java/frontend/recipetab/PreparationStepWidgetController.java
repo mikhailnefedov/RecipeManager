@@ -18,6 +18,7 @@ public class PreparationStepWidgetController {
     private Button editButton;
     @FXML
     private Button downButton;
+    private InstructionWidgetController instructionEditWidgetController;
 
     private int currentStep;
     private List<PreparationStep> preparationSteps;
@@ -94,11 +95,15 @@ public class PreparationStepWidgetController {
 
     /**
      * Opens a new window for editing the instructions.
+     *
      * @throws IOException failed or interrupted I/O operations
      */
     public void openEditWindow() throws IOException {
-        WindowLoader.openNewWindow("recipetab/InstructionWidget",
-                "Editiere Anleitung");
+        instructionEditWidgetController = (InstructionWidgetController)
+                WindowLoader.openNewWindowReturnController(
+                        "recipetab/InstructionWidget",
+                        "Editiere Anleitung");
+        instructionEditWidgetController.initializeInstructions(preparationSteps);
     }
 
 
