@@ -11,29 +11,29 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="96.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.recipetab.PreparationStepWidgetController">
     <GridPane prefHeight="96.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="469.0" minWidth="10.0" prefWidth="469.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="245.0" minWidth="10.0" prefWidth="31.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="470.0" minWidth="8.0" percentWidth="95.0" prefWidth="19.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="245.0" minWidth="10.0" percentWidth="5.0" prefWidth="229.0" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
-        <Button fx:id="upButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#previousInstruction" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1">
+        <Button fx:id="upButton" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#previousInstruction" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1">
             <graphic>
                 <SVGPath content="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" fillRule="EVEN_ODD" />
             </graphic>
         </Button>
-        <Button fx:id="downButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#nextInstruction" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <Button fx:id="downButton" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#nextInstruction" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <graphic>
                 <SVGPath content="M16.707 10.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l4.293-4.293a1 1 0 011.414 0z" fillRule="EVEN_ODD" />
             </graphic>
         </Button>
-        <Button fx:id="editButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#openEditWindow" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <Button fx:id="editButton" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#openEditWindow" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <graphic>
                 <SVGPath content="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
             </graphic>
         </Button>
-        <TextArea fx:id="instructionTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="3" />
+        <TextArea fx:id="instructionTextArea" disable="true" prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="3" />
     </GridPane>
 </AnchorPane>

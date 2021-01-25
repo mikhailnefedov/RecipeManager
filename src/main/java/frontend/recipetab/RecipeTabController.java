@@ -11,7 +11,7 @@ public class RecipeTabController {
     @FXML
     private Button recipeSaveButton; //Button for saving changes/new recipe
     @FXML
-    private Button recipeChangeButton; //Button for changing a recipe
+    private Button recipeEditButton; //Button for changing a recipe
     @FXML
     private Button recipeDeleteButton; //Button for deleting a recipe
     @FXML
@@ -25,11 +25,19 @@ public class RecipeTabController {
     private Recipe currentRecipe;
 
     /**
-     * Activates the three buttons for a recipe: save, change, new.
+     * Enables the editing of the values of this widget components.
      */
-    private void activateRecipeButtons() {
-        recipeSaveButton.setDisable(false);
-        recipeChangeButton.setDisable(false);
+    public void enableEdit() {
+        recipeCommentTextArea.setDisable(false);
+        recipeDetailsWidgetController.enableEdit();
+        preparationStepWidgetController.enableEdit();
+    }
+
+    /**
+     * Enables the edit and delete button of this widget.
+     */
+    private void enableChangeButtons() {
+        recipeEditButton.setDisable(false);
         recipeDeleteButton.setDisable(false);
     }
 
@@ -46,10 +54,23 @@ public class RecipeTabController {
         recipeCommentTextArea.setText(currentRecipe.getComment());
 
         preparationStepWidgetController.initialize(currentRecipe.getPreparation());
+
+        enableChangeButtons();
     }
 
     public void saveChanges() {
         RecipeHandler.updateRecipe(currentRecipe);
+
+        disableEdit();
+    }
+
+    /**
+     * Disables the editing of the values of this widget components.
+     */
+    private void disableEdit() {
+        recipeCommentTextArea.setDisable(true);
+        recipeDetailsWidgetController.disableEdit();
+        preparationStepWidgetController.disableEdit();
     }
 
 }

@@ -23,8 +23,17 @@ public class PreparationStepWidgetController {
     private int currentStep;
     private List<PreparationStep> preparationSteps;
 
-    @FXML
-    protected void initialize() {
+    /**
+     * Enables the editing of the values of this widget components.
+     */
+    public void enableEdit() {
+        editButton.setDisable(false);
+    }
+
+    /**
+     * Disables the editing of the values of this widget components.
+     */
+    public void disableEdit() {
         editButton.setDisable(true);
     }
 
@@ -37,7 +46,6 @@ public class PreparationStepWidgetController {
     public void initialize(List<PreparationStep> preparationSteps) {
         currentStep = 0;
         this.preparationSteps = preparationSteps;
-        editButton.setDisable(false);
 
         if (preparationSteps == null || preparationSteps.size() == 0) {
             upButton.setDisable(true);

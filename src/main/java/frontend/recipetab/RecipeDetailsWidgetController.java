@@ -85,4 +85,33 @@ public class RecipeDetailsWidgetController {
         }
 
     }
+
+    /**
+     * Enables the editing of the values of this widget components.
+     */
+    public void enableEdit() {
+        setDisableValueOfComponents(false);
+    }
+
+    /**
+     * Disables the editing of the values of this widget components.
+     */
+    public void disableEdit() {
+        setDisableValueOfComponents(true);
+    }
+
+    /**
+     * Sets the disable attribute of this widget components.
+     *
+     * @param bool false for enabling components | true for disabling
+     */
+    private void setDisableValueOfComponents(boolean bool) {
+        nameTextField.setDisable(bool);
+        categoryComboBox.setDisable(bool);
+        timeTextField.setDisable(bool);
+        vegetarianCheckBox.setDisable(bool);
+        sourceTextField.setDisable(bool);
+        portionsizeAmountTextField.setDisable(bool);
+        portionsizeUnitComboBox.setDisable(bool);
+    }
 }
