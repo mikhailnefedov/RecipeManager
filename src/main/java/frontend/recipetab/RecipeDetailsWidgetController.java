@@ -4,6 +4,8 @@ import backend.dataclasses.recipe.Portionsize;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipecategories.ListOfRecipeCategories;
 import backend.dataclasses.recipecategories.RecipeCategory;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -31,6 +33,13 @@ public class RecipeDetailsWidgetController {
     private TextField portionsizeAmountTextField;
     @FXML
     private ComboBox<Portionsize.PortionUnit> portionsizeUnitComboBox;
+    private BooleanProperty changeDetected;
+
+    @FXML
+    public void initialize() {
+        changeDetected = new SimpleBooleanProperty();
+    }
+
 
     /**
      * Displays the details of the selected recipe.
@@ -45,6 +54,8 @@ public class RecipeDetailsWidgetController {
         initializeVegetarianCheckbox(selectedRecipe.isVegetarian());
         sourceTextField.setText(selectedRecipe.getSource());
         initializePortionsize(selectedRecipe.getPortionsize());
+
+        changeDetected.setValue(false);
     }
 
     /**
@@ -113,5 +124,13 @@ public class RecipeDetailsWidgetController {
         sourceTextField.setDisable(bool);
         portionsizeAmountTextField.setDisable(bool);
         portionsizeUnitComboBox.setDisable(bool);
+    }
+
+    public BooleanProperty getChangeDetected() {
+        return changeDetected;
+    }
+
+    public void onChange() {
+        changeDetected.setValue(true);
     }
 }

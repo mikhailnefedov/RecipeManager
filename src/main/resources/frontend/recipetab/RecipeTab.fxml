@@ -24,9 +24,8 @@
             <RowConstraints maxHeight="397.0" minHeight="10.0" prefHeight="56.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="419.0" minHeight="10.0" prefHeight="84.0" vgrow="SOMETIMES" />
         </rowConstraints>
-        <Button fx:id="recipeSaveButton" disable="true" mnemonicParsing="false" onAction="#saveChanges" text="%recipeButton.save" GridPane.rowIndex="6" />
-        <Button fx:id="recipeEditButton" disable="true" mnemonicParsing="false" onAction="#enableEdit" text="%recipeButton.change" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-        <Button fx:id="recipeDeleteButton" disable="true" mnemonicParsing="false" text="%recipeButton.delete" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+        <Button fx:id="recipeSaveButton" disable="true" mnemonicParsing="false" onAction="#saveChanges" text="\%recipeButton.save" GridPane.rowIndex="6" />
+        <Button fx:id="recipeEditButton" disable="true" mnemonicParsing="false" onAction="#enableEdit" text="%recipeButton.change" GridPane.columnIndex="2" GridPane.rowIndex="6" />
         <Label fx:id="recipeIDLabel" />
       <TextArea fx:id="recipeCommentTextArea" disable="true" prefHeight="38.0" prefWidth="356.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
       <Label text="%recipe.comment" GridPane.rowIndex="5" />
