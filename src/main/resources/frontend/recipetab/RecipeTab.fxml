@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -11,9 +10,9 @@
 <AnchorPane prefHeight="547.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.recipetab.RecipeTabController">
     <GridPane layoutX="-1.0" layoutY="-1.0" prefHeight="547.0" prefWidth="500.0">
         <columnConstraints>
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="33.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="34.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="33.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints maxHeight="96.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
@@ -24,23 +23,11 @@
             <RowConstraints maxHeight="397.0" minHeight="10.0" prefHeight="56.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="419.0" minHeight="10.0" prefHeight="84.0" vgrow="SOMETIMES" />
         </rowConstraints>
-        <Button fx:id="recipeSaveButton" disable="true" mnemonicParsing="false" onAction="#saveChanges" text="\%recipeButton.save" GridPane.rowIndex="6" />
-        <Button fx:id="recipeEditButton" disable="true" mnemonicParsing="false" onAction="#enableEdit" text="%recipeButton.change" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+         <fx:include fx:id="preparationStepWidget" source="PreparationStepWidget.fxml" GridPane.columnSpan="2147483647" GridPane.rowIndex="4" />
+        <Button fx:id="recipeSaveButton" disable="true" mnemonicParsing="false" onAction="#saveChanges" text="%recipeButton.save" GridPane.columnIndex="1" GridPane.rowIndex="6" />
         <Label fx:id="recipeIDLabel" />
-      <TextArea fx:id="recipeCommentTextArea" disable="true" prefHeight="38.0" prefWidth="356.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
-      <Label text="%recipe.comment" GridPane.rowIndex="5" />
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="4">
-            <fx:include fx:id="preparationStepWidget" source="PreparationStepWidget.fxml" />
-        </AnchorPane>
-      <AnchorPane prefHeight="179.0" prefWidth="518.0" GridPane.columnSpan="3" GridPane.rowIndex="3">
-         <children>
-            <fx:include fx:id="ingredientTableWidget" source="IngredientTableWidget.fxml" />
-         </children>
-      </AnchorPane>
-      <AnchorPane prefHeight="140.0" prefWidth="488.0" GridPane.columnSpan="3" GridPane.rowSpan="3">
-         <children>
-            <fx:include fx:id="recipeDetailsWidget" source="RecipeDetailsWidget.fxml" />
-         </children>
-      </AnchorPane>
+      <fx:include fx:id="commentWidget" source="CommentWidget.fxml" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
+      <fx:include fx:id="ingredientTableWidget" source="IngredientTableWidget.fxml" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
+      <fx:include fx:id="recipeDetailsWidget" source="RecipeDetailsWidget.fxml" GridPane.columnSpan="2147483647" GridPane.rowSpan="3" />
     </GridPane>
 </AnchorPane>

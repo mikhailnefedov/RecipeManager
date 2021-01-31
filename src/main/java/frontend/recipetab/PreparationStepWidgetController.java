@@ -2,7 +2,9 @@ package frontend.recipetab;
 
 import backend.dataclasses.recipe.PreparationStep;
 import frontend.helper.WindowLoader;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -24,6 +26,13 @@ public class PreparationStepWidgetController {
 
     private IntegerProperty currentStep;
     private List<PreparationStep> preparationSteps;
+
+    private BooleanProperty changeDetected;
+
+    @FXML
+    public void initialize() {
+        changeDetected = new SimpleBooleanProperty(false);
+    }
 
     /**
      * Enables the editing of the values of this widget components.
@@ -112,6 +121,11 @@ public class PreparationStepWidgetController {
                         "recipetab/InstructionWidget",
                         "Editiere Anleitung");
         instructionEditWidgetController.initializeInstructions(preparationSteps);
+        changeDetected.bind(instructionEditWidgetController.getChangeDetected());
+    }
+
+    public BooleanProperty getChangeDetected() {
+        return changeDetected;
     }
 
 }

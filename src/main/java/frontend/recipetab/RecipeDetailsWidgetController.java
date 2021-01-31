@@ -133,4 +133,8 @@ public class RecipeDetailsWidgetController {
     public void onChange() {
         changeDetected.setValue(true);
     }
+
+    public void resetChangeDetected() {
+        changeDetected.setValue(false);
+    }
 }

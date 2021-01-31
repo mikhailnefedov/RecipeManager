@@ -1,6 +1,8 @@
 package frontend.recipetab;
 
 import backend.dataclasses.recipe.PreparationStep;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
@@ -15,6 +17,7 @@ import java.util.List;
  */
 public class InstructionWidgetController {
 
+    private BooleanProperty changeDetected;
     @FXML
     private VBox instructionVBox;
     @FXML
@@ -22,6 +25,11 @@ public class InstructionWidgetController {
     private List<PreparationStep> instructions;
     @FXML
     private BorderPane addButtonPane;
+
+    @FXML
+    public void initialize() {
+        changeDetected = new SimpleBooleanProperty(false);
+    }
 
     /**
      * Loads the preparations steps into the frontend.
@@ -71,8 +79,14 @@ public class InstructionWidgetController {
                     && pStep.getInstruction() != null
                     && pStep.getInstruction().length() > 0) {
                 instructions.add(pStep);
+
+                changeDetected.setValue(true);
             }
         }
+    }
+
+    public BooleanProperty getChangeDetected() {
+        return changeDetected;
     }
 
     /**
@@ -84,6 +98,7 @@ public class InstructionWidgetController {
 
         /**
          * Sets the frontend specifications.
+         *
          * @param step preparation step of the textarea
          */
         PreparationStepTextArea(PreparationStep step) {
@@ -102,13 +117,16 @@ public class InstructionWidgetController {
             this.setText(step.getInstruction());
             this.setWrapText(true);
 
-            this.setOnKeyTyped(inputMethodEvent ->
-                    preparationStep.setInstruction(this.getText())
+            this.setOnKeyTyped(inputMethodEvent -> {
+                        preparationStep.setInstruction(this.getText());
+                        changeDetected.setValue(true);
+                    }
             );
         }
 
         /**
          * Returns the PreparationStep that the object holds.
+         *
          * @return PreparationStep itself
          */
         public PreparationStep getPreparationStep() {
