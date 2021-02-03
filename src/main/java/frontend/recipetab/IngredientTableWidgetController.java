@@ -77,8 +77,6 @@ public class IngredientTableWidgetController {
 
     }
 
-    //TODO: erst löschen wenn wirklich speichern gedrückt wurde
-
     /**
      * Deletes the selected ingredient from the recipe.
      */
