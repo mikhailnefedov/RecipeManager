@@ -1,20 +1,12 @@
 package frontend.recipetab;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 
-public class CommentWidgetController {
+public class CommentWidgetController extends RecipeWidgetsController {
 
     @FXML
     private TextArea commentTextArea;
-    private BooleanProperty changeDetected;
-
-    @FXML
-    public void initialize() {
-        changeDetected = new SimpleBooleanProperty(false);
-    }
 
     /**
      * Sets the comment into the comment TextArea.
@@ -30,15 +22,6 @@ public class CommentWidgetController {
      */
     public void enableEdit() {
         commentTextArea.setDisable(false);
-    }
-
-    /**
-     * Gets the changeDetected property.
-     *
-     * @return true, if user edit happened | false, else
-     */
-    public BooleanProperty getChangeDetected() {
-        return changeDetected;
     }
 
     /**

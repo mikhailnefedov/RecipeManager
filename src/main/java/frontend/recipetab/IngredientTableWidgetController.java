@@ -3,8 +3,6 @@ package frontend.recipetab;
 import backend.data.DataHandler;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.uses.Ingredient;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -13,7 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.ArrayList;
 
-public class IngredientTableWidgetController {
+public class IngredientTableWidgetController extends RecipeWidgetsController {
     @FXML
     private TableView<Ingredient> ingredientTable;
     @FXML
@@ -28,7 +26,6 @@ public class IngredientTableWidgetController {
     private Button editButton;
     @FXML
     private Button deleteButton;
-    private BooleanProperty changeDetected;
     private Recipe recipe;
     private ArrayList<Ingredient> ingredientsToRemove;
 
@@ -36,12 +33,12 @@ public class IngredientTableWidgetController {
      * Initialization of IngredientTabWidget. Sets the cell values of the table.
      */
     @FXML
-    protected void initialize() {
+    public void initialize() {
+        super.initialize();
+
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("categoryString"));
         itemColumn.setCellValueFactory(new PropertyValueFactory<>("itemString"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-
-        changeDetected = new SimpleBooleanProperty(false);
 
         ingredientsToRemove = new ArrayList<>();
     }
@@ -63,10 +60,6 @@ public class IngredientTableWidgetController {
     public void showIngredients(Recipe recipe) {
         this.recipe = recipe;
         ingredientTable.setItems(recipe.getObservableIngredients());
-    }
-
-    public BooleanProperty getChangeDetected() {
-        return changeDetected;
     }
 
     public void addIngredient() {

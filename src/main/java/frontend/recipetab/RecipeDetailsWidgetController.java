@@ -4,8 +4,6 @@ import backend.dataclasses.recipe.Portionsize;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipecategories.ListOfRecipeCategories;
 import backend.dataclasses.recipecategories.RecipeCategory;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -17,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * Controller for widget that shows most of the recipe details to the user.
  */
-public class RecipeDetailsWidgetController {
+public class RecipeDetailsWidgetController extends RecipeWidgetsController {
 
     @FXML
     private TextField nameTextField; //name textfield for shown recipe
@@ -33,13 +31,6 @@ public class RecipeDetailsWidgetController {
     private TextField portionsizeAmountTextField;
     @FXML
     private ComboBox<Portionsize.PortionUnit> portionsizeUnitComboBox;
-    private BooleanProperty changeDetected;
-
-    @FXML
-    public void initialize() {
-        changeDetected = new SimpleBooleanProperty();
-    }
-
 
     /**
      * Displays the details of the selected recipe.
@@ -54,8 +45,6 @@ public class RecipeDetailsWidgetController {
         initializeVegetarianCheckbox(selectedRecipe.isVegetarian());
         sourceTextField.setText(selectedRecipe.getSource());
         initializePortionsize(selectedRecipe.getPortionsize());
-
-        changeDetected.setValue(false);
     }
 
     /**
@@ -94,7 +83,6 @@ public class RecipeDetailsWidgetController {
         } else {
             vegetarianCheckBox.setSelected(false);
         }
-
     }
 
     /**
@@ -126,15 +114,8 @@ public class RecipeDetailsWidgetController {
         portionsizeUnitComboBox.setDisable(bool);
     }
 
-    public BooleanProperty getChangeDetected() {
-        return changeDetected;
-    }
-
     public void onChange() {
         changeDetected.setValue(true);
     }
 
-    public void resetChangeDetected() {
-        changeDetected.setValue(false);
-    }
 }

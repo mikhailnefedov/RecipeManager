@@ -1,8 +1,6 @@
 package frontend.recipetab;
 
 import backend.dataclasses.recipe.PreparationStep;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
@@ -15,9 +13,8 @@ import java.util.List;
 /**
  * Controller for InstructionWidget.fxml
  */
-public class InstructionWidgetController {
+public class InstructionWidgetController extends RecipeWidgetsController {
 
-    private BooleanProperty changeDetected;
     @FXML
     private VBox instructionVBox;
     @FXML
@@ -25,11 +22,6 @@ public class InstructionWidgetController {
     private List<PreparationStep> instructions;
     @FXML
     private BorderPane addButtonPane;
-
-    @FXML
-    public void initialize() {
-        changeDetected = new SimpleBooleanProperty(false);
-    }
 
     /**
      * Loads the preparations steps into the frontend.
@@ -83,10 +75,6 @@ public class InstructionWidgetController {
                 changeDetected.setValue(true);
             }
         }
-    }
-
-    public BooleanProperty getChangeDetected() {
-        return changeDetected;
     }
 
     /**
