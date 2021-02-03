@@ -33,6 +33,7 @@ public class RecipeTabController {
      */
     private void bindChangeDetected() {
         changeDetected.bind(recipeDetailsWidgetController.getChangeDetected()
+                .or(ingredientTableWidgetController.getChangeDetected())
                 .or(preparationStepWidgetController.getChangeDetected())
                 .or(commentWidgetController.getChangeDetected()));
     }
@@ -41,9 +42,10 @@ public class RecipeTabController {
      * Enables the editing of the values of this widget components.
      */
     public void enableEdit() {
-        commentWidgetController.enableEdit();
         recipeDetailsWidgetController.enableEdit();
+        ingredientTableWidgetController.enableEdit();
         preparationStepWidgetController.enableEdit();
+        commentWidgetController.enableEdit();
 
         bindChangeDetected();
 
@@ -75,7 +77,7 @@ public class RecipeTabController {
         currentRecipe = selectedRecipe;
         recipeDetailsWidgetController.initializeRecipeDetails(currentRecipe);
 
-        ingredientTableWidgetController.showIngredients(currentRecipe.getObservableIngredients());
+        ingredientTableWidgetController.showIngredients(currentRecipe);
 
         preparationStepWidgetController.initialize(currentRecipe.getPreparation());
 
@@ -89,11 +91,11 @@ public class RecipeTabController {
      */
     public void saveChanges() {
 
-
         currentRecipe.setComment(commentWidgetController.getComment());
 
         recipeDetailsWidgetController.resetChangeDetected();
 
+        ingredientTableWidgetController.saveChanges();
         RecipeHandler.updateRecipe(currentRecipe);
     }
 

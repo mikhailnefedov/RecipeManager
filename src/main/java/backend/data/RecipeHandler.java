@@ -1,7 +1,7 @@
 package backend.data;
 
 import backend.dataclasses.recipe.Recipe;
-import backend.dataclasses.recipecategories.RecipeCategory;
+import backend.dataclasses.recipe.uses.Ingredient;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -63,6 +63,21 @@ public final class RecipeHandler {
         Transaction tx = session.beginTransaction();
         //Update here
         session.update(recipe);
+        tx.commit();
+        session.close();
+    }
+
+    /**
+     * Deletes record of the ingredient.
+     *
+     * @param ingredients ingredient itself
+     */
+    public static void deleteIngredient(ArrayList<Ingredient> ingredients) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        for (Ingredient i : ingredients) {
+            session.remove(i);
+        }
         tx.commit();
         session.close();
     }

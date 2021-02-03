@@ -1,6 +1,7 @@
 package backend.dataclasses.recipe;
 
 import backend.converter.PortionsizeConverter;
+import backend.data.DataHandler;
 import backend.dataclasses.recipe.uses.Ingredient;
 import backend.dataclasses.recipecategories.RecipeCategory;
 import javafx.collections.FXCollections;
@@ -9,10 +10,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Models a recipe of the user.
@@ -111,11 +109,12 @@ public class Recipe {
     }
 
     @OneToMany(mappedBy = "recipe")
-    public Set<Ingredient> getIngredients() {
-        return new HashSet<>(ingredients);
+    @Cascade({CascadeType.ALL, CascadeType.DELETE})
+    public List<Ingredient> getIngredients() {
+        return ingredients;
     }
 
-    public void setIngredients(Set<Ingredient> ingredients) {
+    public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = FXCollections.observableArrayList(ingredients);
     }
 

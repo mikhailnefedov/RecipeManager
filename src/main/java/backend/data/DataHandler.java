@@ -5,6 +5,7 @@ import backend.dataclasses.groceries.GroceryItem;
 import backend.dataclasses.groceries.ShoppingList;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
+import backend.dataclasses.recipe.uses.Ingredient;
 import backend.dataclasses.recipecategories.ListOfRecipeCategories;
 import backend.dataclasses.recipecategories.RecipeCategory;
 import org.hibernate.Session;
@@ -137,6 +138,15 @@ public final class DataHandler {
                                          GroceryCategory affiliatedCategory) {
 
         GroceryCategoryHandler.updateItem(item, affiliatedCategory, newName);
+    }
+
+    /**
+     * Delete ingredient from the database.
+     *
+     * @param ingredients the ingredient itself
+     */
+    public static void deleteIngredient(ArrayList<Ingredient> ingredients) {
+        RecipeHandler.deleteIngredient(ingredients);
     }
 
 }
