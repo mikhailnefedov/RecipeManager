@@ -1,6 +1,5 @@
 package frontend.recipetab;
 
-import backend.data.RecipeHandler;
 import backend.dataclasses.recipe.Recipe;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -63,13 +62,6 @@ public class RecipeTabController {
     }
 
     /**
-     * Disables the save button.
-     */
-    private void disableSaving() {
-        recipeSaveButton.setDisable(true);
-    }
-
-    /**
      * Loads the data of the recipe into the tab.
      */
     public void loadRecipeDataIntoTab(Recipe selectedRecipe) {
@@ -96,7 +88,6 @@ public class RecipeTabController {
         recipeDetailsWidgetController.resetChangeDetected();
 
         ingredientTableWidgetController.saveChanges();
-        RecipeHandler.updateRecipe(currentRecipe);
     }
 
 }

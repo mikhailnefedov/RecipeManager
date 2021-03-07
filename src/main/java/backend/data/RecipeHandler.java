@@ -53,21 +53,6 @@ public final class RecipeHandler {
     }
 
     /**
-     * Updates record of recipe.
-     *
-     * @param recipe recipe itself
-     */
-    public static void updateRecipe(Recipe recipe) {
-
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-        //Update here
-        session.update(recipe);
-        tx.commit();
-        session.close();
-    }
-
-    /**
      * Deletes record of the ingredient.
      *
      * @param ingredients ingredient itself
