@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class RecipeDetailsWidgetController extends RecipeWidgetsController {
 
     @FXML
-    private TextField nameTextField; //name textfield for shown recipe
+    private TextField titleTextField; //name textfield for shown recipe
     @FXML
     private ComboBox<String> categoryComboBox;
     @FXML
@@ -38,13 +38,14 @@ public class RecipeDetailsWidgetController extends RecipeWidgetsController {
      * @param selectedRecipe selected recipe
      */
     public void initializeRecipeDetails(Recipe selectedRecipe) {
-
-        nameTextField.setText(selectedRecipe.getTitle());
+        titleTextField.setText(selectedRecipe.getTitle());
         initializeCategory(selectedRecipe.getRecipeCategory());
         timeTextField.setText(Integer.toString(selectedRecipe.getTime()));
         initializeVegetarianCheckbox(selectedRecipe.isVegetarian());
         sourceTextField.setText(selectedRecipe.getSource());
         initializePortionsize(selectedRecipe.getPortionsize());
+
+        super.initialize();
     }
 
     /**
@@ -105,7 +106,7 @@ public class RecipeDetailsWidgetController extends RecipeWidgetsController {
      * @param bool false for enabling components | true for disabling
      */
     private void setDisableValueOfComponents(boolean bool) {
-        nameTextField.setDisable(bool);
+        titleTextField.setDisable(bool);
         categoryComboBox.setDisable(bool);
         timeTextField.setDisable(bool);
         vegetarianCheckBox.setDisable(bool);
@@ -116,6 +117,25 @@ public class RecipeDetailsWidgetController extends RecipeWidgetsController {
 
     public void onChange() {
         changeDetected.setValue(true);
+    }
+
+    public Recipe getRecipeDetatils() {
+        Recipe recipe = new Recipe();
+        recipe.setTitle(titleTextField.getText());
+        RecipeCategory cat = ListOfRecipeCategories.getInstance()
+                .getRecipeCategory(
+                        categoryComboBox.getSelectionModel().getSelectedItem());
+        recipe.setCategory(cat);
+        recipe.setTime(Integer.parseInt(timeTextField.getText()));
+        recipe.setVegetarian(vegetarianCheckBox.selectedProperty().get());
+        recipe.setSource(sourceTextField.getText());
+
+        double amount = Double.parseDouble(portionsizeAmountTextField.getText());
+        Portionsize.PortionUnit unit = portionsizeUnitComboBox
+                .getSelectionModel().getSelectedItem();
+        recipe.setPortionsize(new Portionsize(amount, unit));
+
+        return recipe;
     }
 
 }

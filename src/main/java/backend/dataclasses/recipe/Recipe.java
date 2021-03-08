@@ -1,7 +1,6 @@
 package backend.dataclasses.recipe;
 
 import backend.converter.PortionsizeConverter;
-import backend.data.DataHandler;
 import backend.dataclasses.recipe.uses.Ingredient;
 import backend.dataclasses.recipecategories.RecipeCategory;
 import javafx.collections.FXCollections;
@@ -109,7 +108,7 @@ public class Recipe {
     }
 
     @OneToMany(mappedBy = "recipe")
-    @Cascade({CascadeType.ALL, CascadeType.DELETE})
+    @Cascade({CascadeType.DELETE})
     public List<Ingredient> getIngredients() {
         return ingredients;
     }
@@ -140,6 +139,21 @@ public class Recipe {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    /**
+     * Copies the MetaData of another recipe object into this instance.
+     *
+     * @param anotherRecipe recipe containing the data
+     */
+    public void copyRecipeMetaData(Recipe anotherRecipe) {
+        title = anotherRecipe.getTitle();
+        category = anotherRecipe.getCategory();
+        source = anotherRecipe.getSource();
+        portionsize = anotherRecipe.getPortionsize();
+        time = anotherRecipe.getTime();
+        vegetarian = anotherRecipe.isVegetarian();
+        comment = anotherRecipe.getComment();
     }
 
     @Override

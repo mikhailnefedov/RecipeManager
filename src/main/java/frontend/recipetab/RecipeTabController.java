@@ -1,5 +1,6 @@
 package frontend.recipetab;
 
+import backend.data.RecipeHandler;
 import backend.dataclasses.recipe.Recipe;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -83,11 +84,42 @@ public class RecipeTabController {
      */
     public void saveChanges() {
 
-        currentRecipe.setComment(commentWidgetController.getComment());
-
-        recipeDetailsWidgetController.resetChangeDetected();
+        saveRecipeMetaData();
 
         ingredientTableWidgetController.saveChanges();
+
+        resetChangeDetected();
+    }
+
+    /**
+     * Saves the comment if user changed it.
+     */
+    private void saveRecipeMetaData() {
+        Recipe newRecipeData = new Recipe();
+        boolean detailsChanged = recipeDetailsWidgetController
+                .getChangeDetected().get();
+        if (detailsChanged) {
+            newRecipeData = recipeDetailsWidgetController.getRecipeDetatils();
+        }
+        boolean commentChanged = commentWidgetController
+                .getChangeDetected().get();
+        if (commentChanged) {
+            newRecipeData.setComment(commentWidgetController.getComment());
+        }
+
+        if (detailsChanged || commentChanged) {
+            RecipeHandler.updateRecipe(currentRecipe, newRecipeData);
+        }
+    }
+
+    /**
+     *
+     */
+    private void resetChangeDetected() {
+        recipeDetailsWidgetController.resetChangeDetected();
+        ingredientTableWidgetController.resetChangeDetected();
+        preparationStepWidgetController.resetChangeDetected();
+        commentWidgetController.resetChangeDetected();
     }
 
 }

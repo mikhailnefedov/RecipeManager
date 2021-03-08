@@ -45,6 +45,7 @@ public class PreparationStepWidgetController extends RecipeWidgetsController {
      * @param preparationSteps list of preparation steps of the recipe.
      */
     public void initialize(List<PreparationStep> preparationSteps) {
+        super.initialize();
         this.preparationSteps = preparationSteps;
         currentStep = new SimpleIntegerProperty(0);
         currentStep.addListener(observable -> updateButtons());

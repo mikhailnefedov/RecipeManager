@@ -10,7 +10,11 @@ public abstract class RecipeWidgetsController {
 
     @FXML
     public void initialize() {
-        changeDetected = new SimpleBooleanProperty(false);
+        if (changeDetected == null) {
+            changeDetected = new SimpleBooleanProperty(false);
+        } else {
+            changeDetected.setValue(false);
+        }
     }
 
     /**

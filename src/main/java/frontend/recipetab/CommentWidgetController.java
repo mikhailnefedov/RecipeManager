@@ -14,6 +14,7 @@ public class CommentWidgetController extends RecipeWidgetsController {
      * @param comment comment of the recipe.
      */
     public void initializeComment(String comment) {
+        super.initialize();
         commentTextArea.setText(comment);
     }
 

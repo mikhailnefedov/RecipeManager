@@ -67,4 +67,19 @@ public final class RecipeHandler {
         session.close();
     }
 
+    /**
+     * Updates the recipe and persists the change.
+     *
+     * @param recipe            recipe that shall be updated
+     * @param recipeWithNewData recipe with the updated data in it.
+     */
+    public static void updateRecipe(Recipe recipe, Recipe recipeWithNewData) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        recipe.copyRecipeMetaData(recipeWithNewData);
+        session.update(recipe);
+        tx.commit();
+        session.close();
+    }
+
 }
