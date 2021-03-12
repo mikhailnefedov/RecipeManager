@@ -55,13 +55,28 @@ public final class RecipeHandler {
     /**
      * Deletes record of the ingredient.
      *
-     * @param ingredients ingredient itself
+     * @param ingredients list of ingredients that shall be deleted
      */
-    public static void deleteIngredient(ArrayList<Ingredient> ingredients) {
+    public static void deleteIngredients(ArrayList<Ingredient> ingredients) {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         for (Ingredient i : ingredients) {
             session.remove(i);
+        }
+        tx.commit();
+        session.close();
+    }
+
+    /**
+     * Saves/Updates the records of the ingredients.
+     *
+     * @param ingredients list of ingredients that shall be updated
+     */
+    public static void saveOrUpdateIngredients(ArrayList<Ingredient> ingredients) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        for (Ingredient i : ingredients) {
+            session.saveOrUpdate(i);
         }
         tx.commit();
         session.close();

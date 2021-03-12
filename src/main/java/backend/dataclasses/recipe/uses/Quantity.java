@@ -28,6 +28,11 @@ public class Quantity {
         this.unit = MeasurementUnits.valueOf(unit);
     }
 
+    public Quantity(String amount, MeasurementUnits unit) {
+        this.amount = Double.parseDouble(amount);
+        this.unit = unit;
+    }
+
     /**
      * Returns all units of measurements for a grocery item.
      *
@@ -35,6 +40,14 @@ public class Quantity {
      */
     public static Set<MeasurementUnits> getAllMeasurementUnits() {
         return Set.of(MeasurementUnits.values());
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public MeasurementUnits getMeasurementUnit() {
+        return unit;
     }
 
     @Override
@@ -50,7 +63,7 @@ public class Quantity {
     /**
      * Different measurements. (Currently only in german)
      */
-    private enum MeasurementUnits {
+    public enum MeasurementUnits {
         Bd, //Bund
         Bl, //Blatt
         EL, //Esslöffel

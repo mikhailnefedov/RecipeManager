@@ -134,13 +134,5 @@ public final class DataHandler {
         GroceryCategoryHandler.updateItem(item, affiliatedCategory, newName);
     }
 
-    /**
-     * Delete ingredient from the database.
-     *
-     * @param ingredients the ingredient itself
-     */
-    public static void deleteIngredient(ArrayList<Ingredient> ingredients) {
-        RecipeHandler.deleteIngredient(ingredients);
-    }
 
 }

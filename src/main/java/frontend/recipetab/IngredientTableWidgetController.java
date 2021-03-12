@@ -1,14 +1,16 @@
 package frontend.recipetab;
 
-import backend.data.DataHandler;
+import backend.data.RecipeHandler;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.uses.Ingredient;
+import frontend.helper.WindowLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class IngredientTableWidgetController extends RecipeWidgetsController {
@@ -28,6 +30,7 @@ public class IngredientTableWidgetController extends RecipeWidgetsController {
     private Button deleteButton;
     private Recipe recipe;
     private ArrayList<Ingredient> ingredientsToRemove;
+    private ArrayList<Ingredient> ingredientsToSaveOrUpdate;
 
     /**
      * Initialization of IngredientTabWidget. Sets the cell values of the table.
@@ -41,8 +44,12 @@ public class IngredientTableWidgetController extends RecipeWidgetsController {
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         ingredientsToRemove = new ArrayList<>();
+        ingredientsToSaveOrUpdate = new ArrayList<>();
     }
 
+    /**
+     * Initializes/Binds the disableProperty of the visible fxml elements.
+     */
     public void enableEdit() {
         ingredientTable.setDisable(false);
         addButton.setDisable(false);
@@ -62,12 +69,54 @@ public class IngredientTableWidgetController extends RecipeWidgetsController {
         ingredientTable.setItems(recipe.getObservableIngredients());
     }
 
-    public void addIngredient() {
-
+    /**
+     * Opens the Edit widget of the ingredients in a new stage.
+     * @return Controller of the edit widget.
+     * @throws IOException
+     */
+    public IngredientEditWidgetController openEditWidget() throws IOException {
+        IngredientEditWidgetController controller = (IngredientEditWidgetController)
+                WindowLoader.openNewWindowReturnController("recipeTab/IngredientEditWidget",
+                        "Füge neue Zutat hinzu");
+        controller.setParentController(this);
+        return controller;
     }
 
-    public void editIngredient() {
+    /**
+     * Adds a new ingredient to the current recipe and to the saveOrUpdate list.
+     * @param ingredient the newly created ingredient.
+     */
+    public void addIngredient(Ingredient ingredient) {
+        ingredient.setRecipe(recipe);
+        changeDetected.setValue(true);
+        recipe.getObservableIngredients().add(ingredient);
+        ingredientsToSaveOrUpdate.add(ingredient);
+    }
 
+    /**
+     * Opens and initializes the Edit widget of the ingredients for the
+     * edit mode.
+     * @throws IOException
+     */
+    public void editIngredient() throws IOException {
+        IngredientEditWidgetController controller = openEditWidget();
+        controller.setCurrentItem(ingredientTable.getSelectionModel()
+                .getSelectedItem());
+        controller.activateEditing();
+    }
+
+    /**
+     * Updates the current ingredient with new data.
+     * @param updatedIngredient
+     */
+    public void updateIngredient(Ingredient updatedIngredient) {
+        changeDetected.setValue(true);
+        Ingredient currentIngredient = ingredientTable.getSelectionModel().getSelectedItem();
+        currentIngredient.setGroceryItem(updatedIngredient.getItem());
+        currentIngredient.setQuantity(updatedIngredient.getQuantity());
+        ingredientsToSaveOrUpdate.add(currentIngredient);
+
+        ingredientTable.refresh();
     }
 
     /**
@@ -81,7 +130,16 @@ public class IngredientTableWidgetController extends RecipeWidgetsController {
                 ingredientTable.getSelectionModel().getSelectedItem());
     }
 
+    /**
+     * Saves the changes made to the ingredient list of the recipe or the
+     * ingredients themselves respectively.
+     */
     public void saveChanges() {
-        DataHandler.deleteIngredient(ingredientsToRemove);
+        if (!ingredientsToSaveOrUpdate.isEmpty()) {
+            RecipeHandler.saveOrUpdateIngredients(ingredientsToSaveOrUpdate);
+        }
+        if (!ingredientsToRemove.isEmpty()) {
+            RecipeHandler.deleteIngredients(ingredientsToRemove);
+        }
     }
 }
