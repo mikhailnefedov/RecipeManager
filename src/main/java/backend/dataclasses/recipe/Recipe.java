@@ -3,6 +3,7 @@ package backend.dataclasses.recipe;
 import backend.converter.PortionsizeConverter;
 import backend.dataclasses.recipe.uses.Ingredient;
 import backend.dataclasses.recipecategories.RecipeCategory;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.hibernate.annotations.Cascade;
@@ -25,7 +26,7 @@ public class Recipe {
     private int time;
     private boolean vegetarian;
     private ObservableList<Ingredient> ingredients;
-    private List<PreparationStep> preparation;
+    private ObservableList<PreparationStep> preparation;
     private String comment;
 
     public Recipe() {
@@ -125,7 +126,15 @@ public class Recipe {
     }
 
     public void setPreparation(List<PreparationStep> preparation) {
-        this.preparation = preparation;
+        this.preparation = FXCollections.observableArrayList(
+                instruction -> new Observable[]
+                        {instruction.getInstructionProperty()});
+        this.preparation.setAll(preparation);
+    }
+
+    @Transient
+    public ObservableList<PreparationStep> getObservablePreparation() {
+        return preparation;
     }
 
     @Transient

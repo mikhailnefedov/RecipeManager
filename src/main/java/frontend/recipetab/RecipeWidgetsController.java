@@ -27,6 +27,14 @@ public abstract class RecipeWidgetsController {
     }
 
     /**
+     * Sets the changeDetected property of this widget.
+     * @param bool true if change happened,
+     */
+    public void setChangeDetected(boolean bool) {
+        changeDetected.setValue(bool);
+    }
+
+    /**
      * Sets the changeDetected property to false.
      */
     public void resetChangeDetected() {

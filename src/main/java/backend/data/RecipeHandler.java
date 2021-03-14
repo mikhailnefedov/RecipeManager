@@ -1,5 +1,6 @@
 package backend.data;
 
+import backend.dataclasses.recipe.PreparationStep;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.uses.Ingredient;
 import org.hibernate.HibernateException;
@@ -93,6 +94,24 @@ public final class RecipeHandler {
         Transaction tx = session.beginTransaction();
         recipe.copyRecipeMetaData(recipeWithNewData);
         session.update(recipe);
+        tx.commit();
+        session.close();
+    }
+
+    /**
+     * Saves/Updates the records of the preparation instructions.
+     *
+     * @param recipe the instruction of this recipe will be updated
+     */
+    public static void updateInstructions(Recipe recipe) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        for (PreparationStep p : recipe.getObservablePreparation()) {
+            if (p.getRecipe() == null) {
+                p.setRecipe(recipe);
+            }
+            session.saveOrUpdate(p);
+        }
         tx.commit();
         session.close();
     }

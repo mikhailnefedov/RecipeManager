@@ -72,7 +72,7 @@ public class RecipeTabController {
 
         ingredientTableWidgetController.showIngredients(currentRecipe);
 
-        preparationStepWidgetController.initialize(currentRecipe.getPreparation());
+        preparationStepWidgetController.initialize(currentRecipe.getObservablePreparation());
 
         commentWidgetController.initializeComment(currentRecipe.getComment());
 
@@ -85,8 +85,8 @@ public class RecipeTabController {
     public void saveChanges() {
 
         saveRecipeMetaData();
-
         ingredientTableWidgetController.saveChanges();
+        saveInstructions();
 
         resetChangeDetected();
     }
@@ -113,7 +113,16 @@ public class RecipeTabController {
     }
 
     /**
-     *
+     * Saves the instruction if user changed it.
+     */
+    private void saveInstructions() {
+        if (preparationStepWidgetController.getChangeDetected().get()) {
+            RecipeHandler.updateInstructions(currentRecipe);
+        }
+    }
+
+    /**
+     * Sets the changeDetected property of the children (controllers) to false.
      */
     private void resetChangeDetected() {
         recipeDetailsWidgetController.resetChangeDetected();
