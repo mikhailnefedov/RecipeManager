@@ -1,5 +1,8 @@
 package backend.dataclasses.recipe;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -11,10 +14,14 @@ public class PreparationStep {
     private Integer id;
     @Column(name = "steporder")
     private int stepOrder;
-    private String instruction;
+    @Convert(converter = backend.converter.StringPropertyConverter.class)
+    private StringProperty instruction;
+    @ManyToOne()
+    @JoinColumn(name = "recipeID")
+    private Recipe recipe;
 
     public PreparationStep() {
-
+        this.instruction = new SimpleStringProperty("");
     }
 
     public int getId() {
@@ -22,11 +29,23 @@ public class PreparationStep {
     }
 
     public String getInstruction() {
-        return instruction;
+        return instruction.get();
     }
 
     public void setInstruction(String instruction) {
-        this.instruction = instruction;
+        this.instruction.set(instruction);
+    }
+
+    public StringProperty getInstructionProperty() {
+        return instruction;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
     }
 
     @Override

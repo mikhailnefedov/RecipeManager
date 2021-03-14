@@ -48,8 +48,20 @@ public class Ingredient {
         return item.toString();
     }
 
-    public String getQuantity() {
-        return quantity.toString();
+    public Quantity getQuantity() {
+        return quantity;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
+    public void setGroceryItem(GroceryItem item) {
+        this.item = item;
+    }
+
+    public void setQuantity(Quantity quantity) {
+        this.quantity = quantity;
     }
 
     @Override

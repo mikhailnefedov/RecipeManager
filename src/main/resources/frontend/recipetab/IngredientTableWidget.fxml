@@ -1,17 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.SVGPath?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="179.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.recipetab.IngredientTableWidgetController">
    <children>
-      <TableView fx:id="ingredientTable" prefHeight="179.0" prefWidth="471.0">
-        <columns>
-          <TableColumn fx:id="categoryColumn" prefWidth="150.0" text="Category" />
-          <TableColumn fx:id="itemColumn" minWidth="0.0" prefWidth="185.0" text="Item" />
-            <TableColumn fx:id="quantityColumn" minWidth="0.0" prefWidth="102.0" text="Quantity" />
-        </columns>
-      </TableView>
+      <GridPane prefHeight="179.0" prefWidth="500.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="95.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" percentHeight="33.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" percentHeight="34.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" percentHeight="33.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TableView fx:id="ingredientTable" disable="true" prefHeight="179.0" prefWidth="471.0" GridPane.rowSpan="2147483647">
+              <columns>
+                <TableColumn fx:id="categoryColumn" prefWidth="150.0" text="Category" />
+                <TableColumn fx:id="itemColumn" minWidth="0.0" prefWidth="185.0" text="Item" />
+                  <TableColumn fx:id="quantityColumn" minWidth="0.0" prefWidth="102.0" text="Quantity" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <Button fx:id="addButton" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#openEditWidget" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1">
+               <graphic>
+                  <SVGPath content="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" fillRule="EVEN_ODD" />
+               </graphic>
+            </Button>
+            <Button fx:id="editButton" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#editIngredient" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <graphic>
+                  <SVGPath content="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+               </graphic>
+            </Button>
+            <Button fx:id="deleteButton" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#deleteIngredient" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <graphic>
+                  <SVGPath content="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" fillRule="EVEN_ODD" />
+               </graphic>
+            </Button>
+         </children>
+      </GridPane>
    </children>
 </AnchorPane>

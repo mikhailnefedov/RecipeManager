@@ -1,6 +1,7 @@
 package frontend.recipetab;
 
 import backend.dataclasses.recipe.PreparationStep;
+import javafx.beans.property.SimpleListProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
@@ -13,13 +14,13 @@ import java.util.List;
 /**
  * Controller for InstructionWidget.fxml
  */
-public class InstructionWidgetController {
+public class InstructionWidgetController extends RecipeWidgetsController {
 
     @FXML
     private VBox instructionVBox;
     @FXML
     private AnchorPane instructionAnchorPane;
-    private List<PreparationStep> instructions;
+    private SimpleListProperty<PreparationStep> instructions;
     @FXML
     private BorderPane addButtonPane;
 
@@ -28,7 +29,7 @@ public class InstructionWidgetController {
      *
      * @param instructions list of preparations steps of the recipe
      */
-    public void initializeInstructions(List<PreparationStep> instructions) {
+    public void initializeInstructions(SimpleListProperty<PreparationStep> instructions) {
 
         instructionVBox.getChildren().remove(addButtonPane);
         this.instructions = instructions;
@@ -39,7 +40,7 @@ public class InstructionWidgetController {
     }
 
     /**
-     * Adds a Textarea to the frontend showing the instruction of the
+     * Appends a Textarea to the instructionVBox showing the instruction of the
      * preparation step.
      *
      * @param step preparation step itself
@@ -50,7 +51,8 @@ public class InstructionWidgetController {
     }
 
     /**
-     * Adds an empty Textarea to the frontend. User can type in a new step.
+     * Appends an empty Textarea to the instructionVBox for the user to type a
+     * new preparation step.
      */
     public void addNewPreparationStep() {
         instructionVBox.getChildren().remove(addButtonPane);
@@ -84,6 +86,7 @@ public class InstructionWidgetController {
 
         /**
          * Sets the frontend specifications.
+         *
          * @param step preparation step of the textarea
          */
         PreparationStepTextArea(PreparationStep step) {
@@ -102,13 +105,15 @@ public class InstructionWidgetController {
             this.setText(step.getInstruction());
             this.setWrapText(true);
 
-            this.setOnKeyTyped(inputMethodEvent ->
-                    preparationStep.setInstruction(this.getText())
+            this.setOnKeyTyped(inputMethodEvent -> {
+                        preparationStep.setInstruction(this.getText());
+                    }
             );
         }
 
         /**
          * Returns the PreparationStep that the object holds.
+         *
          * @return PreparationStep itself
          */
         public PreparationStep getPreparationStep() {

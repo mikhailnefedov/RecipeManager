@@ -5,15 +5,13 @@ import backend.dataclasses.groceries.GroceryItem;
 import backend.dataclasses.groceries.ShoppingList;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
+import backend.dataclasses.recipe.uses.Ingredient;
 import backend.dataclasses.recipecategories.ListOfRecipeCategories;
 import backend.dataclasses.recipecategories.RecipeCategory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 
 /**
@@ -30,9 +28,6 @@ public final class DataHandler {
 
         SessionFactory sessionFactory = new Configuration().configure()
                 .buildSessionFactory();
-        EntityManagerFactory emF = Persistence
-                .createEntityManagerFactory("PersistenceProvider");
-        EntityManager entityManager = emF.createEntityManager();
 
         RecipeCategoryHandler.initialize(sessionFactory);
         GroceryCategoryHandler.initialize(sessionFactory);
@@ -138,5 +133,6 @@ public final class DataHandler {
 
         GroceryCategoryHandler.updateItem(item, affiliatedCategory, newName);
     }
+
 
 }

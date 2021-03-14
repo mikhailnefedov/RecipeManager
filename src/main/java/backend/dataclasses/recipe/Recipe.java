@@ -3,16 +3,14 @@ package backend.dataclasses.recipe;
 import backend.converter.PortionsizeConverter;
 import backend.dataclasses.recipe.uses.Ingredient;
 import backend.dataclasses.recipecategories.RecipeCategory;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Models a recipe of the user.
@@ -28,7 +26,7 @@ public class Recipe {
     private int time;
     private boolean vegetarian;
     private ObservableList<Ingredient> ingredients;
-    private List<PreparationStep> preparation;
+    private ObservableList<PreparationStep> preparation;
     private String comment;
 
     public Recipe() {
@@ -111,11 +109,12 @@ public class Recipe {
     }
 
     @OneToMany(mappedBy = "recipe")
-    public Set<Ingredient> getIngredients() {
-        return new HashSet<>(ingredients);
+    @Cascade({CascadeType.DELETE})
+    public List<Ingredient> getIngredients() {
+        return ingredients;
     }
 
-    public void setIngredients(Set<Ingredient> ingredients) {
+    public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = FXCollections.observableArrayList(ingredients);
     }
 
@@ -127,7 +126,15 @@ public class Recipe {
     }
 
     public void setPreparation(List<PreparationStep> preparation) {
-        this.preparation = preparation;
+        this.preparation = FXCollections.observableArrayList(
+                instruction -> new Observable[]
+                        {instruction.getInstructionProperty()});
+        this.preparation.setAll(preparation);
+    }
+
+    @Transient
+    public ObservableList<PreparationStep> getObservablePreparation() {
+        return preparation;
     }
 
     @Transient
@@ -141,6 +148,21 @@ public class Recipe {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    /**
+     * Copies the MetaData of another recipe object into this instance.
+     *
+     * @param anotherRecipe recipe containing the data
+     */
+    public void copyRecipeMetaData(Recipe anotherRecipe) {
+        title = anotherRecipe.getTitle();
+        category = anotherRecipe.getCategory();
+        source = anotherRecipe.getSource();
+        portionsize = anotherRecipe.getPortionsize();
+        time = anotherRecipe.getTime();
+        vegetarian = anotherRecipe.isVegetarian();
+        comment = anotherRecipe.getComment();
     }
 
     @Override

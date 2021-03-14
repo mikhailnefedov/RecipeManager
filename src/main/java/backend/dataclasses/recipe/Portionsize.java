@@ -14,11 +14,25 @@ public class Portionsize {
      * Constructor for Portionsize.
      *
      * @param amount amount of portions.
-     * @param unit String of unit of this portion.
+     * @param unit   String of unit of this portion.
      */
     public Portionsize(double amount, String unit) {
         this.amount = amount;
         this.unit = PortionUnit.valueOf(unit);
+    }
+
+    public Portionsize(double amount, PortionUnit unit) {
+        this.amount = amount;
+        this.unit = unit;
+    }
+
+    /**
+     * Gets the existing portion units as a Set.
+     *
+     * @return set of portion units
+     */
+    public static Set<PortionUnit> getPortionUnits() {
+        return Set.of(PortionUnit.values());
     }
 
     public double getAmount() {
@@ -37,13 +51,12 @@ public class Portionsize {
         this.unit = unit;
     }
 
-    /**
-     * Gets the existing portion units as a Set.
-     *
-     * @return set of portion units
-     */
-    public static Set<PortionUnit> getPortionUnits() {
-        return Set.of(PortionUnit.values());
+    @Override
+    public String toString() {
+        return "Portionsize{" +
+                "amount=" + amount +
+                ", unit=" + unit +
+                '}';
     }
 
     /**
@@ -56,13 +69,5 @@ public class Portionsize {
         Portionen,      //portions
         Stücke,         //pieces
         Torte,          //cake
-    }
-
-    @Override
-    public String toString() {
-        return "Portionsize{" +
-                "amount=" + amount +
-                ", unit=" + unit +
-                '}';
     }
 }

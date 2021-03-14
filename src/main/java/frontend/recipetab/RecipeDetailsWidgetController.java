@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 /**
  * Controller for widget that shows most of the recipe details to the user.
  */
-public class RecipeDetailsWidgetController {
+public class RecipeDetailsWidgetController extends RecipeWidgetsController {
 
     @FXML
-    private TextField nameTextField; //name textfield for shown recipe
+    private TextField titleTextField; //name textfield for shown recipe
     @FXML
     private ComboBox<String> categoryComboBox;
     @FXML
@@ -38,13 +38,14 @@ public class RecipeDetailsWidgetController {
      * @param selectedRecipe selected recipe
      */
     public void initializeRecipeDetails(Recipe selectedRecipe) {
-
-        nameTextField.setText(selectedRecipe.getTitle());
+        titleTextField.setText(selectedRecipe.getTitle());
         initializeCategory(selectedRecipe.getRecipeCategory());
         timeTextField.setText(Integer.toString(selectedRecipe.getTime()));
         initializeVegetarianCheckbox(selectedRecipe.isVegetarian());
         sourceTextField.setText(selectedRecipe.getSource());
         initializePortionsize(selectedRecipe.getPortionsize());
+
+        super.initialize();
     }
 
     /**
@@ -83,6 +84,58 @@ public class RecipeDetailsWidgetController {
         } else {
             vegetarianCheckBox.setSelected(false);
         }
-
     }
+
+    /**
+     * Enables the editing of the values of this widget components.
+     */
+    public void enableEdit() {
+        setDisableValueOfComponents(false);
+    }
+
+    /**
+     * Disables the editing of the values of this widget components.
+     */
+    public void disableEdit() {
+        setDisableValueOfComponents(true);
+    }
+
+    /**
+     * Sets the disable attribute of this widget components.
+     *
+     * @param bool false for enabling components | true for disabling
+     */
+    private void setDisableValueOfComponents(boolean bool) {
+        titleTextField.setDisable(bool);
+        categoryComboBox.setDisable(bool);
+        timeTextField.setDisable(bool);
+        vegetarianCheckBox.setDisable(bool);
+        sourceTextField.setDisable(bool);
+        portionsizeAmountTextField.setDisable(bool);
+        portionsizeUnitComboBox.setDisable(bool);
+    }
+
+    public void onChange() {
+        changeDetected.setValue(true);
+    }
+
+    public Recipe getRecipeDetatils() {
+        Recipe recipe = new Recipe();
+        recipe.setTitle(titleTextField.getText());
+        RecipeCategory cat = ListOfRecipeCategories.getInstance()
+                .getRecipeCategory(
+                        categoryComboBox.getSelectionModel().getSelectedItem());
+        recipe.setCategory(cat);
+        recipe.setTime(Integer.parseInt(timeTextField.getText()));
+        recipe.setVegetarian(vegetarianCheckBox.selectedProperty().get());
+        recipe.setSource(sourceTextField.getText());
+
+        double amount = Double.parseDouble(portionsizeAmountTextField.getText());
+        Portionsize.PortionUnit unit = portionsizeUnitComboBox
+                .getSelectionModel().getSelectedItem();
+        recipe.setPortionsize(new Portionsize(amount, unit));
+
+        return recipe;
+    }
+
 }

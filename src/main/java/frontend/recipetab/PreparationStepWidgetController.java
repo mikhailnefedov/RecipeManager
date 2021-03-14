@@ -2,14 +2,18 @@ package frontend.recipetab;
 
 import backend.dataclasses.recipe.PreparationStep;
 import frontend.helper.WindowLoader;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 
 import java.io.IOException;
-import java.util.List;
 
-public class PreparationStepWidgetController {
+public class PreparationStepWidgetController extends RecipeWidgetsController {
     @FXML
     private TextArea instructionTextArea;
     @FXML
@@ -19,78 +23,77 @@ public class PreparationStepWidgetController {
     @FXML
     private Button downButton;
     private InstructionWidgetController instructionEditWidgetController;
+    private IntegerProperty currentStep;
+    private SimpleListProperty<PreparationStep> preparationSteps;
 
-    private int currentStep;
-    private List<PreparationStep> preparationSteps;
-
-    @FXML
-    protected void initialize() {
-        editButton.setDisable(true);
+    /**
+     * Enables the editing of the values of this widget components.
+     */
+    public void enableEdit() {
+        editButton.setDisable(false);
     }
 
     /**
      * Initializes the controller for a new recipe. Initializes the GUI of the
      * widget.
      *
-     * @param preparationSteps lsit of preparation steps of the recipe.
+     * @param preparationSteps list of preparation steps of the recipe.
      */
-    public void initialize(List<PreparationStep> preparationSteps) {
-        currentStep = 0;
-        this.preparationSteps = preparationSteps;
-        editButton.setDisable(false);
+    public void initialize(ObservableList<PreparationStep> preparationSteps) {
+        super.initialize();
+        this.preparationSteps = new SimpleListProperty<>();
+        this.preparationSteps.setValue(preparationSteps);
+        preparationSteps.addListener((ListChangeListener<? super PreparationStep>) change -> {
+            changeDetected.setValue(true);
+            bindButtons();
+            bindTextArea();
+        });
 
-        if (preparationSteps == null || preparationSteps.size() == 0) {
-            upButton.setDisable(true);
-            downButton.setDisable(true);
-        } else {
-            updateButtons();
-            updateTextArea();
+        currentStep = new SimpleIntegerProperty(0);
+        currentStep.addListener(observable -> bindTextArea());
+
+        bindButtons();
+        bindTextArea();
+    }
+
+    /**
+     * Binds the up and down button disable property, so that button is
+     * disabled if there is no next/previous instruction available.
+     */
+    public void bindButtons() {
+        upButton.disableProperty().bind(preparationSteps.isNull()
+                .or(preparationSteps.emptyProperty())
+                .or(currentStep.isEqualTo(0)));
+
+        downButton.disableProperty().bind(preparationSteps.isNull()
+                .or(preparationSteps.emptyProperty())
+                .or(currentStep.isEqualTo(preparationSteps.size() - 1)));
+    }
+
+    /**
+     * Binds the text area text property to the current instruction.
+     */
+    private void bindTextArea() {
+        instructionTextArea.textProperty().unbind();
+        instructionTextArea.setText("");
+        if (preparationSteps.size() > 0) {
+            instructionTextArea.textProperty().bind(preparationSteps
+                    .get(currentStep.getValue()).getInstructionProperty());
         }
-
     }
 
     /**
-     * Updates the up and down button. Disables it if there is no next/previous
-     * instruction available.
+     * Increments currentStep value by 1.
      */
-    private void updateButtons() {
-        if (currentStep == 0) {
-            upButton.setDisable(true);
-        } else {
-            upButton.setDisable(false);
-        }
-
-        if (currentStep == preparationSteps.size() - 1) {
-            downButton.setDisable(true);
-        } else {
-            downButton.setDisable(false);
-        }
+    public void nextStep() {
+        currentStep.setValue(currentStep.getValue() + 1);
     }
 
     /**
-     * Updates the text area with the current instruction.
+     * Decrements currentStep value by 1.
      */
-    private void updateTextArea() {
-        instructionTextArea.setText(preparationSteps.get(currentStep)
-                .getInstruction());
-    }
-
-    /**
-     * Shows the next instruction in the widget.
-     */
-    public void nextInstruction() {
-        currentStep++;
-        updateButtons();
-        updateTextArea();
-    }
-
-    /**
-     * Shows the previous instruction in the widget.
-     */
-    public void previousInstruction() {
-        currentStep--;
-        updateButtons();
-        updateTextArea();
+    public void previousStep() {
+        currentStep.setValue(currentStep.getValue() - 1);
     }
 
     /**
@@ -106,8 +109,4 @@ public class PreparationStepWidgetController {
         instructionEditWidgetController.initializeInstructions(preparationSteps);
     }
 
-
 }
-
-
-

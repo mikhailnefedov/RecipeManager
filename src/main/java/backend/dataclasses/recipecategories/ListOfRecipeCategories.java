@@ -91,4 +91,16 @@ public class ListOfRecipeCategories {
     public void addRecipeCategory(RecipeCategory recipeCategory) {
         savedRecipeCategories.add(recipeCategory);
     }
+
+    /**
+     * Gets the recipe category object that equals the param name.
+     *
+     * @param recipeCategory name of the category
+     * @return recipe category object
+     */
+    public RecipeCategory getRecipeCategory(String recipeCategory) {
+        return savedRecipeCategories.stream()
+                .filter(r -> r.getName().equals(recipeCategory))
+                .findFirst().get();
+    }
 }
