@@ -30,6 +30,8 @@ public class Recipe {
     private String comment;
 
     public Recipe() {
+        ingredients = FXCollections.observableArrayList();
+        preparation = FXCollections.observableArrayList();
     }
 
     @Id
@@ -72,6 +74,9 @@ public class Recipe {
      */
     @Transient
     public String getRecipeCategory() {
+        if (category == null) {
+            return "";
+        }
         return category.getName();
     }
 
@@ -109,7 +114,7 @@ public class Recipe {
     }
 
     @OneToMany(mappedBy = "recipe")
-    @Cascade({CascadeType.DELETE})
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
     public List<Ingredient> getIngredients() {
         return ingredients;
     }
@@ -119,7 +124,7 @@ public class Recipe {
     }
 
     @OneToMany(fetch = FetchType.EAGER)
-    @Cascade(CascadeType.SAVE_UPDATE)
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
     @JoinColumn(name = "recipeID")
     public List<PreparationStep> getPreparation() {
         return preparation;

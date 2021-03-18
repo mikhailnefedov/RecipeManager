@@ -109,4 +109,8 @@ public class PreparationStepWidgetController extends RecipeWidgetsController {
         instructionEditWidgetController.initializeInstructions(preparationSteps);
     }
 
+    public ObservableList<PreparationStep> getPreparation() {
+        return preparationSteps.get();
+    }
+
 }

@@ -3,13 +3,12 @@ package frontend.recipetab;
 import backend.dataclasses.recipe.PreparationStep;
 import javafx.beans.property.SimpleListProperty;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Controller for InstructionWidget.fxml
@@ -23,6 +22,7 @@ public class InstructionWidgetController extends RecipeWidgetsController {
     private SimpleListProperty<PreparationStep> instructions;
     @FXML
     private BorderPane addButtonPane;
+    private ArrayList<PreparationStep> stepsToAdd;
 
     /**
      * Loads the preparations steps into the frontend.
@@ -37,6 +37,8 @@ public class InstructionWidgetController extends RecipeWidgetsController {
             addNewTextArea(step);
         }
         instructionVBox.getChildren().add(addButtonPane);
+
+        stepsToAdd = new ArrayList<>();
     }
 
     /**
@@ -56,7 +58,9 @@ public class InstructionWidgetController extends RecipeWidgetsController {
      */
     public void addNewPreparationStep() {
         instructionVBox.getChildren().remove(addButtonPane);
-        addNewTextArea(new PreparationStep());
+        PreparationStep newPreparationStep = new PreparationStep();
+        addNewTextArea(newPreparationStep);
+        stepsToAdd.add(newPreparationStep);
         instructionVBox.getChildren().add(addButtonPane);
     }
 
@@ -65,14 +69,9 @@ public class InstructionWidgetController extends RecipeWidgetsController {
      * Method should be used when stage is closed by the user.
      */
     public void shutdown() {
-        instructionVBox.getChildren().remove(addButtonPane);
-        for (Node n : instructionVBox.getChildren()) {
-            PreparationStepTextArea p = (PreparationStepTextArea) n;
-            PreparationStep pStep = p.getPreparationStep();
-            if (!instructions.contains(pStep)
-                    && pStep.getInstruction() != null
-                    && pStep.getInstruction().length() > 0) {
-                instructions.add(pStep);
+        for (PreparationStep p : stepsToAdd) {
+            if (p.getInstruction() != null && p.getInstruction().length() > 0) {
+                instructions.add(p);
             }
         }
     }
@@ -105,21 +104,9 @@ public class InstructionWidgetController extends RecipeWidgetsController {
             this.setText(step.getInstruction());
             this.setWrapText(true);
 
-            this.setOnKeyTyped(inputMethodEvent -> {
-                        preparationStep.setInstruction(this.getText());
-                    }
-            );
+            this.setOnKeyTyped(inputMethodEvent ->
+                    preparationStep.setInstruction(this.getText()));
         }
 
-        /**
-         * Returns the PreparationStep that the object holds.
-         *
-         * @return PreparationStep itself
-         */
-        public PreparationStep getPreparationStep() {
-            return preparationStep;
-        }
     }
 }
-
-

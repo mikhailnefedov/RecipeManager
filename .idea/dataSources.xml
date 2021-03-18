@@ -15,5 +15,15 @@
         </library>
       </libraries>
     </data-source>
+    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="3c4a6b89-754d-497c-b37f-e04c41a6eecf">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate
+
+D:/Studium/githubprojekte/RecipeManager/src/main/resources/hibernate.cfg.xml</remarks>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:D:\Studium\githubprojekte\RecipeManager\src\main\resources\RecipeManagerDB.db</jdbc-url>
+    </data-source>
   </component>
 </project>

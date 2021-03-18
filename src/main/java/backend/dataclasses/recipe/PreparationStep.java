@@ -10,7 +10,7 @@ import java.util.Objects;
 public class PreparationStep {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
     @Column(name = "steporder")
     private int stepOrder;
