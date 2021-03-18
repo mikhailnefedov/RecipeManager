@@ -39,40 +39,62 @@ public class RecipeDetailsWidgetController extends RecipeWidgetsController {
      */
     public void initializeRecipeDetails(Recipe selectedRecipe) {
         titleTextField.setText(selectedRecipe.getTitle());
-        initializeCategory(selectedRecipe.getRecipeCategory());
+        initializeCategoryComboBox();
+        setCategory(selectedRecipe);
         timeTextField.setText(Integer.toString(selectedRecipe.getTime()));
         initializeVegetarianCheckbox(selectedRecipe.isVegetarian());
         sourceTextField.setText(selectedRecipe.getSource());
-        initializePortionsize(selectedRecipe.getPortionsize());
+        initializePortionsizeComboBox();
+        setPortionsize(selectedRecipe);
 
         super.initialize();
     }
 
     /**
-     * Displays the recipe category of the recipe
-     *
-     * @param categoryName name of the recipe category
+     * Initializes the category combobox.
      */
-    private void initializeCategory(String categoryName) {
+    private void initializeCategoryComboBox() {
 
         Set<String> categories = ListOfRecipeCategories.
                 getInstance().getSavedRecipeCategories().stream().
                 map(RecipeCategory::getName).collect(Collectors.toSet());
         categoryComboBox.getItems().addAll(categories);
-        categoryComboBox.getSelectionModel().select(categoryName);
     }
 
     /**
-     * Displays the portionsize details of the recipe
+     * Displays the recipe category of the recipe in the combobox.
      *
-     * @param portion portionsize of recipe
+     * @param recipe itself
      */
-    private void initializePortionsize(Portionsize portion) {
+    private void setCategory(Recipe recipe) {
+        try {
+            String categoryName = recipe.getRecipeCategory();
+            categoryComboBox.getSelectionModel().select(categoryName);
+        } catch (NullPointerException e) {
+        }
+    }
 
-        portionsizeAmountTextField.setText(Double.toString(portion.getAmount()));
+    /**
+     * Initializes the portionsize combobox.
+     */
+    private void initializePortionsizeComboBox() {
         portionsizeUnitComboBox.getItems().addAll(Portionsize.getPortionUnits());
-        portionsizeUnitComboBox.getSelectionModel().
-                select(portion.getUnit());
+    }
+
+    /**
+     * Displays the portionsize details of the recipe.
+     *
+     * @param recipe the recipe itself
+     */
+    private void setPortionsize(Recipe recipe) {
+        try {
+            Portionsize portion = recipe.getPortionsize();
+            portionsizeUnitComboBox.getSelectionModel().
+                    select(portion.getUnit());
+            portionsizeAmountTextField.setText(
+                    Double.toString(portion.getAmount()));
+        } catch (NullPointerException e) {
+        }
     }
 
     /**
@@ -91,13 +113,6 @@ public class RecipeDetailsWidgetController extends RecipeWidgetsController {
      */
     public void enableEdit() {
         setDisableValueOfComponents(false);
-    }
-
-    /**
-     * Disables the editing of the values of this widget components.
-     */
-    public void disableEdit() {
-        setDisableValueOfComponents(true);
     }
 
     /**

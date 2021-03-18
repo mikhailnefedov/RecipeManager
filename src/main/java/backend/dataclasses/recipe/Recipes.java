@@ -33,4 +33,8 @@ public class Recipes {
         return savedRecipes;
     }
 
+    public void removeRecipe(Recipe recipe) {
+        savedRecipes.remove(recipe);
+    }
+
 }

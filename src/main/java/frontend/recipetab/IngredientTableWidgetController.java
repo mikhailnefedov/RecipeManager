@@ -30,7 +30,6 @@ public class IngredientTableWidgetController extends RecipeWidgetsController {
     private Button deleteButton;
     private Recipe recipe;
     private ArrayList<Ingredient> ingredientsToRemove;
-    private ArrayList<Ingredient> ingredientsToSaveOrUpdate;
 
     /**
      * Initialization of IngredientTabWidget. Sets the cell values of the table.
@@ -44,7 +43,6 @@ public class IngredientTableWidgetController extends RecipeWidgetsController {
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         ingredientsToRemove = new ArrayList<>();
-        ingredientsToSaveOrUpdate = new ArrayList<>();
     }
 
     /**
@@ -71,6 +69,7 @@ public class IngredientTableWidgetController extends RecipeWidgetsController {
 
     /**
      * Opens the Edit widget of the ingredients in a new stage.
+     *
      * @return Controller of the edit widget.
      * @throws IOException
      */
@@ -84,18 +83,19 @@ public class IngredientTableWidgetController extends RecipeWidgetsController {
 
     /**
      * Adds a new ingredient to the current recipe and to the saveOrUpdate list.
+     *
      * @param ingredient the newly created ingredient.
      */
     public void addIngredient(Ingredient ingredient) {
         ingredient.setRecipe(recipe);
         changeDetected.setValue(true);
         recipe.getObservableIngredients().add(ingredient);
-        ingredientsToSaveOrUpdate.add(ingredient);
     }
 
     /**
      * Opens and initializes the Edit widget of the ingredients for the
      * edit mode.
+     *
      * @throws IOException
      */
     public void editIngredient() throws IOException {
@@ -107,6 +107,7 @@ public class IngredientTableWidgetController extends RecipeWidgetsController {
 
     /**
      * Updates the current ingredient with new data.
+     *
      * @param updatedIngredient
      */
     public void updateIngredient(Ingredient updatedIngredient) {
@@ -114,7 +115,6 @@ public class IngredientTableWidgetController extends RecipeWidgetsController {
         Ingredient currentIngredient = ingredientTable.getSelectionModel().getSelectedItem();
         currentIngredient.setGroceryItem(updatedIngredient.getItem());
         currentIngredient.setQuantity(updatedIngredient.getQuantity());
-        ingredientsToSaveOrUpdate.add(currentIngredient);
 
         ingredientTable.refresh();
     }
@@ -124,9 +124,9 @@ public class IngredientTableWidgetController extends RecipeWidgetsController {
      */
     public void deleteIngredient() {
         changeDetected.setValue(true);
-        recipe.getObservableIngredients().remove(
-                ingredientTable.getSelectionModel().getSelectedItem());
         ingredientsToRemove.add(
+                ingredientTable.getSelectionModel().getSelectedItem());
+        recipe.getObservableIngredients().remove(
                 ingredientTable.getSelectionModel().getSelectedItem());
     }
 
@@ -135,9 +135,6 @@ public class IngredientTableWidgetController extends RecipeWidgetsController {
      * ingredients themselves respectively.
      */
     public void saveChanges() {
-        if (!ingredientsToSaveOrUpdate.isEmpty()) {
-            RecipeHandler.saveOrUpdateIngredients(ingredientsToSaveOrUpdate);
-        }
         if (!ingredientsToRemove.isEmpty()) {
             RecipeHandler.deleteIngredients(ingredientsToRemove);
         }

@@ -1,9 +1,11 @@
 package frontend.recipetab;
 
 import backend.data.RecipeHandler;
+import backend.dataclasses.recipe.PreparationStep;
 import backend.dataclasses.recipe.Recipe;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -39,6 +41,14 @@ public class RecipeTabController {
     }
 
     /**
+     * Activates/Deactivates the save button when changeDetected changes.
+     */
+    public void addListenerToChangeDetected() {
+        changeDetected.addListener((observableValue, oldBool, newBool) ->
+                recipeSaveButton.setDisable(!newBool));
+    }
+
+    /**
      * Enables the editing of the values of this widget components.
      */
     public void enableEdit() {
@@ -48,18 +58,7 @@ public class RecipeTabController {
         commentWidgetController.enableEdit();
 
         bindChangeDetected();
-
-        changeDetected.addListener((observableValue, oldBool, newBool) ->
-                handleSaveButton(newBool));
-    }
-
-    /**
-     * Handles the disable value of the save button.
-     *
-     * @param bool true for enabling save button | false for disabling button
-     */
-    public void handleSaveButton(boolean bool) {
-        recipeSaveButton.setDisable(!bool);
+        addListenerToChangeDetected();
     }
 
     /**
@@ -84,42 +83,30 @@ public class RecipeTabController {
      */
     public void saveChanges() {
 
-        saveRecipeMetaData();
-        ingredientTableWidgetController.saveChanges();
-        saveInstructions();
-
+        saveOrUpdateRecipe();
         resetChangeDetected();
     }
 
     /**
      * Saves the comment if user changed it.
      */
-    private void saveRecipeMetaData() {
-        Recipe newRecipeData = new Recipe();
-        boolean detailsChanged = recipeDetailsWidgetController
-                .getChangeDetected().get();
-        if (detailsChanged) {
-            newRecipeData = recipeDetailsWidgetController.getRecipeDetatils();
-        }
-        boolean commentChanged = commentWidgetController
-                .getChangeDetected().get();
-        if (commentChanged) {
-            newRecipeData.setComment(commentWidgetController.getComment());
-        }
+    private void saveOrUpdateRecipe() {
 
-        if (detailsChanged || commentChanged) {
-            RecipeHandler.updateRecipe(currentRecipe, newRecipeData);
-        }
-    }
+        Recipe newRecipeData = recipeDetailsWidgetController.getRecipeDetatils();
 
-    /**
-     * Saves the instruction if user changed it.
-     */
-    private void saveInstructions() {
+        ingredientTableWidgetController.saveChanges();
+
         if (preparationStepWidgetController.getChangeDetected().get()) {
-            RecipeHandler.updateInstructions(currentRecipe);
+            ObservableList<PreparationStep> preparationSteps =
+                    preparationStepWidgetController.getPreparation();
+            currentRecipe.setPreparation(preparationSteps);
         }
+
+        newRecipeData.setComment(commentWidgetController.getComment());
+
+        RecipeHandler.saveOrUpdateRecipe(currentRecipe, newRecipeData);
     }
+
 
     /**
      * Sets the changeDetected property of the children (controllers) to false.

@@ -1,12 +1,13 @@
 package frontend;
 
+import backend.data.RecipeHandler;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
 import frontend.recipetab.RecipeTabController;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
@@ -30,6 +31,11 @@ public class WindowController {
     private TableColumn<Recipe, URL> sourceColumn; //source column " "
     @FXML
     private RecipeTabController recipeTabController; //injected controller
+    @FXML
+    private Button addButton;
+    @FXML
+    private Button deleteButton;
+    private ReadOnlyObjectProperty<Recipe> currentRecipe;
 
     /**
      * Initialization of window. Loads necessary data into the fxml components
@@ -38,6 +44,8 @@ public class WindowController {
     @FXML
     protected void initialize() {
         loadRecipesIntoTable();
+        bindCurrentRecipe();
+        bindButtons();
     }
 
     /**
@@ -62,14 +70,33 @@ public class WindowController {
         return Recipes.getInstance().getSavedRecipes();
     }
 
-    /**
-     * When a recipe on the table is clicked then the data of the recipe is
-     * shown in the tab.
-     */
-    public void handleTableViewClickOnRecipe() {
-        Recipe selectedRecipe = recipeTable.getSelectionModel()
-                .getSelectedItem();
-        recipeTabController.loadRecipeDataIntoTab(selectedRecipe);
+    private void bindCurrentRecipe() {
+        currentRecipe = recipeTable.getSelectionModel().selectedItemProperty();
+        currentRecipe.addListener((observableValue, o, t1) -> {
+            recipeTabController.loadRecipeDataIntoTab(currentRecipe.get());
+        });
+    }
+
+    private void bindButtons() {
+        deleteButton.disableProperty().bind(currentRecipe.isNull());
+    }
+
+    public void addClick() {
+        Recipe newRecipe = new Recipe();
+        Recipes.getInstance().addRecipe(newRecipe);
+    }
+
+    public void deleteClick() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                currentRecipe.get().getTitle() + " löschen?",
+                ButtonType.YES, ButtonType.CANCEL);
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.YES) {
+            RecipeHandler.deleteRecipe(
+                    recipeTable.getSelectionModel().getSelectedItem());
+            Recipes.getInstance().removeRecipe(currentRecipe.get());
+        }
     }
 
 }
