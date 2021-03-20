@@ -1,6 +1,5 @@
 package backend.dataclasses.groceries;
 
-import backend.dataclasses.recipe.Recipe;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +15,6 @@ import java.util.Set;
 public class Groceries {
 
     private static Groceries instance = null;
-    private ShoppingList shoppingList;
     /**
      * Observable Map for frontend view.
      */
@@ -24,7 +22,6 @@ public class Groceries {
     private ObservableList<GroceryCategory> observableCategories;
 
     private Groceries() {
-        shoppingList = new ShoppingList();
         observableItems = FXCollections.observableArrayList(
                 item -> new Observable[]{item.nameProperty(),
                         item.affiliatedCategoryProperty()}
@@ -106,14 +103,6 @@ public class Groceries {
      */
     public void deleteGroceryItem(GroceryItem item) {
         observableItems.remove(item);
-    }
-
-    /**
-     * Creates a shopping list for a given list of recipes.
-     * @param recipes the recipes themselves
-     */
-    public void createShoppingList(ArrayList<Recipe> recipes) {
-        shoppingList.createShoppingList(recipes);
     }
 
 }

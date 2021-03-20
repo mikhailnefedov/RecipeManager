@@ -24,7 +24,7 @@ public class ShoppingList {
         return shopList;
     }
 
-    protected void createShoppingList(ArrayList<Recipe> recipeList) {
+    public void createShoppingList(ArrayList<Recipe> recipeList) {
         for (Recipe recipe : recipeList) {
             addIngredientsToShoppingList(recipe.getIngredients());
         }
@@ -61,17 +61,12 @@ public class ShoppingList {
                 shopList.get(ingredient.getItem().getGroceryCategory());
         ArrayList<Quantity> quantities = itemHashMap.get(ingredient.getItem());
 
-        if (quantities == null) {
-            ArrayList<Quantity> newList = new ArrayList<>(List.of(newQuantity));
-            itemHashMap.put(ingredient.getItem(), newList);
+        Quantity quantityFromList =
+                getQuantity(quantities, newQuantity.getMeasurementUnit());
+        if (quantityFromList != null) {
+            quantityFromList.mergeQuantity(newQuantity);
         } else {
-            Quantity quantityFromList =
-                    getQuantity(quantities, newQuantity.getMeasurementUnit());
-            if (quantityFromList != null) {
-                quantityFromList.mergeQuantity(newQuantity);
-            } else {
-                quantities.add(newQuantity);
-            }
+            quantities.add(newQuantity);
         }
     }
 

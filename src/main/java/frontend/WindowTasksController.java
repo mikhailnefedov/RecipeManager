@@ -1,6 +1,6 @@
 package frontend;
 
-import backend.dataclasses.groceries.Groceries;
+import backend.dataclasses.groceries.ShoppingList;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
 import frontend.helper.WindowLoader;
@@ -38,6 +38,6 @@ public class WindowTasksController {
                 Recipes.getInstance().getSavedRecipes().get(0),
                 Recipes.getInstance().getSavedRecipes().get(1),
                 Recipes.getInstance().getSavedRecipes().get(0)));
-        Groceries.getInstance().createShoppingList(recipes);
+        new ShoppingList().createShoppingList(recipes);
     }
 }
