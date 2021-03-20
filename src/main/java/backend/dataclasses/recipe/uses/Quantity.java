@@ -11,7 +11,7 @@ public class Quantity {
     /**
      * Unit of the ingredient.
      */
-    private MeasurementUnits unit;
+    private MeasurementUnit unit;
 
 
     public Quantity(String quantity) {
@@ -20,16 +20,21 @@ public class Quantity {
         String unit = quantityArray[1];
 
         this.amount = Double.parseDouble(amount);
-        this.unit = MeasurementUnits.valueOf(unit);
+        this.unit = MeasurementUnit.valueOf(unit);
     }
 
     public Quantity(String amount, String unit) {
         this.amount = Double.parseDouble(amount);
-        this.unit = MeasurementUnits.valueOf(unit);
+        this.unit = MeasurementUnit.valueOf(unit);
     }
 
-    public Quantity(String amount, MeasurementUnits unit) {
+    public Quantity(String amount, MeasurementUnit unit) {
         this.amount = Double.parseDouble(amount);
+        this.unit = unit;
+    }
+
+    public Quantity(double amount, MeasurementUnit unit) {
+        this.amount = amount;
         this.unit = unit;
     }
 
@@ -38,32 +43,35 @@ public class Quantity {
      *
      * @return Set of MeasurementUnits
      */
-    public static Set<MeasurementUnits> getAllMeasurementUnits() {
-        return Set.of(MeasurementUnits.values());
+    public static Set<MeasurementUnit> getAllMeasurementUnits() {
+        return Set.of(MeasurementUnit.values());
     }
 
     public double getAmount() {
         return amount;
     }
 
-    public MeasurementUnits getMeasurementUnit() {
+    public MeasurementUnit getMeasurementUnit() {
         return unit;
     }
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(amount);
-        builder.append(" ");
-        builder.append(unit.toString());
-        return builder.toString();
+        String builder = amount +
+                " " +
+                unit.toString();
+        return builder;
         //e.g. "2.0 Kg"
+    }
+
+    public void mergeQuantity(Quantity anotherQuantity) {
+        amount += anotherQuantity.getAmount();
     }
 
     /**
      * Different measurements. (Currently only in german)
      */
-    public enum MeasurementUnits {
+    public enum MeasurementUnit {
         Bd, //Bund
         Bl, //Blatt
         EL, //Esslöffel

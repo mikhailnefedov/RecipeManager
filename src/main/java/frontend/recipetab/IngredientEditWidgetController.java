@@ -1,7 +1,7 @@
 package frontend.recipetab;
 
 import backend.dataclasses.groceries.GroceryItem;
-import backend.dataclasses.groceries.ShoppingList;
+import backend.dataclasses.groceries.Groceries;
 import backend.dataclasses.recipe.uses.Ingredient;
 import backend.dataclasses.recipe.uses.Quantity;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -31,7 +31,7 @@ public class IngredientEditWidgetController {
     @FXML
     private TextField amountTextField;
     @FXML
-    private ComboBox<Quantity.MeasurementUnits> unitComboBox;
+    private ComboBox<Quantity.MeasurementUnit> unitComboBox;
     @FXML
     private TextField searchBar;
     @FXML
@@ -70,7 +70,7 @@ public class IngredientEditWidgetController {
      * @return list of every grocery item
      */
     private ObservableList<GroceryItem> getGroceryItems() {
-        return ShoppingList.getInstance().getObservableItems();
+        return Groceries.getInstance().getObservableItems();
     }
 
     /**
@@ -110,12 +110,9 @@ public class IngredientEditWidgetController {
      * Initializes the amount textfield to only be able to contain numbers.
      */
     private void initializeAmountTextField() {
-        amountTextField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
-                    amountTextField.setText(oldValue);
-                }
+        amountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
+                amountTextField.setText(oldValue);
             }
         });
     }

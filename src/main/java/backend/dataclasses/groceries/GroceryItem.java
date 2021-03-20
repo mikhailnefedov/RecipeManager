@@ -39,6 +39,10 @@ public final class GroceryItem implements Comparable<GroceryItem> {
         this.affiliatedGroceryCategory = affiliatedCategory;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getID() {
         return this.id;
     }

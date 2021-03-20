@@ -37,7 +37,7 @@
         <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <Tab text="%tab.recipe">
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                    <fx:include fx:id="recipeTab" source="RecipeTab/RecipeTab.fxml" />
+                    <fx:include fx:id="recipeTab" source="recipetab/RecipeTab.fxml" />
                 </AnchorPane>
             </Tab>
         </TabPane>

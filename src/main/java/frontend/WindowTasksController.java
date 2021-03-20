@@ -1,8 +1,13 @@
 package frontend;
 
+import backend.dataclasses.groceries.ShoppingList;
+import backend.dataclasses.recipe.Recipe;
+import backend.dataclasses.recipe.Recipes;
 import frontend.helper.WindowLoader;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WindowTasksController {
 
@@ -26,5 +31,13 @@ public class WindowTasksController {
     public void handleGroceryItemsClick() throws IOException {
         WindowLoader.openNewWindow("GroceryItemsWindow",
                 "Zutaten bearbeiten");
+    }
+
+    public void TestClick() {
+        ArrayList<Recipe> recipes = new ArrayList<>(List.of(
+                Recipes.getInstance().getSavedRecipes().get(0),
+                Recipes.getInstance().getSavedRecipes().get(1),
+                Recipes.getInstance().getSavedRecipes().get(0)));
+        new ShoppingList().createShoppingList(recipes);
     }
 }

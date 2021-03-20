@@ -3,7 +3,7 @@ package frontend;
 import backend.data.DataHandler;
 import backend.dataclasses.groceries.GroceryCategory;
 import backend.dataclasses.groceries.GroceryItem;
-import backend.dataclasses.groceries.ShoppingList;
+import backend.dataclasses.groceries.Groceries;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -53,7 +53,7 @@ public class GroceryItemsWindowController {
         groceryTable.getSortOrder().add(groceryTableCategoryColumn);
 
         groceryCategoryComboBox.getItems()          //load into combobox
-                .addAll(ShoppingList.getInstance().getGroceryCategories());
+                .addAll(Groceries.getInstance().getGroceryCategories());
 
         errorTooltip = new ErrorTooltip();
         groceryItemErrorLabel.setTooltip(errorTooltip);
@@ -100,7 +100,7 @@ public class GroceryItemsWindowController {
      * @return list of every grocery item
      */
     private ObservableList<GroceryItem> getGroceryItems() {
-        return ShoppingList.getInstance().getObservableItems();
+        return Groceries.getInstance().getObservableItems();
     }
 
     /**
@@ -146,7 +146,7 @@ public class GroceryItemsWindowController {
         GroceryItem selectedItem = getSelectedItem();
         try {
             DataHandler.deleteGroceryItem(selectedItem);
-            ShoppingList.getInstance().deleteGroceryItem(selectedItem);
+            Groceries.getInstance().deleteGroceryItem(selectedItem);
             enableEditingButtons();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -200,7 +200,7 @@ public class GroceryItemsWindowController {
         String newName = groceryItemTextField.getText();
         GroceryItem newItem = DataHandler
                 .saveNewGroceryItem(relatedCategory, newName);
-        ShoppingList.getInstance().addGroceryItem(newItem);
+        Groceries.getInstance().addGroceryItem(newItem);
         focusTableOnNewItem(newItem);
     }
 
@@ -256,7 +256,7 @@ public class GroceryItemsWindowController {
             errorTooltip.addErrorMessage("Name darf nicht leer sein!");
             return false;
         }
-        if (ShoppingList.getInstance().isItemInList(newItemName, category)) {
+        if (Groceries.getInstance().isItemInList(newItemName, category)) {
             groceryItemTextField
                     .setStyle("-fx-background-color: #ffdddc; -fx-border-color: grey");
             groceryItemErrorLabel.setVisible(true);

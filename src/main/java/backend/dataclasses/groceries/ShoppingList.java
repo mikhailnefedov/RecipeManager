@@ -1,165 +1,88 @@
 package backend.dataclasses.groceries;
 
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import backend.dataclasses.recipe.Recipe;
+import backend.dataclasses.recipe.uses.Ingredient;
+import backend.dataclasses.recipe.uses.Quantity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
+import java.util.List;
+import java.util.Optional;
 
 /**
- * Represents the list of grocery items of the program.
+ * Creates a shopping list for the recipes.
  */
 public class ShoppingList {
 
-    private static ShoppingList instance = null;
-    /**
-     * Map that serves as a template for every recipe. It contains every
-     * Category and its Items. Serves also as a container for saving the
-     * Quantity amounts of the Recipe, so when recipes are combined into a
-     * shopping list, the amounts can be merged together.
-     */
-    private HashMap<GroceryCategory, ArrayList<GroceryItem>> categoriesAndItems;
-    //TODO: Rethink if HashMap is still necessary.
+    private HashMap<GroceryCategory, HashMap<GroceryItem, ArrayList<Quantity>>> shopList;
 
-    /**
-     * Observable Map for frontend view.
-     */
-    private ObservableList<GroceryItem> observableItems;
-
-    private ShoppingList() {
-
-        categoriesAndItems = new HashMap<>();
-        observableItems = FXCollections.observableArrayList(
-                item -> new Observable[]{item.nameProperty(),
-                        item.affiliatedCategoryProperty()}
-        );
+    public ShoppingList() {
+        shopList = new HashMap<>();
     }
 
-    public static ShoppingList getInstance() {
+    public HashMap<GroceryCategory, HashMap<GroceryItem, ArrayList<Quantity>>> getShopList() {
+        return shopList;
+    }
 
-        if (instance == null) {
-            instance = new ShoppingList();
+    public void createShoppingList(ArrayList<Recipe> recipeList) {
+        for (Recipe recipe : recipeList) {
+            addIngredientsToShoppingList(recipe.getIngredients());
         }
-        return instance;
+
+        System.out.println(shopList.toString());
     }
 
-    /**
-     * Initializes ShoppingList by loading data into an observable list and a
-     * HashMap that contains every Category and its items.
-     *
-     * @param categoriesAndItems map of categories and their items
-     */
-    public void initialize(HashMap<GroceryCategory, ArrayList<GroceryItem>>
-                                   categoriesAndItems) {
-        this.categoriesAndItems = categoriesAndItems;
-        for (GroceryCategory category : categoriesAndItems.keySet()) {
-            addItemListToObservable(categoriesAndItems.get(category));
+    private void addIngredientsToShoppingList(List<Ingredient> ingredientList) {
+        for (Ingredient ingredient : ingredientList) {
+            shopList.putIfAbsent(
+                    ingredient.getItem().getGroceryCategory(),
+                    new HashMap<>());
+
+            shopList.get(ingredient.getItem().getGroceryCategory())
+                    .putIfAbsent(
+                            ingredient.getItem(),
+                            new ArrayList<>());
+
+            handleMergeOfQuantityList(ingredient);
         }
     }
 
     /**
-     * Adds a list of items to the observable list for the frontend.
+     * Merges the quantity of the ingredient into the shopping hashmap.
      *
-     * @param items list of GroceryItem
+     * @param ingredient the quantity from this ingredient will be added to the
+     *                   hashmap
      */
-    private void addItemListToObservable(ArrayList<GroceryItem> items) {
-        observableItems.addAll(items);
-    }
+    private void handleMergeOfQuantityList(Ingredient ingredient) {
+        Quantity newQuantity = new Quantity(ingredient.getQuantity().getAmount(),
+                ingredient.getQuantity().getMeasurementUnit());
 
-    /**
-     * Returns list of observable items for javafx frontend.
-     *
-     * @return observable list of grocery items
-     */
-    public ObservableList<GroceryItem> getObservableItems() {
-        return observableItems;
-    }
+        HashMap<GroceryItem, ArrayList<Quantity>> itemHashMap =
+                shopList.get(ingredient.getItem().getGroceryCategory());
+        ArrayList<Quantity> quantities = itemHashMap.get(ingredient.getItem());
 
-    /**
-     * Gets the current grocery categories.
-     *
-     * @return Set of grocery categories
-     */
-    public Set<GroceryCategory> getGroceryCategories() {
-        return categoriesAndItems.keySet();
-    }
-
-    /**
-     * Add new grocery item to the observable list and shopping list template.
-     *
-     * @param newItem new grocery item
-     */
-    public void addGroceryItem(GroceryItem newItem) {
-        observableItems.add(newItem);
-        categoriesAndItems.get(newItem.getGroceryCategory()).add(newItem);
-    }
-
-    /**
-     * Checks if an item is already saved.
-     *
-     * @param itemName the item to be checked. Important is not the object, but
-     *                 its name and category
-     * @param category category of the item
-     * @return true, if it already exists | else, if not
-     */
-    public boolean isItemInList(String itemName, GroceryCategory category) {
-        Stream<String> itemNames = categoriesAndItems.get(category)
-                .stream().map(GroceryItem::toString);
-        return itemNames.anyMatch(item -> item.equals(itemName));
-    }
-
-    /**
-     * Gets the grocery category object corresponding to the parameter string.
-     *
-     * @param categoryName name of the category
-     * @return grocery category
-     */
-    public GroceryCategory getGroceryCategory(String categoryName) {
-
-        Supplier<Stream<GroceryCategory>> stream = () ->
-                categoriesAndItems.keySet().stream()
-                        .filter(category -> category.toString()
-                                .equals(categoryName));
-        if (stream.get().findFirst().isPresent()) {
-            return stream.get().findFirst().get();
+        Quantity quantityFromList =
+                getQuantity(quantities, newQuantity.getMeasurementUnit());
+        if (quantityFromList != null) {
+            quantityFromList.mergeQuantity(newQuantity);
         } else {
-            throw new IllegalArgumentException("Category does not exist");
-        }
-
-    }
-
-    /**
-     * Gets the corresponding grocery item to the parameter of a category.
-     *
-     * @param category        category of the item
-     * @param groceryItemName name of the item
-     * @return grocery item corresponding to the data
-     */
-    public GroceryItem getGroceryItem(GroceryCategory category,
-                                      String groceryItemName) {
-
-        Supplier<Stream<GroceryItem>> items = () -> categoriesAndItems
-                .get(category).stream()
-                .filter(item -> item.toString().equals(groceryItemName));
-        if (items.get().findFirst().isPresent()) {
-            return items.get().findFirst().get();
-        } else {
-            throw new IllegalArgumentException("Item does not exist");
+            quantities.add(newQuantity);
         }
     }
 
     /**
-     * Removes the grocery item from the observable list and the hashmap.
+     * Gets the quantity from the quantities list that has the same
+     * MeasurementUnit.
      *
-     * @param item grocery item that shall be deleted
+     * @param quantities list of quantities
+     * @param unit       MeasurementUnit that is used for filtering the list
+     * @return quantity, if found | null, else
      */
-    public void deleteGroceryItem(GroceryItem item) {
-        observableItems.remove(item);
-        categoriesAndItems.get(item.getGroceryCategory()).remove(item);
+    private Quantity getQuantity(ArrayList<Quantity> quantities,
+                                 Quantity.MeasurementUnit unit) {
+        Optional<Quantity> quantity = quantities.stream()
+                .filter(q -> q.getMeasurementUnit().equals(unit))
+                .findFirst();
+        return quantity.orElse(null);
     }
-
 }
