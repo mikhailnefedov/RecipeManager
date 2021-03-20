@@ -2,7 +2,7 @@ package backend.data;
 
 import backend.dataclasses.groceries.GroceryCategory;
 import backend.dataclasses.groceries.GroceryItem;
-import backend.dataclasses.groceries.ShoppingList;
+import backend.dataclasses.groceries.Groceries;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.Recipes;
 import backend.dataclasses.recipe.uses.Ingredient;
@@ -35,7 +35,7 @@ public final class DataHandler {
 
         Session session = sessionFactory.openSession();
 
-        ShoppingList shopList = ShoppingList.getInstance();
+        Groceries shopList = Groceries.getInstance();
         shopList.initialize(GroceryCategoryHandler.getCategories(session));
 
         ArrayList<RecipeCategory> recipeCategories = RecipeCategoryHandler

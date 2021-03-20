@@ -75,7 +75,7 @@ public class IngredientTableWidgetController extends RecipeWidgetsController {
      */
     public IngredientEditWidgetController openEditWidget() throws IOException {
         IngredientEditWidgetController controller = (IngredientEditWidgetController)
-                WindowLoader.openNewWindowReturnController("recipeTab/IngredientEditWidget",
+                WindowLoader.openNewWindowReturnController("recipetab/IngredientEditWidget",
                         "Füge neue Zutat hinzu");
         controller.setParentController(this);
         return controller;
