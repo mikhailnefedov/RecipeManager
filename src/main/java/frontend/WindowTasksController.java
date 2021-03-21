@@ -33,11 +33,4 @@ public class WindowTasksController {
                 "Zutaten bearbeiten");
     }
 
-    public void TestClick() {
-        ArrayList<Recipe> recipes = new ArrayList<>(List.of(
-                Recipes.getInstance().getSavedRecipes().get(0),
-                Recipes.getInstance().getSavedRecipes().get(1),
-                Recipes.getInstance().getSavedRecipes().get(0)));
-        new ShoppingList().createShoppingList(recipes);
-    }
 }
