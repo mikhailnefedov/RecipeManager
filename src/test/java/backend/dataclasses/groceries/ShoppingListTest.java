@@ -54,7 +54,7 @@ public class ShoppingListTest {
         ShoppingList shoppingList = new ShoppingList();
         shoppingList.createShoppingList(new ArrayList<>(List.of(recipe1)));
         HashMap<GroceryCategory, HashMap<GroceryItem, ArrayList<Quantity>>> shopHashMap =
-                shoppingList.getShopList();
+                shoppingList.getShoppingList();
 
         for (Ingredient ingredient : recipe1.getIngredients()) {
             ArrayList<Quantity> quantities = getQuantities(shopHashMap, ingredient);
@@ -73,7 +73,7 @@ public class ShoppingListTest {
         ShoppingList shoppingList = new ShoppingList();
         shoppingList.createShoppingList(new ArrayList<>(List.of(recipe1,recipe2)));
         HashMap<GroceryCategory, HashMap<GroceryItem, ArrayList<Quantity>>> shopHashMap =
-                shoppingList.getShopList();
+                shoppingList.getShoppingList();
 
         Ingredient appleIngredient = recipe2.getIngredients().get(0);
         ArrayList<Quantity> quantities = getQuantities(shopHashMap, appleIngredient);
@@ -99,7 +99,7 @@ public class ShoppingListTest {
         ShoppingList shoppingList = new ShoppingList();
         shoppingList.createShoppingList(new ArrayList<>(List.of(recipe2,recipe2)));
         HashMap<GroceryCategory, HashMap<GroceryItem, ArrayList<Quantity>>> shopHashMap =
-                shoppingList.getShopList();
+                shoppingList.getShoppingList();
 
         double resultAmount = recipe2.getIngredients().get(0).getQuantity().getAmount();
         resultAmount *= 2;

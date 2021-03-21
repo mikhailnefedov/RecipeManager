@@ -3,7 +3,9 @@ package backend.dataclasses.groceries;
 import backend.dataclasses.recipe.Recipe;
 import backend.dataclasses.recipe.uses.Ingredient;
 import backend.dataclasses.recipe.uses.Quantity;
+import backend.report.SimpleShoppingListPdf;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,14 +16,14 @@ import java.util.Optional;
  */
 public class ShoppingList {
 
-    private HashMap<GroceryCategory, HashMap<GroceryItem, ArrayList<Quantity>>> shopList;
+    private HashMap<GroceryCategory, HashMap<GroceryItem, ArrayList<Quantity>>> shoppingList;
 
     public ShoppingList() {
-        shopList = new HashMap<>();
+        shoppingList = new HashMap<>();
     }
 
-    public HashMap<GroceryCategory, HashMap<GroceryItem, ArrayList<Quantity>>> getShopList() {
-        return shopList;
+    public HashMap<GroceryCategory, HashMap<GroceryItem, ArrayList<Quantity>>> getShoppingList() {
+        return shoppingList;
     }
 
     public void createShoppingList(ArrayList<Recipe> recipeList) {
@@ -29,16 +31,17 @@ public class ShoppingList {
             addIngredientsToShoppingList(recipe.getIngredients());
         }
 
-        System.out.println(shopList.toString());
+        System.out.println(shoppingList.toString());
+        generateShoppingListPdf();
     }
 
     private void addIngredientsToShoppingList(List<Ingredient> ingredientList) {
         for (Ingredient ingredient : ingredientList) {
-            shopList.putIfAbsent(
+            shoppingList.putIfAbsent(
                     ingredient.getItem().getGroceryCategory(),
                     new HashMap<>());
 
-            shopList.get(ingredient.getItem().getGroceryCategory())
+            shoppingList.get(ingredient.getItem().getGroceryCategory())
                     .putIfAbsent(
                             ingredient.getItem(),
                             new ArrayList<>());
@@ -58,7 +61,7 @@ public class ShoppingList {
                 ingredient.getQuantity().getMeasurementUnit());
 
         HashMap<GroceryItem, ArrayList<Quantity>> itemHashMap =
-                shopList.get(ingredient.getItem().getGroceryCategory());
+                shoppingList.get(ingredient.getItem().getGroceryCategory());
         ArrayList<Quantity> quantities = itemHashMap.get(ingredient.getItem());
 
         Quantity quantityFromList =
@@ -84,5 +87,14 @@ public class ShoppingList {
                 .filter(q -> q.getMeasurementUnit().equals(unit))
                 .findFirst();
         return quantity.orElse(null);
+    }
+
+    private void generateShoppingListPdf() {
+        SimpleShoppingListPdf pdf = new SimpleShoppingListPdf();
+        try {
+            pdf.generate(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
