@@ -95,7 +95,7 @@ public class SimpleShoppingListPdf {
         float fieldWidth = 15;
 
         PdfFormField checkBox = PdfFormField.createCheckBox(pdfDocument,
-                new Rectangle(freeBBox.getLeft(), top - fieldHeight - 5, fieldWidth, fieldHeight), checkBoxName, "Off", PdfFormField.TYPE_CHECK);
+                new Rectangle(freeBBox.getLeft(), top - fieldHeight - 5, fieldWidth, fieldHeight), checkBoxName, "Off");
         checkBox.getWidgets().get(0).setBorderStyle(PdfAnnotation.STYLE_BEVELED);
         checkBox.setBorderWidth(1).setBorderColor(ColorConstants.BLACK);
 
